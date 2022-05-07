@@ -1,0 +1,15 @@
+-------------------- Auto-Git Log --------------------
+		Mon Apr 18 2022 14:41:48 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* app/Http/Controllers/Auth/LoginController.php
+
+
+Created files:
+
+
+Deleted files:
+
+
+Renamed files:

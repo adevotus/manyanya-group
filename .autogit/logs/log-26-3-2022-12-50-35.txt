@@ -1,0 +1,20 @@
+-------------------- Auto-Git Log --------------------
+		Tue Apr 26 2022 12:50:35 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* app/Http/Controllers/Auth/LoginController.php
+* app/Models/User.php
+* resources/views/layouts/home/app.blade.php
+* resources/views/layouts/home/content.blade.php
+* routes/web.php
+
+
+Created files:
+* .autogit/logs/log-24-3-2022-7-35-11.txt
+
+
+Deleted files:
+
+
+Renamed files:

@@ -1,0 +1,31 @@
+-------------------- Auto-Git Log --------------------
+		Mon Apr 18 2022 20:14:59 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* app/Http/Controllers/Admin/PageController.php
+* app/Http/Controllers/Storekeeper/PathrouterController.php
+* resources/views/layouts/navi-store.blade.php
+* resources/views/login.blade.php
+* routes/web.php
+
+
+Created files:
+* .autogit/logs/log-18-3-2022-14-41-48.txt
+* app/Http/Controllers/muhasibu/muhasibuController.php
+* resources/views/layouts/muhasibu/appmuhasibu.blade.php
+* resources/views/layouts/muhasibu/headermuhasibu.blade.php
+* resources/views/layouts/muhasibu/navmuhasibu.blade.php
+* resources/views/layouts/partials/admin.blade.php
+* resources/views/layouts/partials/adminheader.blade.php
+* resources/views/layouts/partials/admnavi.blade.php
+* resources/views/manager/managerboard.blade.php
+* resources/views/manager/pages/drivers.blade.php
+* resources/views/muhasibu/muhasibudash.blade.php
+* resources/views/stockkeeper/pages/sto-drivers.blade.php
+
+
+Deleted files:
+
+
+Renamed files:

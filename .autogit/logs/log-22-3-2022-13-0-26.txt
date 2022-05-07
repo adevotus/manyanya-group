@@ -1,0 +1,17 @@
+-------------------- Auto-Git Log --------------------
+		Fri Apr 22 2022 13:00:26 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* resources/views/assets/homecss.blade.php
+* resources/views/layouts/home/app.blade.php
+* resources/views/layouts/home/footer.blade.php
+
+
+Created files:
+
+
+Deleted files:
+
+
+Renamed files:

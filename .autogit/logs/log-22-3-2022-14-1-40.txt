@@ -1,0 +1,18 @@
+-------------------- Auto-Git Log --------------------
+		Fri Apr 22 2022 14:01:40 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* resources/views/layouts/home/content.blade.php
+* resources/views/layouts/home/footer.blade.php
+* resources/views/layouts/home/navigation.blade.php
+
+
+Created files:
+* .autogit/logs/log-22-3-2022-13-0-26.txt
+
+
+Deleted files:
+
+
+Renamed files:

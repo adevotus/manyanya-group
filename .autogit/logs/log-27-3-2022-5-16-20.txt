@@ -1,0 +1,20 @@
+-------------------- Auto-Git Log --------------------
+		Wed Apr 27 2022 05:16:20 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* public/home/css/style.css
+* public/home/js/main.js
+* resources/views/layouts/header.blade.php
+* resources/views/layouts/home/content.blade.php
+* resources/views/layouts/home/header.blade.php
+* resources/views/layouts/home/navigation.blade.php
+
+
+Created files:
+
+
+Deleted files:
+
+
+Renamed files:
