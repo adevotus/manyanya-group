@@ -9,12 +9,12 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      *
-     * @return void
+     * @return voids
      */
     public function run()
     {
         $this->call(LaratrustSeeder::class);
-        // \App\Models\User::factory(1000)->create();
+        \App\Models\Cargo::factory()->create();
         // $this->call(UserSeeder::class);
     }
 }

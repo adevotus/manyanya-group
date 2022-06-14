@@ -3,50 +3,61 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session as FacadesSession;
+use  Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    public function login()
-    {
-        return view('login');
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers {
+        logout as performLogout;
     }
 
-    public function authenticate(Request $request)
+    public function logout(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+        $this->performLogout($request);
+        return redirect()->route('login');
+    }
 
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            if (Auth::user()->hasRole('superadmin')) {
-                return redirect()->route('admin.home');
-            } else if (Auth::user()->hasRole('storekeeper')) {
-                return redirect()->route('storekeeper.home');
-            } else if (Auth::user()->hasRole('muhasibu')) {
-                return redirect()->route('muhasibu.home');
-            } else if (Auth::user()->hasRole('manager')) {
-                return redirect()->route('manager.home');
-            } else if (Auth::user()->hasRole('driver')) {
-                return redirect()->route('driver.home');
-            } else {
-                abort(403);
-            }
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected function redirectTo()
+    {
+        if (Auth::user()->isA('superadmin')) {
+            return  '/superadmin';
+        } else if (Auth::user()->isA('storekeeper')) {
+            return  '/storekeeper';
+        } else if (Auth::user()->isA('muhasibu')) {
+            return  '/muhasibu';
+        } else if (Auth::user()->isA('manager')) {
+            return  '/manager';
+        } else {
+            return  '/driver';
         }
-
-
-        return redirect("/login")->withSuccess('Login details are not valid');
     }
-    public function signOut()
-    {
-        FacadesSession::flush();
-        Auth::logout();
 
-        return Redirect('/login');
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
     }
 }

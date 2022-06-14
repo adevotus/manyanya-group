@@ -24,17 +24,15 @@ class RedirectIfAuthenticated
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 if (Auth::user()->isA('superadmin')) {
-                    return  '/superadmin';
+                    return  redirect()->route('admin.home');
                 } else if (Auth::user()->isA('storekeeper')) {
-                    return  '/dashboard';
+                    return  redirect()->route('store.home');
                 } else if (Auth::user()->isA('muhasibu')) {
-                    return  '/muhasibu';
+                    return  redirect()->route('muhasibu.home');
                 } else if (Auth::user()->isA('manager')) {
-                    return  '/manager';
-                } else if (Auth::user()->isA('driver')) {
-                    return  '/dashboard';
+                    return  redirect()->route('manager.home');
                 } else {
-                    abort(403);
+                    return  redirect()->route('driver.home');
                 }
             }
         }
