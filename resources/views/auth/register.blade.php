@@ -83,32 +83,32 @@
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @endif
                                                 </div>
-                                        </div>
-                                        <div class="text-center d-grid m-2">
-                                            <button class="btn btn-primary" type="submit"> Sign Up </button>
-                                        </div>
 
-                                        </form>
-                                        <div class="col-12 text-center">
-                                            <p class="text-black-50">Already have account? <a href="{{ route('login') }}"
-                                                    class="text-black ms-1"><b>Sign
-                                                        In</b></a></p>
-                                        </div>
+                                                <div class="text-center d-grid m-2">
+                                                    <button class="btn btn-primary" type="submit"> Sign Up </button>
+                                                </div>
 
-                                    </div> <!-- end card-body -->
+
+                                                <div class="col-12 text-center">
+                                                    <p class="text-black-50">Already have account? <a href="{{ route('login') }}"
+                                                            class="text-black ms-1"><b>Sign
+                                                                In</b></a></p>
+                                                </div>
+
+
+
+                                                <!-- end card -->
+                                            </form>
+
+                                        </div> <!-- end col -->
+                                    </div>
+                                    <!-- end row -->
                                 </div>
-                                <!-- end card -->
+                                <!-- end container -->
+                            </div>
+                            <!-- end page -->
 
-
-                            </div> <!-- end col -->
-                        </div>
-                        <!-- end row -->
-                    </div>
-                    <!-- end container -->
-                    </div>
-                    <!-- end page -->
-
-                    @include('assets.js')
+                            @include('assets.js')
                 </body>
 
                 </html>
