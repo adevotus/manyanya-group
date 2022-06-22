@@ -11,7 +11,7 @@ class VehicleController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:storekeeper|superadmin|manager');
+        $this->middleware('role:mechanics|superadmin|manager');
     }
 
     /**

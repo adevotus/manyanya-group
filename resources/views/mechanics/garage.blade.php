@@ -9,7 +9,7 @@
                 <div class="page-title-box">
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('store.home') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('mechanics.home') }}">Home</a></li>
                             <li class="breadcrumb-item active">Garage</li>
                         </ol>
                     </div>
@@ -46,6 +46,12 @@
                                         @error('tool_condition')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
+                                        @error('tool_number')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                        @error('slip')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -53,8 +59,8 @@
                                 <div class="me-3">
                                     <div class="row text-end">
                                         <div class="col-sm-5">
-                                            <input type="search" name="search" class="form-control my-1 my-md-0" id="search"
-                                                placeholder="Search...">
+                                            <input type="search" name="search" class="form-control my-1 my-md-0"
+                                                id="search" placeholder="Search...">
 
                                         </div>
                                         <div class="col-sm-5">
@@ -106,8 +112,7 @@
                                                 <td>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#update-modal{{ $garage->id }}"
-                                                        class="action-icon"> <i
-                                                            class="mdi mdi-square-edit-outline"></i></a>
+                                                        class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#delete-modal{{ $garage->id }}"
                                                         class="action-icon"> <i class="mdi mdi-delete"></i></a>
@@ -157,7 +162,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form method="POST" action="{{ route('store.garages') }}">
+                    <form method="POST" action="{{ route('mechanics.garages') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="mb-3">
@@ -168,8 +173,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Amount</label>
-                            <input type="number" name="amount" class="form-control @error('amount') is-invalid @enderror"
-                                id="name" placeholder="Enter tool amount">
+                            <input type="number" name="amount"
+                                class="form-control @error('amount') is-invalid @enderror" id="name"
+                                placeholder="Enter tool amount">
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Condition</label>
@@ -177,6 +183,21 @@
                                 class="form-control @error('tool_condition') is-invalid @enderror" id="name"
                                 placeholder="Enter tool condition">
                         </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Tool Number</label>
+                            <input type="text" name="tool_number"
+                                class="form-control @error('tool_number') is-invalid @enderror" id="name"
+                                placeholder="Enter tool number">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="example-fileinput" class="form-label">Payment Slip</label>
+                            <input type="file" id="example-fileinput" name="slip"
+                                placeholder="select doc, pdf or image file"
+                                class="form-control @error('slip') is-invalid @enderror">
+                        </div>
+
 
                         <div class="text-end">
                             <button type="submit" class="btn btn-success waves-effect waves-light">Save</button>

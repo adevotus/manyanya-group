@@ -31,6 +31,8 @@ class RedirectIfAuthenticated
                     return  redirect()->route('muhasibu.home');
                 } else if (Auth::user()->isA('manager')) {
                     return  redirect()->route('manager.home');
+                } else if (Auth::user()->isA('mechanics')) {
+                    return  redirect()->route('mechanics.home');
                 } else {
                     return  redirect()->route('driver.home');
                 }

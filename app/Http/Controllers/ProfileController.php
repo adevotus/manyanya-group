@@ -12,7 +12,7 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:manager|driver|muhasibu|superadmin|storekeeper');
+        $this->middleware('role:mechanics|manager|driver|muhasibu|superadmin|storekeeper');
     }
 
     public function index()

@@ -29,6 +29,10 @@ return [
             'users' => 'c,r,u,d',
             'profile' => 'r,u'
         ],
+        'mechanics' => [
+            'users' => 'c,r,u,d',
+            'profile' => 'r,u'
+        ],
         'driver' => [
             'users' => 'c,r,u,d',
             'profile' => 'r,u'

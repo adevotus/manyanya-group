@@ -11,7 +11,7 @@ class GarageController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:storekeeper|superadmin|manager');
+        $this->middleware('role:mechanics|superadmin|manager');
     }
 
     public function store(Request $request)
@@ -20,7 +20,16 @@ class GarageController extends Controller
             'tool_name' => 'required|string|max:255',
             'amount' => 'required|numeric|gte:1',
             'tool_condition' => 'required|string|max:255',
+            'tool_number' => 'required|string|max:255',
+            'tool_condition' => 'required|string|max:255',
         ]);
+
+        if ($request->hasFile('slip')) {
+            $this->validate(
+                $request,
+                ['slip' => 'required|mimes:png,jpeg,jpg,docx,pdf,']
+            );
+        }
 
         $garage = Garage::create([
             'tool_name' => $request->tool_name,

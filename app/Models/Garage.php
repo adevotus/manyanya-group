@@ -14,5 +14,7 @@ class Garage extends Model
         'amount',
         'condition',
         'payment',
+        'tool_no',
+        'slip',
     ];
 }

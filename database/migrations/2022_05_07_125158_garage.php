@@ -18,7 +18,9 @@ class Garage extends Migration
             $table->string('tool_name');
             $table->string('amount');
             $table->string('condition');
-            $table->string('payment')->default('unpaid');
+            $table->string('slip')->nullable();
+            $table->string('tool_no')->nullable();
+            $table->string('payment')->default('paid');
             $table->timestamps();
         });
     }

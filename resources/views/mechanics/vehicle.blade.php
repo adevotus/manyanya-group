@@ -9,7 +9,7 @@
                 <div class="page-title-box">
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('store.home') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('mechanics.home') }}">Home</a></li>
                             <li class="breadcrumb-item active">Vehicles</li>
                         </ol>
                     </div>
@@ -54,7 +54,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="me-3">
-                                    <form action="{{ route('store.vehicle') }}" method="get">
+                                    <form action="{{ route('mechanics.vehicle') }}" method="get">
                                         <div class="row text-end">
                                             <div class="col-sm-5">
                                                 <input type="search" name="search" class="form-control my-1 my-md-0"
@@ -116,8 +116,7 @@
                                                 <td>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#update-modal{{ $vehicle->id }}"
-                                                        class="action-icon"> <i
-                                                            class="mdi mdi-square-edit-outline"></i></a>
+                                                        class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#delete-modal{{ $vehicle->id }}"
                                                         class="action-icon"> <i class="mdi mdi-delete"></i></a>
@@ -167,7 +166,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form method="POST" action="{{ route('store.vehicle') }}">
+                    <form method="POST" action="{{ route('mechanics.vehicle') }}">
                         @csrf
 
                         <div class="mb-3">
@@ -179,13 +178,14 @@
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Registration Number</label>
                             <input type="text" name="registration_no"
-                                class="form-control @error('registration_no') is-invalid @enderror" id="exampleInputEmail1"
-                                placeholder="Enter registration number">
+                                class="form-control @error('registration_no') is-invalid @enderror"
+                                id="exampleInputEmail1" placeholder="Enter registration number">
                         </div>
                         <div class="mb-3">
                             <label for="position" class="form-label">Plate Number</label>
-                            <input type="text" name="plate_no" class="form-control @error('plate_no') is-invalid @enderror"
-                                id="plate number" placeholder="Enter plate number">
+                            <input type="text" name="plate_no"
+                                class="form-control @error('plate_no') is-invalid @enderror" id="plate number"
+                                placeholder="Enter plate number">
                         </div>
                         <div class="mb-3">
                             <label for="category" class="form-label">Condition</label>

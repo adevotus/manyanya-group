@@ -6,6 +6,7 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\GarageController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\MuhasibuController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoutesController;
@@ -24,7 +25,7 @@ Route::POST('/', [HomeController::class, 'CustomerRequest'])->name('home');
 Auth::routes();
 
 //Profile & Settings route
-Route::group(['prefix' => 'settings', 'middleware' => ['auth', 'role:muhasibu|driver|storekeeper|manager|superadmin']], function () {
+Route::group(['prefix' => 'settings', 'middleware' => ['auth', 'role:mechanics|muhasibu|driver|storekeeper|manager|superadmin']], function () {
     Route::get('/', [ProfileController::class, 'index'])->name('settings');
     Route::post('/', [ProfileController::class, 'update']);
     Route::put('/', [ProfileController::class, 'password']);
@@ -78,11 +79,6 @@ Route::group(['prefix' => 'superadmin', 'middleware' => ['auth', 'role:superadmi
 Route::group(['prefix' => 'storekeeper', 'middleware' => ['auth', 'role:storekeeper|manager|superadmin']], function () {
     Route::get('/', [StoreController::class, 'index'])->name('store.home');
 
-    // Vehicle view,Create,Update,Delete
-    Route::get('/vehicle', [StoreController::class, 'vehicle'])->name('store.vehicle');
-    Route::post('/vehicle', [VehicleController::class, 'store']);
-    Route::put('/vehicle', [VehicleController::class, 'update']);
-    Route::delete('/vehicle', [VehicleController::class, 'destroy']);
 
     // Driver view,Create,Update,Delete
     Route::get('/driver', [StoreController::class, 'driver'])->name('store.driver');
@@ -111,6 +107,7 @@ Route::group(['prefix' => 'storekeeper', 'middleware' => ['auth', 'role:storekee
     Route::delete('/garages', [GarageController::class, 'destroy']);
 });
 
+
 //muhasibu route
 Route::group(['prefix' => 'muhasibu', 'middleware' => ['role:muhasibu']], function () {
     Route::get('/', [MuhasibuController::class, 'index'])->name('muhasibu.home');
@@ -121,9 +118,6 @@ Route::group(['prefix' => 'muhasibu', 'middleware' => ['role:muhasibu']], functi
 
     Route::get('/garage', [MuhasibuController::class, 'garage'])->name('muhasibu.garage');
     Route::post('/garage', [MuhasibuController::class, 'tool_store']);
-
-
-
 });
 
 // Manager Route
@@ -162,6 +156,25 @@ Route::group(['prefix' => 'manager', 'middleware' => ['role:manager']], function
     Route::put('/garages', [GarageController::class, 'update']);
     Route::delete('/garages', [GarageController::class, 'destroy']);
 });
+
+// Mechanics view, crud ops
+Route::group(['prefix' => 'mechanics', 'middleware' => ['role:mechanics']], function () {
+    Route::get('/', [MechanicsController::class, 'index'])->name('mechanics.home');
+
+    // Garage view,Create,Update,Delete
+    Route::get('/garages', [MechanicsController::class, 'garages'])->name('mechanics.garages');
+    Route::post('/garages', [GarageController::class, 'store']);
+    Route::put('/garages', [GarageController::class, 'update']);
+    Route::delete('/garages', [GarageController::class, 'destroy']);
+
+    // Vehicle view,Create,Update,Delete
+    Route::get('/vehicle', [MechanicsController::class, 'vehicle'])->name('mechanics.vehicle');
+    Route::post('/vehicle', [VehicleController::class, 'store']);
+    Route::put('/vehicle', [VehicleController::class, 'update']);
+    Route::delete('/vehicle', [VehicleController::class, 'destroy']);
+});
+
+
 
 
 //Driver route

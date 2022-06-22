@@ -46,6 +46,8 @@ class LoginController extends Controller
             return  '/muhasibu';
         } else if (Auth::user()->isA('manager')) {
             return  '/manager';
+        } else if (Auth::user()->isA('mechanics')) {
+            return  '/mechanics';
         } else {
             return  '/driver';
         }

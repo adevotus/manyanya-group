@@ -30,6 +30,9 @@
         @role('muhasibu')
             @include('layouts.sidebar.accountant')
         @endrole
+        @role('mechanics')
+            @include('layouts.sidebar.mechanics')
+        @endrole
         <!-- ============================================================== -->
         <!-- Start Page Content here -->
         <!-- ============================================================== -->
