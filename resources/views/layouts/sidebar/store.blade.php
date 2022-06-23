@@ -14,12 +14,7 @@
                          <span>Routes</span>
                      </a>
                  </li>
-                 <li class="{{ Route::is('store.vehicle') ? 'menuitem-active' : '' }} ">
-                     <a class="active" href="{{ route('store.vehicle') }}">
-                         <i data-feather="truck"></i>
-                         <span>Vehicle</span>
-                     </a>
-                 </li>
+
                  <li class="{{ Route::is('store.driver') ? 'menuitem-active' : '' }} ">
                      <a class="active" href="{{ route('store.driver') }}">
                          <i data-feather="user"></i>
@@ -34,10 +29,17 @@
                      </a>
                  </li>
 
-                 <li class="{{ Route::is('store.garages') ? 'menuitem-active' : '' }} ">
-                     <a class="active" href="{{ route('store.garages') }}">
-                         <i data-feather="tool"></i>
-                         <span>Garage</span>
+                 <li class="{{ Route::is('store.cargos') ? 'menuitem-active' : '' }} ">
+                     <a class="active" href="{{ route('store.cargos') }}">
+                         <i data-feather="sliders"></i>
+                         <span>Expense</span>
+                     </a>
+                 </li>
+
+                 <li class="{{ Route::is('store.cargos') ? 'menuitem-active' : '' }} ">
+                     <a class="active" href="{{ route('store.cargos') }}">
+                         <i data-feather="archive"></i>
+                         <span>Slips</span>
                      </a>
                  </li>
              </ul>

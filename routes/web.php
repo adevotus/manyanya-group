@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GarageController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\ManagerController;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 // homepage route
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact']);
-Route::POST('/', [HomeController::class, 'CustomerRequest'])->name('home');
+Route::POST('/', [HomeController::class, 'CustomerRequest']);
 
 
 Auth::routes();
@@ -99,12 +100,6 @@ Route::group(['prefix' => 'storekeeper', 'middleware' => ['auth', 'role:storekee
     Route::post('/cargos', [CargoController::class, 'store']);
     Route::put('/cargos', [CargoController::class, 'update']);
     Route::delete('/cargos', [CargoController::class, 'destroy']);
-
-    // Garage view,Create,Update,Delete
-    Route::get('/garages', [StoreController::class, 'garages'])->name('store.garages');
-    Route::post('/garages', [GarageController::class, 'store']);
-    Route::put('/garages', [GarageController::class, 'update']);
-    Route::delete('/garages', [GarageController::class, 'destroy']);
 });
 
 
@@ -167,6 +162,12 @@ Route::group(['prefix' => 'mechanics', 'middleware' => ['role:mechanics']], func
     Route::put('/garages', [GarageController::class, 'update']);
     Route::delete('/garages', [GarageController::class, 'destroy']);
 
+    // Other Expenses view,Create,Update,Delete
+    Route::get('/expenses', [MechanicsController::class, 'expense'])->name('mechanics.expense');
+    Route::post('/expenses', [ExpenseController::class, 'store']);
+    Route::put('/expenses', [ExpenseController::class, 'update']);
+    Route::delete('/expenses', [ExpenseController::class, 'destroy']);
+
     // Vehicle view,Create,Update,Delete
     Route::get('/vehicle', [MechanicsController::class, 'vehicle'])->name('mechanics.vehicle');
     Route::post('/vehicle', [VehicleController::class, 'store']);
@@ -182,4 +183,10 @@ Route::group(['prefix' => 'driver', 'middleware' => ['role:driver']], function (
     Route::get('/', [DriverController::class, 'index'])->name('driver.home');
     Route::post('/', [DriverController::class, 'registration']);
     Route::put('/', [DriverController::class, 'route_confirmation']);
+
+    // Other Expenses view,Create,Update,Delete
+    Route::get('/expenses', [DriverController::class, 'expense'])->name('driver.expense');
+    Route::post('/expenses', [ExpenseController::class, 'store']);
+    Route::put('/expenses', [ExpenseController::class, 'update']);
+    Route::delete('/expenses', [ExpenseController::class, 'destroy']);
 });

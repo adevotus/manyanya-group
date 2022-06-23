@@ -31,8 +31,8 @@
                          <span>Acknowledgement</span>
                      </a>
                  </li>
-                 <li class="{{ Route::is('muhasibu.garage') ? 'menuitem-active' : '' }}">
-                     <a href="{{ route('muhasibu.garage') }}">
+                 <li class="{{ Route::is('mechanics.expense') ? 'menuitem-active' : '' }}">
+                     <a href="{{ route('mechanics.expense') }}">
                          <i data-feather="tool"></i>
                          <span>Expenses</span>
                      </a>

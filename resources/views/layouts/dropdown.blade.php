@@ -29,7 +29,7 @@
         </a>
 
         <!-- item-->
-        <a href="@role('superadmin') {{ route('admin.vehicle') }} @endrole @role('manager') {{ route('manager.vehicle') }} @endrole @role('storekeeper') {{ route('store.vehicle') }} @endrole"
+        <a href="@role('superadmin') {{ route('admin.vehicle') }} @endrole @role('manager') {{ route('manager.vehicle') }} @endrole"
             class="dropdown-item">
             <i class="fe-truck me-1"></i>
             <span>New Vehicle</span>
@@ -43,10 +43,10 @@
         </a>
 
         <!-- item-->
-        <a href="@role('superadmin') {{ route('admin.garages') }} @endrole @role('manager') {{ route('manager.garages') }} @endrole @role('storekeeper') {{ route('store.garages') }} @endrole"
+        <a href="@role('superadmin') {{ route('admin.garages') }} @endrole @role('manager') {{ route('manager.garages') }} @endrole"
             class="dropdown-item">
             <i class="fe-shuffle me-1"></i>
-            <span>New Cargo</span>
+            <span>New Garage</span>
         </a>
 
 

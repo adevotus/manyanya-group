@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST" action="{{ route('store.garages') }}">
+                <form method="POST" action="{{ route('mechanics.garages') }}">
                     @method('delete')
                     @csrf
 
@@ -32,8 +32,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<div class="modal fade" id="update-modal{{ $garage->id }}" tabindex="-1" style="display: none;"
-    aria-hidden="true">
+<div class="modal fade" id="update-modal{{ $garage->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light">
@@ -43,7 +42,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST" action="{{ route('store.garages') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('mechanics.garages') }}" enctype="multipart/form-data">
                     @method('put')
                     @csrf
 
@@ -68,6 +67,21 @@
                             class="form-control @error('tool_condition') is-invalid @enderror" id="name"
                             placeholder="Enter tool condition">
                     </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Tool Number</label>
+                        <input type="text" name="tool_number" value="{{ $garage->tool_no }}"
+                            class="form-control @error('tool_number') is-invalid @enderror" id="name"
+                            placeholder="Enter tool number">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="example-fileinput" class="form-label">Payment Slip</label>
+                        <input type="file" id="example-fileinput" name="payment_slip"
+                            placeholder="select doc, docx, pdf or image file"
+                            class="form-control @error('payment_slip') is-invalid @enderror">
+                    </div>
+
 
                     <div class="text-end">
                         <button type="submit" class="btn btn-success waves-effect waves-light">Update Tool</button>

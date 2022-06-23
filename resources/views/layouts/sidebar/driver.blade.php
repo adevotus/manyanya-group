@@ -15,6 +15,12 @@
                  </li>
                  <li class="{{ Route::is('driver.home') ? 'menuitem-active' : '' }}">
                      <a href="{{ route('driver.home') }}">
+                         <i data-feather="user"></i>
+                         <span> Profile</span>
+                     </a>
+                 </li>
+                 <li class="{{ Route::is('driver.home') ? 'menuitem-active' : '' }}">
+                     <a href="{{ route('driver.home') }}">
                          <i data-feather="archive"></i>
                          <span>Expences</span>
                      </a>
