@@ -140,7 +140,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4 text-end">
-                                    <a href="{{ route('admin.routes') }}"
+                                    <a href="{{ route('routes') }}"
                                         class="btn btn-success text-end waves-effect waves-light"><i
                                             class="mdi mdi-plus-circle me-1"></i>View More</a>
                                 </div><!-- end col-->
@@ -323,7 +323,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4 text-end">
-                                    <a href="{{ route('admin.cargos') }}"
+                                    <a href="{{ route('cargos') }}"
                                         class="btn btn-success text-end waves-effect waves-light"><i
                                             class="mdi mdi-plus-circle me-1"></i>View More</a>
                                 </div><!-- end col-->
@@ -405,7 +405,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4 text-end">
-                                    <a href="{{ route('admin.vehicle') }}"
+                                    <a href="{{ route('vehicle') }}"
                                         class="btn btn-success text-end waves-effect waves-light"><i
                                             class="mdi mdi-plus-circle me-1"></i>View More</a>
                                 </div><!-- end col-->
@@ -494,7 +494,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4 text-end">
-                                    <a href="{{ route('admin.garages') }}"
+                                    <a href="{{ route('garages') }}"
                                         class="btn btn-success text-end waves-effect waves-light"><i
                                             class="mdi mdi-plus-circle me-1"></i>View More</a>
                                 </div><!-- end col-->

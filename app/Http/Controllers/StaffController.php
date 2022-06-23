@@ -12,8 +12,80 @@ class StaffController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:superadmin');
+        $this->middleware('role:superadmin|manager');
     }
+
+    // Staff Members
+    public function staff(Request $request)
+    {
+        $staffs = User::whereRoleIs(['superadmin', 'manager', 'muhasibu', 'mechanics', 'storekeeper'])->orderBy('updated_at', 'desc')->paginate(20);
+
+        if (!is_null($request->date)) {
+            if (strlen($request->date) > 16) {
+                $fromdate = substr($request->date, 0, -14);
+                $toDate =  substr($request->date, -10);
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $staffs = User::orderBy('updated_at', 'desc')->whereRoleIs(['superadmin', 'manager', 'mechanics', 'muhasibu', 'storekeeper'])
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('fname', 'LIKE', '%' . $search . '%')
+                        ->orWhere('lname', 'LIKE', '%' . $search . '%')
+                        // ->orWhere('status', $search)
+                        ->paginate(15);
+                } else {
+                    $staffs = User::orderBy('updated_at', 'desc')
+                        ->whereRoleIs(['superadmin', 'manager', 'mechanics', 'muhasibu', 'storekeeper'])
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->paginate(15);
+                }
+            } else {
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $staffs = User::orderBy('updated_at', 'desc')->whereRoleIs(['superadmin', 'manager', 'mechanics', 'muhasibu', 'storekeeper'])
+                        ->whereDate('updated_at', $request->date)
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('fname', 'LIKE', '%' . $search . '%')
+                        ->orWhere('lname', 'LIKE', '%' . $search . '%')
+                        ->paginate(15);
+                } else {
+                    $staffs = User::orderBy('updated_at', 'desc')->whereRoleIs(['superadmin', 'manager', 'mechanics', 'muhasibu', 'storekeeper'])
+                        ->whereDate('updated_at', $request->date)
+                        ->paginate(15);
+                }
+            }
+        } else {
+            if (!is_null($request->search)) {
+                $this->validate($request, [
+                    'search' => 'string',
+                ]);
+
+                $search = $request->search;
+
+                $staffs = User::orderBy('updated_at', 'desc')->whereRoleIs(['superadmin', 'manager', 'mechanics', 'muhasibu', 'storekeeper'])
+                    ->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('fname', 'LIKE', '%' . $search . '%')
+                    ->orWhere('lname', 'LIKE', '%' . $search . '%')
+                    ->paginate(15);
+            }
+        }
+
+
+        return view('admin.staff')->with('staffs', $staffs);
+    }
+
 
 
     public function store(Request $request)
@@ -24,7 +96,7 @@ class StaffController extends Controller
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
-            'role' => ['required', 'string', 'max:255', 'in:superadmin,manager,storekeeper,muhasibu'],
+            'role' => ['required', 'string', 'max:255', 'in:superadmin,manager,mechanics,storekeeper,muhasibu'],
         ]);
 
 
@@ -36,7 +108,15 @@ class StaffController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $user->attachRole($request->role);
+        if ($request->role == 'superadmin') {
+            if (auth()->user()->hasRole('superadmin')) {
+                $user->attachRole($request->role);
+            } else {
+                abort(403);
+            }
+        } else {
+            $user->attachRole($request->role);
+        }
 
 
 
@@ -56,7 +136,7 @@ class StaffController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'role' => ['required', 'string', 'max:255', 'in:superadmin,manager,storekeeper,muhasibu'],
+            'role' => ['required', 'string', 'max:255', 'in:superadmin,manager,mechanics,storekeeper,muhasibu'],
         ]);
 
         $user = User::find($request->staff_id);
@@ -76,8 +156,17 @@ class StaffController extends Controller
 
         foreach ($user->roles as $role) {
             if ($role->name != $request->role) {
-                $user->detachRole($role);
-                $user->attachRole($request->role);
+                if ($request->role == 'superadmin' || $role->name == 'superadmin') {
+                    if (auth()->user()->hasRole('superadmin')) {
+                        $user->detachRole($role);
+                        $user->attachRole($request->role);
+                    } else {
+                        abort(403);
+                    }
+                } else {
+                    $user->detachRole($role);
+                    $user->attachRole($request->role);
+                }
             }
         }
 

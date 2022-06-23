@@ -421,4 +421,94 @@ class DriverController extends Controller
 
         return view('mechanics.expense')->with('expenses', $expenses);
     }
+
+
+    // Driver
+    public function driver(Request $request)
+    {
+        $drivers = User::whereRoleIs('driver')->orderBy('updated_at', 'desc')->paginate(20);
+
+        if (!is_null($request->date)) {
+            if (strlen($request->date) > 16) {
+                $fromdate = substr($request->date, 0, -14);
+                $toDate =  substr($request->date, -10);
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $drivers = User::orderBy('updated_at', 'desc')->whereRoleIs('driver')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('fname', 'LIKE', '%' . $search . '%')
+                        ->orWhere('lname', 'LIKE', '%' . $search . '%')
+                        // ->orWhere('status', $search)
+                        ->paginate(15);
+                } else {
+                    $drivers = User::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->paginate(15);
+                }
+            } else {
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $drivers = User::orderBy('updated_at', 'desc')->whereRoleIs('driver')
+                        ->whereDate('updated_at', $request->date)
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('fname', 'LIKE', '%' . $search . '%')
+                        ->orWhere('lname', 'LIKE', '%' . $search . '%')
+                        ->paginate(15);
+                } else {
+                    $drivers = User::orderBy('updated_at', 'desc')->whereRoleIs('driver')
+                        ->whereDate('updated_at', $request->date)
+                        ->paginate(15);
+                }
+            }
+        } else {
+            if (!is_null($request->search)) {
+                $this->validate($request, [
+                    'search' => 'string',
+                ]);
+
+                $search = $request->search;
+
+                $drivers = User::orderBy('updated_at', 'desc')->whereRoleIs('driver')
+                    ->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('fname', 'LIKE', '%' . $search . '%')
+                    ->orWhere('lname', 'LIKE', '%' . $search . '%')
+                    ->paginate(15);
+            }
+        }
+
+
+        return view('services.driver')->with('drivers', $drivers);
+    }
+
+
+    public function license($id)
+    {
+        $driver = User::where('id', $id)
+            ->whereRoleIs('driver')
+            ->first();
+
+        return Storage::download($driver->licence);
+    }
+
+    public function certificate($id)
+    {
+        $driver = User::where('id', $id)
+            ->whereRoleIs('driver')
+            ->first();
+
+        return Storage::download($driver->birth_certifacate);
+    }
 }

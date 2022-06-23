@@ -15,24 +15,7 @@
     <div id="wrapper">
 
         @include('layouts.header')
-        @role('superadmin')
-            @include('layouts.sidebar.admin')
-        @endrole
-        @role('manager')
-            @include('layouts.sidebar.manager')
-        @endrole
-        @role('storekeeper')
-            @include('layouts.sidebar.store')
-        @endrole
-        @role('driver')
-            @include('layouts.sidebar.driver')
-        @endrole
-        @role('muhasibu')
-            @include('layouts.sidebar.accountant')
-        @endrole
-        @role('mechanics')
-            @include('layouts.sidebar.mechanics')
-        @endrole
+        @include('layouts.sidebar')
         <!-- ============================================================== -->
         <!-- Start Page Content here -->
         <!-- ============================================================== -->

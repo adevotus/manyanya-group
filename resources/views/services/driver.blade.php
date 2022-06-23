@@ -9,7 +9,7 @@
                 <div class="page-title-box">
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('manager.home') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="">Home</a></li>
                             <li class="breadcrumb-item active">Drivers</li>
                         </ol>
                     </div>
@@ -46,6 +46,12 @@
                                         @error('email')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
+                                        @error('phone_number')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                        @error('verified')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
                                         @error('password')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
@@ -60,7 +66,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="me-3">
-                                    <form action="{{ route('manager.driver') }}" method="get">
+                                    <form action="{{ route('driver') }}" method="get">
                                         <div class="row text-end">
                                             <div class="col-sm-5">
                                                 <input type="search" name="search" class="form-control my-1 my-md-0"
@@ -93,7 +99,7 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email</th>
-                                        <th>Phone Number</th>
+                                        <th>Phone</th>
                                         <th>status</th>
                                         <th>License</th>
                                         <th>Certificate</th>
@@ -136,12 +142,12 @@
 
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('store.license.download', ['id' => $driver->id]) }}"
+                                                    <a href="{{ route('license.download', ['id' => $driver->id]) }}"
                                                         class="action-icon">
                                                         <i data-feather="download"></i>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('store.certificate.download', ['id' => $driver->id]) }}"
+                                                    <a href="{{ route('certificate.download', ['id' => $driver->id]) }}"
                                                         class="action-icon">
                                                         <i data-feather="download"></i>
                                                 </td>
@@ -151,14 +157,13 @@
                                                 <td>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#update-modal{{ $driver->id }}"
-                                                        class="action-icon"> <i
-                                                            class="mdi mdi-square-edit-outline"></i></a>
+                                                        class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#delete-modal{{ $driver->id }}"
                                                         class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                    @include('layouts.models.drivers')
                                                 </td>
 
-                                                @include('layouts.models.drivers')
                                             </tr>
                                         @endforeach
                                     @else
@@ -202,13 +207,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form method="POST" action="{{ route('store.driver') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('driver') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="mb-3">
                             <label for="name" class="form-label">Username</label>
-                            <input type="text" name="name" required class="form-control @error('name') is-invalid @enderror"
-                                id="name" placeholder="Enter driver name">
+                            <input type="text" name="name" required
+                                class="form-control @error('name') is-invalid @enderror" id="name"
+                                placeholder="Enter driver name">
                         </div>
                         <div class="mb-3">
                             <div class="row">
@@ -278,9 +284,9 @@
                             </select>
                         </div>
 
-
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success waves-effect waves-light">Create Account</button>
+                            <button type="submit" class="btn btn-success waves-effect waves-light">Create
+                                Account</button>
                             <button type="button" class="btn btn-secondary waves-effect waves-light"
                                 data-bs-dismiss="modal">Close</button>
                         </div>

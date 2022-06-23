@@ -57,7 +57,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="me-3">
-                                    <form action="{{ route('admin.staff') }}" method="get">
+                                    <form action="{{ route('staff') }}" method="get">
                                         <div class="row text-end">
                                             <div class="col-sm-5">
                                                 <input type="search" name="search" class="form-control my-1 my-md-0"
@@ -126,8 +126,7 @@
                                                 <td>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#update-modal{{ $staff->id }}"
-                                                        class="action-icon"> <i
-                                                            class="mdi mdi-square-edit-outline"></i></a>
+                                                        class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#delete-modal{{ $staff->id }}"
                                                         class="action-icon"> <i class="mdi mdi-delete"></i></a>
@@ -177,13 +176,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form method="POST" action="{{ route('admin.staff') }}">
+                    <form method="POST" action="{{ route('staff') }}">
                         @csrf
 
                         <div class="mb-3">
                             <label for="name" class="form-label">Username</label>
-                            <input type="text" name="name" required class="form-control @error('name') is-invalid @enderror"
-                                id="name" placeholder="Enter driver name">
+                            <input type="text" name="name" required
+                                class="form-control @error('name') is-invalid @enderror" id="name"
+                                placeholder="Enter driver name">
                         </div>
                         <div class="mb-3">
                             <div class="row">
@@ -212,8 +212,11 @@
                             <label for="example-select" class="form-label">Select Role</label>
                             <select class="form-select  @error('role') is-invalid @enderror" name="role"
                                 id="example-select">
-                                <option value="superadmin">Super Administrator</option>
+                                @role('superadmin')
+                                    <option value="superadmin">Super Administrator</option>
+                                @endrole
                                 <option value="manager">Manager</option>
+                                <option value="mechanics">Mechanics</option>
                                 <option value="storekeeper">Store Keeper</option>
                                 <option value="muhasibu">Accountant</option>
                             </select>
@@ -235,7 +238,8 @@
                         </div>
 
                         <div class="text-end">
-                            <button type="submit" class="btn btn-success waves-effect waves-light">Create Account</button>
+                            <button type="submit" class="btn btn-success waves-effect waves-light">Create
+                                Account</button>
                             <button type="button" class="btn btn-secondary waves-effect waves-light"
                                 data-bs-dismiss="modal">Close</button>
                         </div>

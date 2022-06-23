@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST" action="@role('superadmin') {{ route('admin.staff') }} @endrole">
+                <form method="POST" action=" {{ route('staff') }} ">
                     @method('delete')
                     @csrf
 
@@ -32,8 +32,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<div class="modal fade" id="update-modal{{ $staff->id }}" tabindex="-1" style="display: none;"
-    aria-hidden="true">
+<div class="modal fade" id="update-modal{{ $staff->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light">
@@ -43,8 +42,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST" action="@role('superadmin') {{ route('admin.staff') }} @endrole"
-                    enctype="multipart/form-data">
+                <form method="POST" action=" {{ route('staff') }} " enctype="multipart/form-data">
                     @method('put')
                     @csrf
 
@@ -84,13 +82,18 @@
                         <label for="example-select" class="form-label">Select Role</label>
                         <select class="form-select  @error('role') is-invalid @enderror" name="role"
                             id="example-select">
-                            <option value="superadmin"
-                                @foreach ($staff->roles as $role) {{ $role->name === 'superadmin' ? 'selected' : '' }} @endforeach>
-                                Super
-                                Administrator</option>
+                            @role('superadmin')
+                                <option value="superadmin"
+                                    @foreach ($staff->roles as $role) {{ $role->name === 'superadmin' ? 'selected' : '' }} @endforeach>
+                                    Super
+                                    Administrator</option>
+                            @endrole
                             <option
                                 @foreach ($staff->roles as $role) {{ $role->name === 'manager' ? 'selected' : '' }} @endforeach
                                 value="manager">Manager</option>
+                            <option
+                                @foreach ($staff->roles as $role) {{ $role->name === 'mechanics' ? 'selected' : '' }} @endforeach
+                                value="mechanics">Mechanics</option>
                             <option
                                 @foreach ($staff->roles as $role) {{ $role->name === 'storekeeper' ? 'selected' : '' }} @endforeach
                                 value="storekeeper">Store Keeper</option>

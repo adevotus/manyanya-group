@@ -237,7 +237,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4 text-end">
-                                    <a href="{{ route('manager.driver') }}"
+                                    <a href="{{ route('driver') }}"
                                         class="btn btn-success text-end waves-effect waves-light"><i
                                             class="mdi mdi-plus-circle me-1"></i>View More</a>
                                 </div><!-- end col-->
