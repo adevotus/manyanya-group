@@ -12,11 +12,7 @@
                 </div>
             </div>
 
-            @if (is_null(Auth::user()->fname) || is_null(Auth::user()->lname) || is_null(Auth::user()->licence))
-                @include('driver.register')
-            @else
-                @include('driver.home')
-            @endif
+            @include('driver.home')
         </div>
     </div>
 @endsection

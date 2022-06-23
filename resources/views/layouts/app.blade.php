@@ -16,9 +16,7 @@
 
         @include('layouts.header')
         @include('layouts.sidebar')
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
+
         <div class="content-page">
             @yield('content')
             @include('layouts.footer')

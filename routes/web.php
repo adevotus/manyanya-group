@@ -59,8 +59,13 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|manag
 // Routes view,Create,Update,Delete
 Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|muhasibu|manager|superadmin']], function () {
     Route::get('/routes', [RoutesController::class, 'routes'])->name('routes');
-    Route::post('/routes', [RoutesController::class, 'store']);
-    Route::put('/routes', [RoutesController::class, 'update']);
+
+    Route::get('/add_routes', [RoutesController::class, 'create'])->name('routes.add');
+    Route::post('/add_routes', [RoutesController::class, 'store']);
+
+    Route::get('/{id}/edit_routes', [RoutesController::class, 'edit'])->name('route.edit');
+    Route::post('/{id}/edit_routes', [RoutesController::class, 'update']);
+
     Route::delete('/routes', [RoutesController::class, 'destroy']);
 });
 
@@ -98,6 +103,8 @@ Route::group(['prefix' => 'manager', 'middleware' => ['role:manager']], function
 // Mechanics view, crud ops
 Route::group(['prefix' => 'mechanics', 'middleware' => ['role:mechanics']], function () {
     Route::get('/', [MechanicsController::class, 'index'])->name('mechanics.home');
+
+    Route::get('/acknowledgement', [MechanicsController::class, 'index'])->name('mechanics.ack');
 });
 
 //Driver route
@@ -105,6 +112,8 @@ Route::group(['prefix' => 'driver', 'middleware' => ['role:driver']], function (
     Route::get('/', [DriverController::class, 'index'])->name('driver.home');
     Route::post('/', [DriverController::class, 'registration']);
     Route::put('/', [DriverController::class, 'route_confirmation']);
+
+    Route::get('/profile', [DriverController::class, 'profile'])->name('driver.profile');
 });
 
 

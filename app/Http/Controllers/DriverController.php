@@ -107,6 +107,11 @@ class DriverController extends Controller
         return view('driver.dashboard')->with('routes', $routes)->with('price', $total_price);
     }
 
+    public function profile()
+    {
+        return view('driver.register');
+    }
+
     public function registration(Request $request)
     {
         $this->validate($request, [

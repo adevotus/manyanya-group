@@ -281,12 +281,12 @@
 
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('store.license.download', ['id' => $driver->id]) }}"
+                                                        <a href="{{ route('license.download', ['id' => $driver->id]) }}"
                                                             class="action-icon">
                                                             <i data-feather="download"></i>
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('store.certificate.download', ['id' => $driver->id]) }}"
+                                                        <a href="{{ route('certificate.download', ['id' => $driver->id]) }}"
                                                             class="action-icon">
                                                             <i data-feather="download"></i>
                                                     </td>

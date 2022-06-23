@@ -16,6 +16,7 @@ class Cargo extends Model
         'name',
         'amount',
         'weight',
+        'total',
         'invoice',
         'payment'
     ];

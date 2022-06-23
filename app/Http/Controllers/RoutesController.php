@@ -14,14 +14,14 @@ class RoutesController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:superadmin|storekeeper|manager');
+        $this->middleware('role:superadmin|storekeeper|manager|muhasibu');
     }
 
     public function routes(Request $request)
     {
-        $drivers = User::whereRoleIs('driver')->where('verified', true)->where('status', true)->get();
-        $vehicles = Vehicle::where('status', 'available')->get();
-        $cargos = Cargo::where('status', 'pending')->get();
+        $drivers = User::whereRoleIs('driver')->get();
+        $vehicles = Vehicle::get();
+        $cargos = Cargo::get();
 
         // dd(strlen($request->date)); //max - 24 min - 10
         // dd(substr($request->date, 0, -14), substr($request->date, -10));
@@ -121,85 +121,105 @@ class RoutesController extends Controller
             ->with('cargos', $cargos);
     }
 
+    public function create()
+    {
+        $drivers = User::whereRoleIs('driver')->get();
+        $vehicles = Vehicle::where('status', 'available')->get();
+        $cargos = Cargo::orderBy('created_at', 'desc')->get();
+
+        return view('services.add_route')->with('vehicles', $vehicles)
+            ->with('drivers', $drivers)
+            ->with('cargos', $cargos);
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [
-            'source' => 'required|string|max:255',
-            'destination' => 'required|string|max:255',
+            'route_name' => 'required|string|max:255',
+            'departure_date' => 'required|string|max:255',
+            'trip' => 'required|string|max:255|in:go,return',
+            'fuel' => 'required|numeric|gt:0|max:255',
             'cargo_id' => 'required|numeric|gte:1',
             'vehicle_id' => 'required|numeric|gte:1',
             'driver_id' => 'required|numeric|gte:1',
         ]);
 
-        $cargo = Cargo::find($request->cargo_id);
-        $cargo->status = 'assigned';
-        $cargo->save();
-
-        $vehicle = Vehicle::find($request->vehicle_id);
-        $vehicle->status = 'notavailable';
-        $vehicle->save();
-
-        $driver = User::find($request->driver_id);
-        $driver->status = false;
-        $driver->save();
-
         $route = Route::create([
-            'source' => $request->source,
-            'destination' => $request->destination,
+            'route' => $request->route_name,
+            'fuel' => $request->fuel,
+            'trip' => $request->trip,
+            'date' => $request->departure_date,
             'cargo_id' => $request->cargo_id,
             'driver_id' => $request->driver_id,
             'vehicle_id' => $request->vehicle_id,
         ]);
 
-
-
         if ($route) {
             Session::flash('message', 'Route successful created');
-            return redirect()->back();
+            return redirect()->route('routes');
         } else {
             Session::flash('message', 'Route unsuccessful created');
             return redirect()->back();
         }
     }
 
-    public function update(Request $request)
+    public function edit($id)
     {
-        $this->validate($request, [
-            'source' => 'required|string|max:255',
-            'destination' => 'required|string|max:255',
-            'cargo_id' => 'required|numeric|gte:1',
-            'vehicle_id' => 'required|numeric|gte:1',
-            'driver_id' => 'required|numeric|gte:1',
-            'route_id' => 'required|numeric|gte:1',
-        ]);
+        $drivers = User::whereRoleIs('driver')->get();
+        $vehicles = Vehicle::where('status', 'available')->get();
+        $cargos = Cargo::orderBy('created_at', 'desc')->get();
 
-        $route = Route::find($request->route_id);
+        $route = Route::where('id', $id)->first();
 
-        if ($route->cargo_id != $request->cargo_id) {
-            $cargo = Cargo::find($route->cargo_id);
-            $cargo->status = 'pending';
-            $cargo->save();
+        return view('services.edit_route')
+            ->with('route', $route)
+            ->with('vehicles', $vehicles)
+            ->with('drivers', $drivers)
+            ->with('cargos', $cargos);
+    }
 
-            $cargo = Cargo::find($request->cargo_id);
-            $cargo->status = 'assigned';
-            $cargo->save();
-        }
+    public function update(Request $request, $id)
+    {
+        if (auth()->user()->isA('muhasibu')) {
+            $route = Route::find($id);
 
-        if (!is_null($route)) {
+            $this->validate($request, [
+                'driver_allowance' => 'required|numeric|gte:1',
+                'price' => 'required|numeric|gte:1',
+            ]);
 
-            $route->source =  $request->source;
-            $route->destination =  $request->destination;
-            $route->cargo_id =  $request->cargo_id;
-            $route->driver_id =  $request->driver_id;
-            $route->vehicle_id =  $request->vehicle_id;
+            $route->drive_allowance =  $request->driver_allowance;
+            $route->price =  $request->price;
 
             $route->save();
-
-            Session::flash('message', 'Route successful updated');
-            return redirect()->back();
         } else {
-            Session::flash('message', 'Route unsuccessful updated');
-            return redirect()->back();
+            $this->validate($request, [
+                'route_name' => 'required|string|max:255',
+                'departure_date' => 'required|string|max:255',
+                'trip' => 'required|string|max:255|in:go,return',
+                'fuel' => 'required|numeric|gt:0|max:255',
+                'vehicle_id' => 'required|numeric|gte:1',
+                'driver_id' => 'required|numeric|gte:1',
+            ]);
+
+            $route = Route::find($id);
+
+            if (!is_null($route)) {
+                $route->route =  $request->route_name;
+                $route->fuel =  $request->fuel;
+                $route->date =  $request->departure_date;
+                $route->trip =  $request->trip;
+                $route->driver_id =  $request->driver_id;
+                $route->vehicle_id =  $request->vehicle_id;
+
+                $route->save();
+
+                Session::flash('message', 'Route successful updated');
+                return redirect()->route('routes');
+            } else {
+                Session::flash('message', 'Route unsuccessful updated');
+                return redirect()->back();
+            }
         }
     }
 

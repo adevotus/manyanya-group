@@ -3,11 +3,7 @@
         <div class="card">
             <div class="card-head bg-white">
                 <h4 class="" style="margin-left: 20px;">
-                    Availability State: @if (Auth::user()->status)
-                        <strong class="text-success">Available</strong>
-                    @else
-                        <strong class="text-danger">Not Available</strong>
-                    @endif
+
                 </h4>
             </div>
             <div class="card-body">
@@ -39,8 +35,8 @@
                             <form action="{{ route('driver.home') }}" method="get">
                                 <div class="row text-end">
                                     <div class="col-sm-5">
-                                        <input type="search" name="search" class="form-control my-1 my-md-0" id="search"
-                                            placeholder="Search...">
+                                        <input type="search" name="search" class="form-control my-1 my-md-0"
+                                            id="search" placeholder="Search...">
                                     </div>
                                     <div class="col-sm-5">
                                         <input type="text" id="range-datepicker" class="form-control flatpickr-input"
@@ -103,8 +99,8 @@
                                         </td>
                                         <td>
                                             <a href="#" data-bs-toggle="modal"
-                                                data-bs-target="#update-modal{{ $route->id }}"
-                                                class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                data-bs-target="#update-modal{{ $route->id }}" class="action-icon">
+                                                <i class="mdi mdi-square-edit-outline"></i></a>
 
                                         </td>
 
@@ -116,8 +112,8 @@
                                                     <div class="modal-header bg-light">
                                                         <h4 class="modal-title text-success" id="myCenterModalLabel">
                                                             Driver Status Updates</h4>
-                                                        <button type="button" class="btn-close"
-                                                            data-bs-dismiss="modal" aria-hidden="true"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-hidden="true"></button>
                                                     </div>
                                                     <div class="modal-body p-4">
                                                         <form method="POST" action="">

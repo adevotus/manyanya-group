@@ -23,7 +23,6 @@ class CreateUsersTable extends Migration
             $table->string('profile')->nullable();
             $table->string('licence')->nullable();
             $table->boolean('verified')->default(false);
-            $table->boolean('status')->default(true); //Available to be assigned another route
             $table->string('birth_certifacate')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

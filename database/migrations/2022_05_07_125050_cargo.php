@@ -20,10 +20,9 @@ class Cargo extends Migration
             $table->string('customername');
             $table->string('customerphone');
             $table->string('customeremail');
-            $table->double('amount', 100, 0);
-            $table->double('weight', 10, 0);
-            $table->string('status')->default('pending');
-            $table->string('payment')->default('unpaid');
+            $table->double('amount', 100, 0)->nullable();
+            $table->double('weight', 10, 0)->nullable();
+            $table->double('Total', 10, 0)->nullable();
             $table->timestamps();
         });
     }

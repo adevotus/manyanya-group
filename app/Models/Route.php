@@ -10,12 +10,16 @@ class Route extends Model
     use HasFactory;
 
     public $fillable = [
-        'source',
-        'destination',
+        'route',
+        'fuel',
+        'trip',
+        'date',
+        'drive_allowance',
+        'vehicle_status',
+        'vehicle_description',
         'cargo_id',
         'driver_id',
         'vehicle_id',
-        'status',
         'price',
     ];
 

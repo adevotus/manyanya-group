@@ -22,49 +22,8 @@ class MuhasibuController extends Controller
 
     public function index(Request $request)
     {
-        if (is_null($request->search)) {
-            $routes = Route::orderBy('updated_at', 'desc')->paginate(20);
-        } else {
-            $this->validate($request, [
-                'search' => 'string',
-            ]);
-            $search = $request->search;
-
-            $routes = Route::orderBy('updated_at', 'desc')
-                ->where('source', 'LIKE', '%' . $search . '%')
-                ->where('destination', 'LIKE', '%' . $search . '%')
-                ->orWhereHas('driver',  function ($query) use ($search) {
-                    $query->where('name', 'LIKE', '%' . $search . '%');
-                })
-                ->orWhereHas('cargo',  function ($query) use ($search) {
-                    $query->where('name', 'LIKE', '%' . $search . '%');
-                })
-                ->orWhereHas('vehicle',  function ($query) use ($search) {
-                    $query->where('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('platenumber', 'LIKE', '%' . $search . '%');
-                })->paginate(20);
-        }
-
-        $cargos = Cargo::whereIn('payment', array('bank', 'office'))
-            ->whereDate('updated_at', '>=',  Carbon::now()->subDays(6))
-            ->select(DB::raw('DATE(updated_at) as day'), DB::raw('SUM(amount) as price'))
-            ->groupBy('day')
-            ->orderBy('day', 'ASC')->get();
-
-        $xAxis = [];
-        $yAxis  = [];
-
-        // dd(count($cargos));
-
-        foreach ($cargos as $cargo) {
-            $day = new DateTime($cargo->day);
-
-            array_push($yAxis, $cargo->price);
-            array_push($xAxis, $day->format('l'));
-        }
-
-        return view('muhasibu.dashboard')->with('routes', $routes)
-            ->with('xAxis',  $xAxis)->with('yAxis', $yAxis);
+        $routes = Route::get();
+        return view('muhasibu.dashboard')->with('routes', $routes);
     }
 
     public function garage()
@@ -140,6 +99,4 @@ class MuhasibuController extends Controller
         }
         return redirect()->back();
     }
-
-   
 }

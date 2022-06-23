@@ -88,7 +88,6 @@ class CargoController extends Controller
             'customerphone' => 'required|string|max:255',
             'customeremail' => 'required|email|max:255',
             'name' => 'required|string|max:255',
-            'amount' => 'required|numeric|gte:0',
             'weight' => 'required|numeric|gte:0',
         ]);
 
@@ -99,7 +98,6 @@ class CargoController extends Controller
             'customerphone' => $request->customerphone,
             'customeremail' => $request->customeremail,
             'name'  => $request->name,
-            'amount'  => $request->amount,
             'weight'  => $request->weight,
             'invoice' => $invoice,
 
@@ -107,16 +105,16 @@ class CargoController extends Controller
 
         if ($cargo) {
             // Mail::to(auth()->user()->email)->queue(new InvoiceMail());
-            Mail::to($request->customeremail)->queue(new InvoiceMail(
-                $cargo->invoice,
-                $cargo->created_at,
-                $cargo->customername,
-                $cargo->customerphone,
-                $cargo->customeremail,
-                $cargo->name,
-                $cargo->amount,
-                $cargo->weight,
-            ));
+            // Mail::to($request->customeremail)->queue(new InvoiceMail(
+            //     $cargo->invoice,
+            //     $cargo->created_at,
+            //     $cargo->customername,
+            //     $cargo->customerphone,
+            //     $cargo->customeremail,
+            //     $cargo->name,
+            //     $cargo->amount,
+            //     $cargo->weight,
+            // ));
 
             Session::flash('message', 'Cargo successful created');
             return redirect()->back();

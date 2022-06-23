@@ -26,7 +26,6 @@ class User extends Authenticatable
         'lname',
         'phone',
         'verified',
-        'status',
         'default_url',
         'profile',
         'birth_certifacate',

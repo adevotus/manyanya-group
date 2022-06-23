@@ -14,7 +14,6 @@ class Vehicle extends Model
         'platenumber',
         'reg_number',
         'condition',
-        'status',
     ];
 
     public function route()

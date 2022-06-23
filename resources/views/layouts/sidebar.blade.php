@@ -149,10 +149,10 @@
                         </a>
                     </li>
 
-                    <li class="{{ Route::is('garages') ? 'menuitem-active' : '' }} ">
-                        <a class="active" href="{{ route('garages') }}">
-                            <i data-feather="tool"></i>
-                            <span>slips</span>
+                    <li class="{{ Route::is('mechanics.ack') ? 'menuitem-active' : '' }} ">
+                        <a class="active" href="{{ route('mechanics.ack') }}">
+                            <i data-feather="check"></i>
+                            <span>Acknowledgement</span>
                         </a>
                     </li>
                 @endrole
@@ -239,6 +239,33 @@
                         <a class="active" href="{{ route('garages') }}">
                             <i data-feather="tool"></i>
                             <span>slips</span>
+                        </a>
+                    </li>
+                @endrole
+
+                @role('driver')
+                    <li class="{{ Route::is('driver.home') ? 'menuitem-active' : '' }}">
+                        <a href="{{ route('driver.home') }}">
+                            <i data-feather="airplay"></i>
+                            <span> Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="{{ Route::is('driver.profile') ? 'menuitem-active' : '' }}">
+                        <a href="{{ route('driver.profile') }}">
+                            <i data-feather="user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="{{ Route::is('expense') ? 'menuitem-active' : '' }}">
+                        <a href="{{ route('expense') }}">
+                            <i data-feather="archive"></i>
+                            <span> Expenses</span>
+                        </a>
+                    </li>
+                    <li class="{{ Route::is('vehicle') ? 'menuitem-active' : '' }}">
+                        <a href="{{ route('vehicle') }}">
+                            <i data-feather="upload-cloud"></i>
+                            <span> Uploads</span>
                         </a>
                     </li>
                 @endrole

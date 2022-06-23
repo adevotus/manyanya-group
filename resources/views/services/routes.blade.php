@@ -28,10 +28,10 @@
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <button type="button" class="btn btn-success waves-effect waves-light"
-                                            data-bs-toggle="modal" data-bs-target="#custom-modal"><i
+                                        <a href={{ route('routes.add') }}
+                                            class="btn btn-success waves-effect waves-light"><i
                                                 class="mdi mdi-plus-circle me-1"></i> Add
-                                            Add Route</button>
+                                            Add Route</a>
                                     </div>
                                     <div class="col-sm-7">
                                         @if (Session::has('message'))
@@ -89,15 +89,29 @@
                                         <th style="width: 20px;">
                                             #
                                         </th>
-                                        <th>Route Source</th>
-                                        <th>Route Destination</th>
-                                        <th>
-                                            Price
-                                        </th>
+                                        <th>Route Name</th>
+                                        <th>Route Fuel</th>
+                                        <th>Route Trip</th>
+                                        @role('muhasibu')
+                                            <th>
+                                                Price
+                                            </th>
+                                        @endrole
+                                        @role('manager')
+                                            <th>
+                                                Price
+                                            </th>
+                                        @endrole
+                                        @role('superadmin')
+                                            <th>
+                                                Price
+                                            </th>
+                                        @endrole
+
                                         <th>Driver Name</th>
                                         <th>Vehicle Model</th>
-                                        <th>Cargo</th>
-                                        <th>Status</th>
+                                        <th>Item</th>
+                                        <th>Weight</th>
                                         <th>Create Date</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>
@@ -110,14 +124,29 @@
                                                     {{ $routes->firstItem() + $key }}
                                                 </td>
                                                 <td class="table-user">
-                                                    {{ $route->source }}
+                                                    {{ $route->route }}
                                                 </td>
                                                 <td class="table-user">
-                                                    {{ $route->destination }}
+                                                    {{ $route->fuel }}
                                                 </td>
-                                                <td>
-                                                    {{ number_format($route->price) }}
+                                                <td class="table-user">
+                                                    {{ $route->trip }}
                                                 </td>
+                                                @role('muhasibu')
+                                                    <td>
+                                                        {{ number_format($route->price) }}
+                                                    </td>
+                                                @endrole
+                                                @role('manager')
+                                                    <td>
+                                                        {{ number_format($route->price) }}
+                                                    </td>
+                                                @endrole
+                                                @role('superadmin')
+                                                    <td>
+                                                        {{ number_format($route->price) }}
+                                                    </td>
+                                                @endrole
                                                 <td>
                                                     {{ $route->driver->name }}
                                                 </td>
@@ -128,17 +157,14 @@
                                                     {{ $route->cargo->name }}
                                                 </td>
                                                 <td>
-                                                    <span
-                                                        class="badge @if ($route->status === 'paid') bg-soft-success text-success @elseif ($route->status === 'pending')  bg-soft-info text-info @else bg-soft-danger text-danger @endif">
-                                                        {{ $route->status }}
-                                                    </span>
+                                                    {{ $route->cargo->weight }}
                                                 </td>
+
                                                 <td>
                                                     {{ date('Y-m-d', strtotime($route->updated_at)) }}
                                                 </td>
                                                 <td>
-                                                    <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#update-modal{{ $route->id }}"
+                                                    <a href="{{ route('route.edit', ['id' => $route->id]) }}"
                                                         class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#delete-modal{{ $route->id }}"
@@ -146,6 +172,7 @@
                                                 </td>
 
                                                 @include('layouts.models.routes')
+
                                             </tr>
                                         @endforeach
                                     @else
@@ -184,63 +211,4 @@
         <!-- end row -->
     </div>
 
-    <div class="modal fade" id="custom-modal" tabindex="-1" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-light">
-                    <h4 class="modal-title" id="myCenterModalLabel">Add New Route</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form method="POST" action="{{ route('routes') }}">
-                        @csrf
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Route Source</label>
-                            <input type="text" name="source" class="form-control @error('source') is-invalid @enderror"
-                                id="name" placeholder="Enter route source">
-                        </div>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Route Destination</label>
-                            <input type="text" name="destination"
-                                class="form-control @error('destination') is-invalid @enderror" id="name"
-                                placeholder="Enter route destination">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="example-select" class="form-label">Select Driver</label>
-                            <select class="form-select" name="driver_id" id="example-select">
-                                @foreach ($drivers as $driver)
-                                    <option value="{{ $driver->id }}">{{ $driver->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="example-select" class="form-label">Select Vehicle</label>
-                            <select class="form-select" name="vehicle_id" id="example-select">
-                                @foreach ($vehicles as $vehicle)
-                                    <option value="{{ $vehicle->id }}">{{ $vehicle->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="example-select" class="form-label">Select Cargo</label>
-                            <select class="form-select" name="cargo_id" id="example-select">
-                                @foreach ($cargos as $cargo)
-                                    <option value="{{ $cargo->id }}">{{ $cargo->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-success waves-effect waves-light">Create Route</button>
-                            <button type="button" class="btn btn-secondary waves-effect waves-light"
-                                data-bs-dismiss="modal">Close</button>
-                        </div>
-
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
 @endsection

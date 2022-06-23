@@ -15,9 +15,14 @@ class Routes extends Migration
     {
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
-            $table->string('source');
-            $table->string('destination');
+            $table->string('route');
+            $table->string('fuel')->nullable();
+            $table->string('trip')->nullable();
+            $table->string('date')->nullable();
+            $table->double('drive_allowance', 100, 0)->nullable();
             $table->string('status')->default('pending'); //Pending, Assigned, Delivered
+            $table->string('vehicle_status')->nullable();
+            $table->string('vehicle_description')->nullable();
             $table->double('price', 100, 0)->default(0);
 
             $table->timestamps();
