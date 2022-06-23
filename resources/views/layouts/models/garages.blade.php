@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST" action="{{ route('mechanics.garages') }}">
+                <form method="POST" action="{{ route('garages') }}">
                     @method('delete')
                     @csrf
 
@@ -42,7 +42,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST" action="{{ route('mechanics.garages') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('garages') }}" enctype="multipart/form-data">
                     @method('put')
                     @csrf
 

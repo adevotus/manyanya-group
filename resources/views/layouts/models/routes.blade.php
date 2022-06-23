@@ -9,8 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST"
-                    action="@role('superadmin') {{ route('admin.routes') }} @endrole @role('stokekeeper') {{ route('store.routes') }} @endrole @role('manager') {{ route('manager.routes') }} @endrole ">
+                <form method="POST" action="{{ route('routes') }}">
                     @method('delete')
                     @csrf
 
@@ -33,8 +32,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<div class="modal fade" id="update-modal{{ $route->id }}" tabindex="-1" style="display: none;"
-    aria-hidden="true">
+<div class="modal fade" id="update-modal{{ $route->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light">
@@ -44,8 +42,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST"
-                    action="@role('superadmin') {{ route('admin.routes') }} @endrole @role('stokekeeper') {{ route('store.routes') }} @endrole @role('manager') {{ route('manager.routes') }} @endrole ">
+                <form method="POST" action="{{ route('routes') }}">
                     @method('put')
                     @csrf
 

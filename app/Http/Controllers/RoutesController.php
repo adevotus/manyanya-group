@@ -17,6 +17,110 @@ class RoutesController extends Controller
         $this->middleware('role:superadmin|storekeeper|manager');
     }
 
+    public function routes(Request $request)
+    {
+        $drivers = User::whereRoleIs('driver')->where('verified', true)->where('status', true)->get();
+        $vehicles = Vehicle::where('status', 'available')->get();
+        $cargos = Cargo::where('status', 'pending')->get();
+
+        // dd(strlen($request->date)); //max - 24 min - 10
+        // dd(substr($request->date, 0, -14), substr($request->date, -10));
+
+        $routes = Route::orderBy('updated_at', 'desc')->paginate(20);
+
+        if (!is_null($request->date)) {
+            if (strlen($request->date) > 16) {
+                $fromdate = substr($request->date, 0, -14);
+                $toDate =  substr($request->date, -10);
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $routes = Route::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->where('source', 'LIKE', '%' . $search . '%')
+                        ->orWhere('destination', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', $search)
+                        ->orWhereHas('driver', function ($query) use ($search) {
+                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                        })
+                        ->orWhereHas('vehicle', function ($query) use ($search) {
+                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                        })
+                        ->orWhereHas('cargo', function ($query) use ($search) {
+                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                        })
+                        ->paginate(15);
+                } else {
+                    $routes = Route::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->paginate(15);
+                }
+            } else {
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $routes = Route::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->where('source', 'LIKE', '%' . $search . '%')
+                        ->orWhere('destination', 'LIKE', '%' . $search . '%')
+                        ->orWhere('status', $search)
+                        ->orWhereHas('driver', function ($query) use ($search) {
+                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                        })
+                        ->orWhereHas('vehicle', function ($query) use ($search) {
+                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                        })
+                        ->orWhereHas('cargo', function ($query) use ($search) {
+                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                        })
+                        ->paginate(15);
+                } else {
+                    $routes = Route::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->paginate(15);
+                }
+            }
+        } else {
+            if (!is_null($request->search)) {
+                $this->validate($request, [
+                    'search' => 'string',
+                ]);
+
+                $search = $request->search;
+
+                $routes = Route::orderBy('updated_at', 'desc')
+                    ->where('source', 'LIKE', '%' . $search . '%')
+                    ->orWhere('destination', 'LIKE', '%' . $search . '%')
+                    ->orWhere('status', $search)
+                    ->orWhereHas('driver', function ($query) use ($search) {
+                        return $query->where('name', 'LIKE', '%' . $search . '%');
+                    })
+                    ->orWhereHas('vehicle', function ($query) use ($search) {
+                        return $query->where('name', 'LIKE', '%' . $search . '%');
+                    })
+                    ->orWhereHas('cargo', function ($query) use ($search) {
+                        return $query->where('name', 'LIKE', '%' . $search . '%');
+                    })
+                    ->paginate(15);
+            }
+        }
+
+        return view('services.routes')->with('routes', $routes)
+            ->with('vehicles', $vehicles)
+            ->with('drivers', $drivers)
+            ->with('cargos', $cargos);
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [

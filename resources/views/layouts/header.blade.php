@@ -29,7 +29,8 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
 
-                        <a class="dropdown-item notify-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                        <a class="dropdown-item notify-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
                              this.closest('form').submit();">
                             <i class="fe-log-out"></i>
                             <span>Logout</span>
@@ -91,7 +92,7 @@
                 @include('layouts.dropdown')
             @endrole
             @role('storekeeper')
-                @include('layouts.dropdown')
+                {{-- @include('layouts.dropdown') --}}
             @endrole
 
         </ul>

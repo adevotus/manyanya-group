@@ -12,7 +12,78 @@ class ExpenseController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:superadmin|mechanics|manager');
+        $this->middleware('role:superadmin|driver|storekeeper|mechanics|manager');
+    }
+
+    // Expenses
+    public function expense(Request $request)
+    {
+        $expenses = Expense::orderBy('updated_at', 'desc')->paginate(20);
+
+        if (!is_null($request->date)) {
+            if (strlen($request->date) > 16) {
+                $fromdate = substr($request->date, 0, -14);
+                $toDate =  substr($request->date, -10);
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $expenses = Expense::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('platenumber', 'LIKE', '%' . $search . '%')
+                        ->orWhere('reg_number', 'LIKE', '%' . $search . '%')
+                        ->orWhere('condition', $search)
+                        ->paginate(15);
+                } else {
+                    $expenses = Expense::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->paginate(15);
+                }
+            } else {
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $expenses = Expense::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('platenumber', 'LIKE', '%' . $search . '%')
+                        ->orWhere('reg_number', 'LIKE', '%' . $search . '%')
+                        ->orWhere('condition', $search)
+                        ->paginate(15);
+                } else {
+                    $expenses = Expense::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->paginate(15);
+                }
+            }
+        } else {
+            if (!is_null($request->search)) {
+                $this->validate($request, [
+                    'search' => 'string',
+                ]);
+
+                $search = $request->search;
+
+                $expenses = Expense::orderBy('updated_at', 'desc')
+                    ->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('platenumber', 'LIKE', '%' . $search . '%')
+                    ->orWhere('reg_number', 'LIKE', '%' . $search . '%')
+                    ->orWhere('condition', $search)
+                    ->paginate(15);
+            }
+        }
+
+        return view('services.expense')->with('expenses', $expenses);
     }
 
     public function store(Request $request)

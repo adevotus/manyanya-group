@@ -17,6 +17,70 @@ class CargoController extends Controller
         $this->middleware('role:storekeeper|superadmin|manager');
     }
 
+    // cargo
+    public function cargos(Request $request)
+    {
+        $cargos = Cargo::orderBy('updated_at', 'desc')->paginate(20);
+
+        if (!is_null($request->date)) {
+            if (strlen($request->date) > 16) {
+                $fromdate = substr($request->date, 0, -14);
+                $toDate =  substr($request->date, -10);
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $cargos = Cargo::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        // ->orWhere('status', $search)
+                        ->paginate(15);
+                } else {
+                    $cargos = Cargo::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->paginate(15);
+                }
+            } else {
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $cargos = Cargo::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        ->paginate(15);
+                } else {
+                    $cargos = Cargo::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->paginate(15);
+                }
+            }
+        } else {
+            if (!is_null($request->search)) {
+                $this->validate($request, [
+                    'search' => 'string',
+                ]);
+
+                $search = $request->search;
+
+                $cargos = Cargo::orderBy('updated_at', 'desc')
+                    ->where('name', 'LIKE', '%' . $search . '%')
+                    ->paginate(15);
+            }
+        }
+
+
+        return view('services.cargo')->with('cargos', $cargos);
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [

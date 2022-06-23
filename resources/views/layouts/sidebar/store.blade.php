@@ -8,8 +8,8 @@
                          <span> Dashboard</span>
                      </a>
                  </li>
-                 <li class="{{ Route::is('store.routes') ? 'menuitem-active' : '' }} ">
-                     <a class="active" href="{{ route('store.routes') }}">
+                 <li class="{{ Route::is('routes') ? 'menuitem-active' : '' }} ">
+                     <a class="active" href="{{ route('routes') }}">
                          <i data-feather="corner-up-right"></i>
                          <span>Routes</span>
                      </a>
@@ -22,22 +22,22 @@
                      </a>
                  </li>
 
-                 <li class="{{ Route::is('store.cargos') ? 'menuitem-active' : '' }} ">
-                     <a class="active" href="{{ route('store.cargos') }}">
+                 <li class="{{ Route::is('cargos') ? 'menuitem-active' : '' }} ">
+                     <a class="active" href="{{ route('cargos') }}">
                          <i data-feather="globe"></i>
                          <span>Cargos</span>
                      </a>
                  </li>
 
-                 <li class="{{ Route::is('store.cargos') ? 'menuitem-active' : '' }} ">
-                     <a class="active" href="{{ route('store.cargos') }}">
+                 <li class="{{ Route::is('expense') ? 'menuitem-active' : '' }} ">
+                     <a class="active" href="{{ route('expense') }}">
                          <i data-feather="sliders"></i>
                          <span>Expense</span>
                      </a>
                  </li>
 
-                 <li class="{{ Route::is('store.cargos') ? 'menuitem-active' : '' }} ">
-                     <a class="active" href="{{ route('store.cargos') }}">
+                 <li class="{{ Route::is('cargos') ? 'menuitem-active' : '' }} ">
+                     <a class="active" href="{{ route('cargos') }}">
                          <i data-feather="archive"></i>
                          <span>Slips</span>
                      </a>

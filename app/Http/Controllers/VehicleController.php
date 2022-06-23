@@ -14,12 +14,76 @@ class VehicleController extends Controller
         $this->middleware('role:mechanics|superadmin|manager');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function index(Request $request)
+    {
+        $vehicle = Vehicle::orderBy('updated_at', 'desc')->paginate(20);
+
+        if (!is_null($request->date)) {
+            if (strlen($request->date) > 16) {
+                $fromdate = substr($request->date, 0, -14);
+                $toDate =  substr($request->date, -10);
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $vehicle = Vehicle::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('platenumber', 'LIKE', '%' . $search . '%')
+                        ->orWhere('reg_number', 'LIKE', '%' . $search . '%')
+                        ->orWhere('condition', $search)
+                        ->paginate(15);
+                } else {
+                    $vehicle = Vehicle::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->paginate(15);
+                }
+            } else {
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $vehicle = Vehicle::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('platenumber', 'LIKE', '%' . $search . '%')
+                        ->orWhere('reg_number', 'LIKE', '%' . $search . '%')
+                        ->orWhere('condition', $search)
+                        ->paginate(15);
+                } else {
+                    $vehicle = Vehicle::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->paginate(15);
+                }
+            }
+        } else {
+            if (!is_null($request->search)) {
+                $this->validate($request, [
+                    'search' => 'string',
+                ]);
+
+                $search = $request->search;
+
+                $vehicle = Vehicle::orderBy('updated_at', 'desc')
+                    ->where('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('platenumber', 'LIKE', '%' . $search . '%')
+                    ->orWhere('reg_number', 'LIKE', '%' . $search . '%')
+                    ->orWhere('condition', $search)
+                    ->paginate(15);
+            }
+        }
+
+        return view('services.vehicle')->with('vehicles', $vehicle);
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [

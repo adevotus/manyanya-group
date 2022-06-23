@@ -32,54 +32,49 @@ Route::group(['prefix' => 'settings', 'middleware' => ['auth', 'role:mechanics|m
     Route::put('/', [ProfileController::class, 'password']);
 });
 
-//Super Admin Route
-Route::group(['prefix' => 'superadmin', 'middleware' => ['auth', 'role:superadmin']], function () {
-    Route::get('', [AdminController::class, 'index'])->name('admin.home');
 
-    // Vehicle view,Create,Update,Delete
-    Route::get('/vehicle', [AdminController::class, 'vehicle'])->name('admin.vehicle');
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|manager|superadmin']], function () {
+    Route::get('/vehicle', [VehicleController::class, 'index'])->name('vehicle');
     Route::post('/vehicle', [VehicleController::class, 'store']);
     Route::put('/vehicle', [VehicleController::class, 'update']);
     Route::delete('/vehicle', [VehicleController::class, 'destroy']);
+});
 
-    // Driver view,Create,Update,Delete
-    Route::get('/driver', [AdminController::class, 'driver'])->name('admin.driver');
-    Route::get('/certicicate/{id}', [AdminController::class, 'certificate'])->name('admin.certificate.download');
-    Route::get('/license/{id}', [AdminController::class, 'license'])->name('admin.license.download');
-    Route::post('/driver', [DriverController::class, 'store']);
-    Route::put('/driver', [DriverController::class, 'update']);
-    Route::delete('/driver', [DriverController::class, 'destroy']);
-
-    // Staff Member View,Create,Update,Delete
-    Route::get('/staff', [AdminController::class, 'staff'])->name('admin.staff');
-    Route::post('/staff', [StaffController::class, 'store']);
-    Route::put('/staff', [StaffController::class, 'update']);
-    Route::delete('/staff', [StaffController::class, 'destroy']);
-
-    // Routes view,Create,Update,Delete
-    Route::get('/routes', [AdminController::class, 'routes'])->name('admin.routes');
-    Route::post('/routes', [RoutesController::class, 'store']);
-    Route::put('/routes', [RoutesController::class, 'update']);
-    Route::delete('/routes', [RoutesController::class, 'destroy']);
-
-    // Cargo view,Create,Update,Delete
-    Route::get('/cargos', [AdminController::class, 'cargos'])->name('admin.cargos');
+// Cargo view,Create,Update,Delete
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|manager|superadmin']], function () {
+    Route::get('/cargos', [CargoController::class, 'cargos'])->name('cargos');
     Route::post('/cargos', [CargoController::class, 'store']);
     Route::put('/cargos', [CargoController::class, 'update']);
     Route::delete('/cargos', [CargoController::class, 'destroy']);
+});
 
-    // Garage view,Create,Update,Delete
-    Route::get('/garages', [AdminController::class, 'garages'])->name('admin.garages');
+// Garage view,Create,Update,Delete
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|manager|superadmin']], function () {
+    Route::get('/garages', [GarageController::class, 'garages'])->name('garages');
     Route::post('/garages', [GarageController::class, 'store']);
     Route::put('/garages', [GarageController::class, 'update']);
     Route::delete('/garages', [GarageController::class, 'destroy']);
 });
 
+// Routes view,Create,Update,Delete
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|muhasibu|manager|superadmin']], function () {
+    Route::get('/routes', [RoutesController::class, 'routes'])->name('routes');
+    Route::post('/routes', [RoutesController::class, 'store']);
+    Route::put('/routes', [RoutesController::class, 'update']);
+    Route::delete('/routes', [RoutesController::class, 'destroy']);
+});
 
-// Store keeper route
+// Other Expenses view,Create,Update,Delete
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|driver|mechanics|muhasibu|manager|superadmin']], function () {
+    Route::get('/expenses', [ExpenseController::class, 'expense'])->name('expense');
+    Route::post('/expenses', [ExpenseController::class, 'store']);
+    Route::put('/expenses', [ExpenseController::class, 'update']);
+    Route::delete('/expenses', [ExpenseController::class, 'destroy']);
+});
+
+
 Route::group(['prefix' => 'storekeeper', 'middleware' => ['auth', 'role:storekeeper|manager|superadmin']], function () {
     Route::get('/', [StoreController::class, 'index'])->name('store.home');
-
 
     // Driver view,Create,Update,Delete
     Route::get('/driver', [StoreController::class, 'driver'])->name('store.driver');
@@ -88,18 +83,6 @@ Route::group(['prefix' => 'storekeeper', 'middleware' => ['auth', 'role:storekee
     Route::post('/driver', [DriverController::class, 'store']);
     Route::put('/driver', [DriverController::class, 'update']);
     Route::delete('/driver', [DriverController::class, 'destroy']);
-
-    // Routes view,Create,Update,Delete
-    Route::get('/routes', [StoreController::class, 'routes'])->name('store.routes');
-    Route::post('/routes', [RoutesController::class, 'store']);
-    Route::put('/routes', [RoutesController::class, 'update']);
-    Route::delete('/routes', [RoutesController::class, 'destroy']);
-
-    // Cargo view,Create,Update,Delete
-    Route::get('/cargos', [StoreController::class, 'cargos'])->name('store.cargos');
-    Route::post('/cargos', [CargoController::class, 'store']);
-    Route::put('/cargos', [CargoController::class, 'update']);
-    Route::delete('/cargos', [CargoController::class, 'destroy']);
 });
 
 
@@ -119,12 +102,6 @@ Route::group(['prefix' => 'muhasibu', 'middleware' => ['role:muhasibu']], functi
 Route::group(['prefix' => 'manager', 'middleware' => ['role:manager']], function () {
     Route::get('/', [ManagerController::class, 'index'])->name('manager.home');
 
-    // Vehicle view,Create,Update,Delete
-    Route::get('/vehicle', [ManagerController::class, 'vehicle'])->name('manager.vehicle');
-    Route::post('/vehicle', [VehicleController::class, 'store']);
-    Route::put('/vehicle', [VehicleController::class, 'update']);
-    Route::delete('/vehicle', [VehicleController::class, 'destroy']);
-
     // Driver view,Create,Update,Delete
     Route::get('/driver', [ManagerController::class, 'driver'])->name('manager.driver');
     Route::get('/certicicate/{id}', [ManagerController::class, 'certificate'])->name('manager.certificate.download');
@@ -132,47 +109,11 @@ Route::group(['prefix' => 'manager', 'middleware' => ['role:manager']], function
     Route::post('/driver', [DriverController::class, 'store']);
     Route::put('/driver', [DriverController::class, 'update']);
     Route::delete('/driver', [DriverController::class, 'destroy']);
-
-    // Routes view,Create,Update,Delete
-    Route::get('/routes', [ManagerController::class, 'routes'])->name('manager.routes');
-    Route::post('/routes', [RoutesController::class, 'store']);
-    Route::put('/routes', [RoutesController::class, 'update']);
-    Route::delete('/routes', [RoutesController::class, 'destroy']);
-
-    // Cargo view,Create,Update,Delete
-    Route::get('/cargos', [ManagerController::class, 'cargos'])->name('manager.cargos');
-    Route::post('/cargos', [CargoController::class, 'store']);
-    Route::put('/cargos', [CargoController::class, 'update']);
-    Route::delete('/cargos', [CargoController::class, 'destroy']);
-
-    // Garage view,Create,Update,Delete
-    Route::get('/garages', [ManagerController::class, 'garages'])->name('manager.garages');
-    Route::post('/garages', [GarageController::class, 'store']);
-    Route::put('/garages', [GarageController::class, 'update']);
-    Route::delete('/garages', [GarageController::class, 'destroy']);
 });
 
 // Mechanics view, crud ops
 Route::group(['prefix' => 'mechanics', 'middleware' => ['role:mechanics']], function () {
     Route::get('/', [MechanicsController::class, 'index'])->name('mechanics.home');
-
-    // Garage view,Create,Update,Delete
-    Route::get('/garages', [MechanicsController::class, 'garages'])->name('mechanics.garages');
-    Route::post('/garages', [GarageController::class, 'store']);
-    Route::put('/garages', [GarageController::class, 'update']);
-    Route::delete('/garages', [GarageController::class, 'destroy']);
-
-    // Other Expenses view,Create,Update,Delete
-    Route::get('/expenses', [MechanicsController::class, 'expense'])->name('mechanics.expense');
-    Route::post('/expenses', [ExpenseController::class, 'store']);
-    Route::put('/expenses', [ExpenseController::class, 'update']);
-    Route::delete('/expenses', [ExpenseController::class, 'destroy']);
-
-    // Vehicle view,Create,Update,Delete
-    Route::get('/vehicle', [MechanicsController::class, 'vehicle'])->name('mechanics.vehicle');
-    Route::post('/vehicle', [VehicleController::class, 'store']);
-    Route::put('/vehicle', [VehicleController::class, 'update']);
-    Route::delete('/vehicle', [VehicleController::class, 'destroy']);
 });
 
 
@@ -183,10 +124,4 @@ Route::group(['prefix' => 'driver', 'middleware' => ['role:driver']], function (
     Route::get('/', [DriverController::class, 'index'])->name('driver.home');
     Route::post('/', [DriverController::class, 'registration']);
     Route::put('/', [DriverController::class, 'route_confirmation']);
-
-    // Other Expenses view,Create,Update,Delete
-    Route::get('/expenses', [DriverController::class, 'expense'])->name('driver.expense');
-    Route::post('/expenses', [ExpenseController::class, 'store']);
-    Route::put('/expenses', [ExpenseController::class, 'update']);
-    Route::delete('/expenses', [ExpenseController::class, 'destroy']);
 });

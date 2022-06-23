@@ -15,6 +15,70 @@ class GarageController extends Controller
         $this->middleware('role:mechanics|superadmin|manager');
     }
 
+    public function garages(Request $request)
+    {
+        $garage = Garage::orderBy('updated_at', 'desc')->paginate(20);
+
+        if (!is_null($request->date)) {
+            if (strlen($request->date) > 16) {
+                $fromdate = substr($request->date, 0, -14);
+                $toDate =  substr($request->date, -10);
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $garage = Garage::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->where('tool_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('condition', $search)
+                        ->paginate(15);
+                } else {
+                    $garage = Garage::orderBy('updated_at', 'desc')
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                        ->paginate(15);
+                }
+            } else {
+
+                if (!is_null($request->search)) {
+                    $this->validate($request, [
+                        'search' => 'string',
+                    ]);
+
+                    $search = $request->search;
+
+                    $garage = Garage::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->where('tool_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('condition', $search)
+                        ->paginate(15);
+                } else {
+                    $garage = Garage::orderBy('updated_at', 'desc')
+                        ->whereDate('updated_at', $request->date)
+                        ->paginate(15);
+                }
+            }
+        } else {
+            if (!is_null($request->search)) {
+                $this->validate($request, [
+                    'search' => 'string',
+                ]);
+
+                $search = $request->search;
+
+                $garage = Garage::orderBy('updated_at', 'desc')
+                    ->where('tool_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('condition', $search)
+                    ->paginate(15);
+            }
+        }
+
+        return view('services.garage')->with('garages', $garage);
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -22,7 +86,6 @@ class GarageController extends Controller
             'amount' => 'required|numeric|gte:1',
             'tool_condition' => 'required|string|max:255',
             'tool_number' => 'required|string|max:255',
-            'tool_condition' => 'required|string|max:255',
             'payment_slip' => 'required|mimes:png,jpeg,jpg,docx,pdf,docs|max:1000',
         ]);
 

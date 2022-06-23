@@ -9,7 +9,7 @@
                 <div class="page-title-box">
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('mechanics.home') }}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="">Home</a></li>
                             <li class="breadcrumb-item active">Other Expenses</li>
                         </ol>
                     </div>
@@ -154,7 +154,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form method="POST" action="{{ route('mechanics.expense') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('expense') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="mb-3">

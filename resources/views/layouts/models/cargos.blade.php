@@ -9,8 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST"
-                    action="@role('superadmin') {{ route('admin.cargos') }} @endrole @role('stokekeeper') {{ route('store.cargos') }} @endrole @role('manager') {{ route('manager.cargos') }} @endrole ">
+                <form method="POST" action="{{ route('cargos') }}">
                     @method('delete')
                     @csrf
 
@@ -33,8 +32,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<div class="modal fade" id="update-modal{{ $cargo->id }}" tabindex="-1" style="display: none;"
-    aria-hidden="true">
+<div class="modal fade" id="update-modal{{ $cargo->id }}" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light">
@@ -44,9 +42,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST"
-                    action="@role('superadmin') {{ route('admin.cargos') }} @endrole @role('stokekeeper') {{ route('store.cargos') }} @endrole @role('manager') {{ route('manager.cargos') }} @endrole "
-                    enctype="multipart/form-data">
+                <form method="POST" action="{{ route('cargos') }}" enctype="multipart/form-data">
                     @method('put')
                     @csrf
 
@@ -91,7 +87,8 @@
                     </div>
 
                     <div class="text-end">
-                        <button type="submit" class="btn btn-success waves-effect waves-light">Update Account</button>
+                        <button type="submit" class="btn btn-success waves-effect waves-light">Update
+                            Account</button>
                         <button type="button" class="btn btn-secondary waves-effect waves-light"
                             data-bs-dismiss="modal">Close</button>
                     </div>
