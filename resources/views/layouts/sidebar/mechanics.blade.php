@@ -13,36 +13,36 @@
                          <span> Dashboard</span>
                      </a>
                  </li>
-                 <li class="{{ Route::is('mechanics.vehicle') ? 'menuitem-active' : '' }}">
-                     <a href="{{ route('mechanics.vehicle') }}">
+                 <li class="{{ Route::is('vehicle') ? 'menuitem-active' : '' }}">
+                     <a href="{{ route('vehicle') }}">
                          <i data-feather="credit-card"></i>
                          <span> Vehicle</span>
                      </a>
                  </li>
-                 <li class="{{ Route::is('mechanics.garages') ? 'menuitem-active' : '' }}">
-                     <a href="{{ route('mechanics.garages') }}">
+                 <li class="{{ Route::is('garages') ? 'menuitem-active' : '' }}">
+                     <a href="{{ route('garages') }}">
                          <i data-feather="globe"></i>
                          <span>Garage</span>
                      </a>
                  </li>
-                 <li class="{{ Route::is('muhasibu.invoice') ? 'menuitem-active' : '' }}">
+                 {{-- <li class="{{ Route::is('muhasibu.invoice') ? 'menuitem-active' : '' }}">
                      <a href="{{ route('muhasibu.invoice') }}">
                          <i data-feather="message-circle"></i>
                          <span>Acknowledgement</span>
                      </a>
-                 </li>
-                 <li class="{{ Route::is('mechanics.expense') ? 'menuitem-active' : '' }}">
-                     <a href="{{ route('mechanics.expense') }}">
+                 </li> --}}
+                 <li class="{{ Route::is('expense') ? 'menuitem-active' : '' }}">
+                     <a href="{{ route('expense') }}">
                          <i data-feather="tool"></i>
                          <span>Expenses</span>
                      </a>
                  </li>
-                 <li class="{{ Route::is('muhasibu.garage') ? 'menuitem-active' : '' }}">
+                 {{-- <li class="{{ Route::is('muhasibu.garage') ? 'menuitem-active' : '' }}">
                      <a href="{{ route('muhasibu.garage') }}">
                          <i data-feather="tool"></i>
                          <span>Report</span>
                      </a>
-                 </li>
+                 </li> --}}
 
              </ul>
 

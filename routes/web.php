@@ -11,7 +11,6 @@ use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\MuhasibuController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoutesController;
-use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Auth;

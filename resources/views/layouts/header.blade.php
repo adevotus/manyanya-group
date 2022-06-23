@@ -89,7 +89,7 @@
                 @include('layouts.dropdown')
             @endrole
             @role('manager')
-                @include('layouts.dropdown')
+                {{-- @include('layouts.dropdown') --}}
             @endrole
             @role('storekeeper')
                 {{-- @include('layouts.dropdown') --}}
