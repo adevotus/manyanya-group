@@ -100,7 +100,7 @@ class DriverController extends Controller
 
         $total_price = 0;
         foreach ($route as  $rt) {
-            $total_price += $rt->price;
+            $total_price += $rt->drive_allowance;
         }
 
 
@@ -515,5 +515,29 @@ class DriverController extends Controller
             ->first();
 
         return Storage::download($driver->birth_certifacate);
+    }
+
+    public function delivered(Request $request, $id)
+    {
+        $this->validate($request, [
+            'confirm_delivered' => 'required|string|in:yes,no',
+        ]);
+
+        $route = Route::find($id);
+        if (!is_null($route) && $request->confirm_delivered == 'yes') {
+            $route->status = 'delivered';
+            $route->save();
+
+            if ($route) {
+                Session::flash('message', 'Route successful confirmed');
+                return redirect()->back();
+            } else {
+                Session::flash('message', 'Route unsuccessful confirmed');
+                return redirect()->back();
+            }
+        } else {
+            Session::flash('message', 'Please check the route again!');
+            return redirect()->back();
+        }
     }
 }

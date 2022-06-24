@@ -59,11 +59,11 @@
                                 <th style="width: 20px;">
                                     #
                                 </th>
-                                <th>Source</th>
-                                <th>Destination</th>
-                                <th>Price</th>
-                                <th>Vehicle Model</th>
-                                <th>Cargo</th>
+                                <th>Route</th>
+                                <th>Allowance</th>
+                                <th>Vehicle</th>
+                                <th>Cargo Name</th>
+                                <th>Tons</th>
                                 <th>Status</th>
                                 <th>Create Date</th>
                                 <th style="width: 85px;">Action</th>
@@ -77,19 +77,20 @@
                                             {{ $routes->firstItem() + $key }}
                                         </td>
                                         <td class="table-user">
-                                            {{ $route->source }}
+                                            {{ $route->route }}
                                         </td>
-                                        <td class="table-user">
-                                            {{ $route->destination }}
-                                        </td>
+
                                         <td>
-                                            {{ number_format($route->price) }}
+                                            {{ number_format($route->drive_allowance) }}
                                         </td>
                                         <td>
                                             {{ $route->vehicle->name }}
                                         </td>
                                         <td>
                                             {{ $route->cargo->name }}
+                                        </td>
+                                        <td>
+                                            {{ $route->cargo->weight }}
                                         </td>
                                         <td>
                                             {{ $route->status }}
@@ -116,12 +117,9 @@
                                                             aria-hidden="true"></button>
                                                     </div>
                                                     <div class="modal-body p-4">
-                                                        <form method="POST" action="">
-                                                            @method('put')
+                                                        <form method="POST"
+                                                            action="{{ route('driver.deliver', ['id' => $route->id]) }}">
                                                             @csrf
-
-                                                            <input type="number" hidden name="route_id" hidden
-                                                                value="{{ $route->id }}">
 
                                                             <p>
                                                                 Please change status to yes if you have already
@@ -137,21 +135,8 @@
                                                                 <label for="example-select" class="form-label">Have
                                                                     you delivered the cargo?</label>
                                                                 <select
-                                                                    class="form-select  @error('cargo_delivered') is-invalid @enderror"
-                                                                    name="cargo_delivered" id="example-select">
-                                                                    <option value="yes" selected>Yes</option>
-                                                                    <option value="no">No</option>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="dropdown-divider"></div>
-
-                                                            <div class="mb-3">
-                                                                <label for="example-select" class="form-label">Are
-                                                                    Available Now?</label>
-                                                                <select
-                                                                    class="form-select @error('driver_status') is-invalid @enderror"
-                                                                    name="driver_status" id="example-select">
+                                                                    class="form-select  @error('confirm_delivered') is-invalid @enderror"
+                                                                    name="confirm_delivered" id="example-select">
                                                                     <option value="yes" selected>Yes</option>
                                                                     <option value="no">No</option>
                                                                 </select>

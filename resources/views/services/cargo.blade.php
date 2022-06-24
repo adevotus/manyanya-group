@@ -28,10 +28,12 @@
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="col-sm-7">
-                                        <button type="button" class="btn btn-success waves-effect waves-light"
-                                            data-bs-toggle="modal" data-bs-target="#custom-modal"><i
-                                                class="mdi mdi-plus-circle me-1"></i> Add
-                                            Add Cargo</button>
+                                        @role('storekeeper')
+                                            <button type="button" class="btn btn-success waves-effect waves-light"
+                                                data-bs-toggle="modal" data-bs-target="#custom-modal"><i
+                                                    class="mdi mdi-plus-circle me-1"></i> Add
+                                                Add Cargo</button>
+                                        @endrole
                                     </div>
                                     <div class="col-sm-7">
                                         @if (Session::has('message'))

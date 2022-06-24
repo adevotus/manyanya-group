@@ -54,13 +54,6 @@
                             <span>Expenses</span>
                         </a>
                     </li>
-
-                    <li class="{{ Route::is('garages') ? 'menuitem-active' : '' }} ">
-                        <a class="active" href="{{ route('garages') }}">
-                            <i data-feather="tool"></i>
-                            <span>slips</span>
-                        </a>
-                    </li>
                 @endrole
                 @role('manager')
                     <li class="{{ Route::is('manager.home') ? 'menuitem-active' : '' }}">
@@ -112,13 +105,6 @@
                         <a class="active" href="{{ route('expense') }}">
                             <i data-feather="sliders"></i>
                             <span>Expenses</span>
-                        </a>
-                    </li>
-
-                    <li class="{{ Route::is('garages') ? 'menuitem-active' : '' }} ">
-                        <a class="active" href="{{ route('garages') }}">
-                            <i data-feather="tool"></i>
-                            <span>slips</span>
                         </a>
                     </li>
                 @endrole
@@ -185,18 +171,17 @@
                         </a>
                     </li>
 
+                    <li class="{{ Route::is('garages') ? 'menuitem-active' : '' }} ">
+                        <a class="active" href="{{ route('garages') }}">
+                            <i data-feather="tool"></i>
+                            <span>Garage</span>
+                        </a>
+                    </li>
 
                     <li class="{{ Route::is('expense') ? 'menuitem-active' : '' }} ">
                         <a class="active" href="{{ route('expense') }}">
                             <i data-feather="sliders"></i>
                             <span>Expenses</span>
-                        </a>
-                    </li>
-
-                    <li class="{{ Route::is('garages') ? 'menuitem-active' : '' }} ">
-                        <a class="active" href="{{ route('garages') }}">
-                            <i data-feather="tool"></i>
-                            <span>slips</span>
                         </a>
                     </li>
                 @endrole
@@ -234,13 +219,6 @@
                             <span>Expenses</span>
                         </a>
                     </li>
-
-                    <li class="{{ Route::is('garages') ? 'menuitem-active' : '' }} ">
-                        <a class="active" href="{{ route('garages') }}">
-                            <i data-feather="tool"></i>
-                            <span>slips</span>
-                        </a>
-                    </li>
                 @endrole
 
                 @role('driver')
@@ -260,12 +238,6 @@
                         <a href="{{ route('expense') }}">
                             <i data-feather="archive"></i>
                             <span> Expenses</span>
-                        </a>
-                    </li>
-                    <li class="{{ Route::is('vehicle') ? 'menuitem-active' : '' }}">
-                        <a href="{{ route('vehicle') }}">
-                            <i data-feather="upload-cloud"></i>
-                            <span> Uploads</span>
                         </a>
                     </li>
                 @endrole

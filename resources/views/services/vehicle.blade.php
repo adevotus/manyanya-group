@@ -87,7 +87,6 @@
                                         <th>Reg #</th>
                                         <th>Plate #</th>
                                         <th>Condition</th>
-                                        <th>Status</th>
                                         <th>Create Date</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>
@@ -114,12 +113,7 @@
                                                     </span>
 
                                                 </td>
-                                                <td>
-                                                    <span
-                                                        class="badge @if ($vehicle->status === 'available') bg-soft-success text-success @else  bg-soft-danger text-danger @endif">
-                                                        {{ $vehicle->status }}
-                                                    </span>
-                                                </td>
+
                                                 <td>
                                                     {{ date('Y-m-d', strtotime($vehicle->updated_at)) }}
                                                 </td>

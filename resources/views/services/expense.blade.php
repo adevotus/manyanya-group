@@ -105,12 +105,24 @@
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#update-modal{{ $expense->id }}"
                                                         class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                                    <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#delete-modal{{ $expense->id }}"
-                                                        class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                    @role('muhasibu')
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete-modal{{ $expense->id }}"
+                                                            class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                    @endrole
+                                                    @role('manager')
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete-modal{{ $expense->id }}"
+                                                            class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                    @endrole
+                                                    @role('superadmin')
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete-modal{{ $expense->id }}"
+                                                            class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                    @endrole
+                                                    @include('layouts.models.expense')
                                                 </td>
 
-                                                @include('layouts.models.expense')
                                             </tr>
                                         @endforeach
                                     @else

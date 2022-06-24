@@ -49,7 +49,7 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|muh
 });
 
 // Garage view,Create,Update,Delete
-Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|muhasibu|manager|superadmin']], function () {
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|storekeeper|muhasibu|manager|superadmin']], function () {
     Route::get('/garages', [GarageController::class, 'garages'])->name('garages');
     Route::post('/garages', [GarageController::class, 'store']);
     Route::put('/garages', [GarageController::class, 'update']);
@@ -104,12 +104,14 @@ Route::group(['prefix' => 'manager', 'middleware' => ['role:manager']], function
 Route::group(['prefix' => 'mechanics', 'middleware' => ['role:mechanics']], function () {
     Route::get('/', [MechanicsController::class, 'index'])->name('mechanics.home');
 
-    Route::get('/acknowledgement', [MechanicsController::class, 'index'])->name('mechanics.ack');
+    Route::get('/acknowledgement', [MechanicsController::class, 'ack'])->name('mechanics.ack');
+    Route::post('/check/{id}', [MechanicsController::class, 'updateVehicle'])->name('mechanics.check');
 });
 
 //Driver route
 Route::group(['prefix' => 'driver', 'middleware' => ['role:driver']], function () {
     Route::get('/', [DriverController::class, 'index'])->name('driver.home');
+    Route::post('/confirm/{id}', [DriverController::class, 'delivered'])->name('driver.deliver');
     Route::post('/', [DriverController::class, 'registration']);
     Route::put('/', [DriverController::class, 'route_confirmation']);
 

@@ -138,7 +138,7 @@ class RoutesController extends Controller
             'route_name' => 'required|string|max:255',
             'departure_date' => 'required|string|max:255',
             'trip' => 'required|string|max:255|in:go,return',
-            'fuel' => 'required|numeric|gt:0|max:255',
+            'fuel' => 'required|numeric|gt:0',
             'cargo_id' => 'required|numeric|gte:1',
             'vehicle_id' => 'required|numeric|gte:1',
             'driver_id' => 'required|numeric|gte:1',
@@ -194,20 +194,23 @@ class RoutesController extends Controller
             $total = $request->price * $cargo->weight;
 
             if ($request->payment_mode == 'installment') {
-                $this->validate($request, [
-                    'advanced_payment' => 'required|numeric|gte:1',
-                ]);
+                if (!empty($request->advanced_payment)) {
+                    $this->validate($request, [
+                        'advanced_payment' => 'required|numeric|gte:1',
+                    ]);
 
-                $route->i_price =  $request->advanced_payment;
-                $route->r_price = $total - $request->advanced_payment;
+                    $route->i_price =  $request->advanced_payment;
+                    $route->r_price = $total - $request->advanced_payment;
+                }
             }
 
             $route->mode =  $request->payment_mode;
             $route->payment_method =  $request->payment_method;
             $route->drive_allowance =  $request->driver_allowance;
             $route->price =  $total;
-
+            $route->status = 'approved';
             $route->save();
+
             $cargo->amount = $request->price;
             $cargo->save();
 

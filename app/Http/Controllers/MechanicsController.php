@@ -2,16 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cargo;
 use App\Models\Expense;
 use App\Models\Garage;
+use App\Models\Route;
+use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class MechanicsController extends Controller
 {
     public function index()
     {
-        return view('mechanics.home');
+        $vehicles = Vehicle::orderBy('created_at', 'desc')->get()->take(4);
+        $tools = Garage::orderBy('created_at', 'desc')->get()->take(4);
+
+        $vehicle = Vehicle::count();
+        $tool = Garage::count();
+
+        return view('mechanics.home')
+            ->with('vehicle', $vehicle)
+            ->with('vehicles', $vehicles)
+            ->with('garages', $tools)
+            ->with('tool', $tool);
+    }
+
+    public function ack()
+    {
+        $route = Route::orderBy('updated_at', 'desc')->paginate(20);
+
+        return view('mechanics.ack')->with('routes', $route);
+    }
+
+    public function updateVehicle(Request $request, $id)
+    {
+        $this->validate($request, [
+            'description' => 'required|string'
+        ]);
+
+        $route = Route::find($id);
+        if (!is_null($route)) {
+            $route->vehicle_description = $request->description;
+            $route->save();
+
+            Session::flash('message', 'Vehicle description successful updated');
+            return redirect()->back();
+        } else {
+            Session::flash('message', 'Vehicle description unsuccessful updated');
+            return redirect()->back();
+        }
     }
 
     // Expenses
