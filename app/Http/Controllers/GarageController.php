@@ -12,7 +12,7 @@ class GarageController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:mechanics|superadmin|manager');
+        $this->middleware('role:mechanics|muhasibu|superadmin|manager');
     }
 
     public function garages(Request $request)

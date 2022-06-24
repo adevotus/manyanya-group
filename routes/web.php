@@ -41,7 +41,7 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|manag
 });
 
 // Cargo view,Create,Update,Delete
-Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|manager|superadmin']], function () {
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|muhasibu|manager|superadmin']], function () {
     Route::get('/cargos', [CargoController::class, 'cargos'])->name('cargos');
     Route::post('/cargos', [CargoController::class, 'store']);
     Route::put('/cargos', [CargoController::class, 'update']);
@@ -49,7 +49,7 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|man
 });
 
 // Garage view,Create,Update,Delete
-Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|manager|superadmin']], function () {
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|muhasibu|manager|superadmin']], function () {
     Route::get('/garages', [GarageController::class, 'garages'])->name('garages');
     Route::post('/garages', [GarageController::class, 'store']);
     Route::put('/garages', [GarageController::class, 'update']);

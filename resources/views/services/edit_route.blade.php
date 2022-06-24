@@ -108,7 +108,7 @@
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <input type="number" id="total" name="total"
-                                                    value="{{ $route->cargo->total }}" disabled
+                                                    value="{{ $route->price }}" disabled
                                                     class="form-control @error('total') is-invalid @enderror" id="name">
                                                 @error('total')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -126,32 +126,42 @@
                                         <label for="example-select" class="form-label">Payment Mode</label>
                                         <select id="payment_mode" class="form-select" name="payment_mode"
                                             id="example-select">
-                                            <option value="full">Full</option>
-                                            <option value="installment">Installment</option>
+                                            <option value="full" {{ $route->mode === 'full' ? 'selected' : '' }}>Full
+                                            </option>
+                                            <option value="installment"
+                                                {{ $route->mode === 'installment' ? 'selected' : '' }}>Installment
+                                            </option>
                                         </select>
                                         @error('payment_mode')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
 
-                                    <div class="mb-3 hideiffull" style="display: none;">
-                                        <label for="name" class="form-label">Advance Payment</label>
-                                        <input type="number" id="advanced_payment" name="advanced_payment" min="0"
-                                            class="form-control toAdd @error('advanced_payment') is-invalid @enderror"
-                                            id="name" placeholder="Enter advanced payment">
-                                        @error('advanced_payment')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                    @if ($route->mode == 'installment')
+                                        <div class="mb-3 hideiffull">
+                                            <label for="name" class="form-label">Advance Payment</label>
+                                            <input type="number" id="advanced_payment" name="advanced_payment"
+                                                min="0"
+                                                class="form-control toAdd @error('advanced_payment') is-invalid @enderror"
+                                                id="name" placeholder="Enter advanced payment">
+                                            @error('advanced_payment')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    @endif
 
                                     <div class="mb-3">
                                         <label for="example-select" class="form-label">Paid Through</label>
-                                        <select class="form-select" name="payment_mode" id="example-select">
-                                            <option value="cash">Cash</option>
-                                            <option value="bank">Bank</option>
-                                            <option value="agent">Agent</option>
+                                        <select class="form-select" name="payment_method" id="example-select">
+                                            <option value="cash"
+                                                {{ $route->payment_method === 'cash' ? 'selected' : '' }}>Cash
+                                            </option>
+                                            <option value="bank"
+                                                {{ $route->payment_method === 'bank' ? 'selected' : '' }}>Bank</option>
+                                            <option value="agent"
+                                                {{ $route->payment_method === 'agent' ? 'selected' : '' }}>Agent</option>
                                         </select>
-                                        @error('payment_mode')
+                                        @error('payment_method')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>

@@ -20,10 +20,16 @@ class Routes extends Migration
             $table->string('trip')->nullable();
             $table->string('date')->nullable();
             $table->double('drive_allowance', 100, 0)->nullable();
-            $table->string('status')->default('pending'); //Pending, Assigned, Delivered
+            $table->string('status')->default('pending');
             $table->string('vehicle_status')->nullable();
             $table->string('vehicle_description')->nullable();
             $table->double('price', 100, 0)->default(0);
+            $table->string('mode')->default('full');
+            $table->string('payment_method')->default('bank');
+            $table->double('i_price', 100, 0)->nullable();
+            $table->double('r_price', 100, 0)->nullable();
+            $table->string('description')->nullable();
+
 
             $table->timestamps();
 

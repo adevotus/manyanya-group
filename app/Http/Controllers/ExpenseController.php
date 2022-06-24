@@ -12,7 +12,7 @@ class ExpenseController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:superadmin|driver|storekeeper|mechanics|manager');
+        $this->middleware('role:superadmin|driver|storekeeper|mechanics|muhasibu|manager');
     }
 
     // Expenses

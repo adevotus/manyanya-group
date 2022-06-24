@@ -28,10 +28,25 @@
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <a href={{ route('routes.add') }}
-                                            class="btn btn-success waves-effect waves-light"><i
-                                                class="mdi mdi-plus-circle me-1"></i> Add
-                                            Add Route</a>
+                                        @role('storekeeper')
+                                            <a href={{ route('routes.add') }}
+                                                class="btn btn-success waves-effect waves-light"><i
+                                                    class="mdi mdi-plus-circle me-1"></i> Add
+                                                Add Route</a>
+                                        @endrole
+                                        @role('manager')
+                                            <a href={{ route('routes.add') }}
+                                                class="btn btn-success waves-effect waves-light"><i
+                                                    class="mdi mdi-plus-circle me-1"></i> Add
+                                                Add Route</a>
+                                        @endrole
+                                        @role('superadmin')
+                                            <a href={{ route('routes.add') }}
+                                                class="btn btn-success waves-effect waves-light"><i
+                                                    class="mdi mdi-plus-circle me-1"></i> Add
+                                                Add Route</a>
+                                        @endrole
+
                                     </div>
                                     <div class="col-sm-7">
                                         @if (Session::has('message'))
@@ -40,21 +55,7 @@
                                                 {{ Session::get('message') }}</p>
                                         @endif
 
-                                        @error('source')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                        @error('destination')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                        @error('cargo_id')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                        @error('vehicle_id')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                        @error('driver_id')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
+
                                     </div>
                                 </div>
                             </div>
@@ -89,13 +90,18 @@
                                         <th style="width: 20px;">
                                             #
                                         </th>
+                                        <th>Date</th>
                                         <th>Route Name</th>
-                                        <th>Route Fuel</th>
-                                        <th>Route Trip</th>
+                                        <th>Fuel</th>
+                                        <th>Trip</th>
+                                        <th>Item</th>
+                                        <th>Tons</th>
                                         @role('muhasibu')
-                                            <th>
-                                                Price
-                                            </th>
+                                            <th>Total</th>
+                                            <th>Method</th>
+                                            <th>Mode</th>
+                                            <th>Installed</th>
+                                            <th>Remaining</th>
                                         @endrole
                                         @role('manager')
                                             <th>
@@ -109,10 +115,8 @@
                                         @endrole
 
                                         <th>Driver Name</th>
+                                        <th>Allowance</th>
                                         <th>Vehicle Model</th>
-                                        <th>Item</th>
-                                        <th>Weight</th>
-                                        <th>Create Date</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>
                                 </thead>
@@ -123,6 +127,9 @@
                                                 <td>
                                                     {{ $routes->firstItem() + $key }}
                                                 </td>
+                                                <td>
+                                                    {{ date('Y-m-d', strtotime($route->date)) }}
+                                                </td>
                                                 <td class="table-user">
                                                     {{ $route->route }}
                                                 </td>
@@ -130,11 +137,29 @@
                                                     {{ $route->fuel }}
                                                 </td>
                                                 <td class="table-user">
-                                                    {{ $route->trip }}
+                                                    {{ ucfirst(trans($route->trip)) }}
+                                                </td>
+                                                <td>
+                                                    {{ ucfirst($route->cargo->name) }}
+                                                </td>
+                                                <td>
+                                                    {{ $route->cargo->weight }}
                                                 </td>
                                                 @role('muhasibu')
                                                     <td>
                                                         {{ number_format($route->price) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ ucfirst($route->payment_method) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ ucfirst($route->mode) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ number_format($route->i_price) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ number_format($route->r_price) }}
                                                     </td>
                                                 @endrole
                                                 @role('manager')
@@ -151,27 +176,29 @@
                                                     {{ $route->driver->name }}
                                                 </td>
                                                 <td>
+                                                    {{ number_format($route->drive_allowance) }}
+                                                </td>
+                                                <td>
                                                     {{ $route->vehicle->name }}
                                                 </td>
-                                                <td>
-                                                    {{ $route->cargo->name }}
-                                                </td>
-                                                <td>
-                                                    {{ $route->cargo->weight }}
-                                                </td>
 
-                                                <td>
-                                                    {{ date('Y-m-d', strtotime($route->updated_at)) }}
-                                                </td>
                                                 <td>
                                                     <a href="{{ route('route.edit', ['id' => $route->id]) }}"
                                                         class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                                    <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#delete-modal{{ $route->id }}"
-                                                        class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                    @role('superadmin')
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete-modal{{ $route->id }}"
+                                                            class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                        @include('layouts.models.routes')
+                                                    @endrole
+                                                    @role('manager')
+                                                        <a href="#" data-bs-toggle="modal"
+                                                            data-bs-target="#delete-modal{{ $route->id }}"
+                                                            class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                        @include('layouts.models.routes')
+                                                    @endrole
                                                 </td>
 
-                                                @include('layouts.models.routes')
 
                                             </tr>
                                         @endforeach

@@ -21,6 +21,11 @@ class Route extends Model
         'driver_id',
         'vehicle_id',
         'price',
+        'mode',
+        'payment_method',
+        'i_price',
+        'r_price',
+        'description',
     ];
 
 

@@ -182,16 +182,37 @@ class RoutesController extends Controller
     {
         if (auth()->user()->isA('muhasibu')) {
             $route = Route::find($id);
+            $cargo = Cargo::find($route->cargo_id);
 
             $this->validate($request, [
                 'driver_allowance' => 'required|numeric|gte:1',
                 'price' => 'required|numeric|gte:1',
+                'payment_mode' => 'required|string|in:full,installment',
+                'payment_method' => 'required|string|in:cash,bank,agent',
             ]);
 
+            $total = $request->price * $cargo->weight;
+
+            if ($request->payment_mode == 'installment') {
+                $this->validate($request, [
+                    'advanced_payment' => 'required|numeric|gte:1',
+                ]);
+
+                $route->i_price =  $request->advanced_payment;
+                $route->r_price = $total - $request->advanced_payment;
+            }
+
+            $route->mode =  $request->payment_mode;
+            $route->payment_method =  $request->payment_method;
             $route->drive_allowance =  $request->driver_allowance;
-            $route->price =  $request->price;
+            $route->price =  $total;
 
             $route->save();
+            $cargo->amount = $request->price;
+            $cargo->save();
+
+            Session::flash('message', 'Route successful updated');
+            return redirect()->route('routes');
         } else {
             $this->validate($request, [
                 'route_name' => 'required|string|max:255',

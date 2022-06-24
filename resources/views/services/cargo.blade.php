@@ -95,9 +95,10 @@
                                         <th>Customer Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Cargo Details</th>
+                                        <th>Items</th>
                                         <th>Amount</th>
-                                        <th>Weight</th>
+                                        <th>Tons</th>
+                                        <th>Total</th>
                                         <th>Create Date</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>
@@ -129,6 +130,9 @@
                                                 </td>
                                                 <td>
                                                     {{ number_format($cargo->weight) }}
+                                                </td>
+                                                <td>
+                                                    {{ number_format($cargo->amount * $cargo->weight) }}
                                                 </td>
                                                 <td>
                                                     {{ date('Y-m-d', strtotime($cargo->updated_at)) }}
