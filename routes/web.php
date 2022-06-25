@@ -10,6 +10,7 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\MuhasibuController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuotaController;
 use App\Http\Controllers\RoutesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StoreController;
@@ -19,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 
 // homepage route
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/contact', [HomeController::class, 'contact']);
-Route::POST('/', [HomeController::class, 'CustomerRequest']);
+Route::post('/', [HomeController::class, 'qoute']);
+Route::post('/contact', [HomeController::class, 'contact']);
 
 
 Auth::routes();
@@ -38,6 +39,13 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|manag
     Route::post('/vehicle', [VehicleController::class, 'store']);
     Route::put('/vehicle', [VehicleController::class, 'update']);
     Route::delete('/vehicle', [VehicleController::class, 'destroy']);
+});
+
+// Qouta view,Create,Update,Delete
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:muhasibu|manager|superadmin']], function () {
+    Route::get('/quotas', [QuotaController::class, 'index'])->name('quotes');
+    Route::put('/quotas/{id}', [QuotaController::class, 'update'])->name('update');
+    Route::delete('/quotas/{id}', [QuotaController::class, 'destroy'])->name('destroy');
 });
 
 // Cargo view,Create,Update,Delete

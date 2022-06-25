@@ -1,40 +1,47 @@
 <?php
 
 namespace App\Http\Controllers\Home;
+
 use App\Models\CustomerRequest;
 use App\Http\Controllers\Controller;
+use App\Models\Quote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('home');
     }
 
-    public function contact(){
-        return view ('sections.contact');
+    public function contact()
+    {
+        return view('sections.contact');
     }
 
-    public function CustomerRequest(){
-        $this->validate($request,[
+    public function qoute(Request $request)
+    {
+        $this->validate($request, [
             'name' => 'required|string|max:20',
-            'email' => 'required|string|max:30',
-            'phonenumber' => 'required|numeric',
-            'notices' =>'required|string|numeric:200',
-             'vehicle_id' => 'required|'
-        
+            'email' => 'required|email|max:30',
+            'phone_number' => 'required|string|max:20',
+            'message' => 'required|string|max:255',
         ]);
-       dd(all);
 
-       $customerrequrest = CustomerRequest::create([
-        'name' => $request->customername,
-        'phonenumber' => $request->phone,
-        'email' => $request->email,
-        'notices' => $request->notices,
-        'vehicle_id' => $request->vehivle_id,
-  
-    ]);
+        $quote = Quote::create([
+            'name' => $request->name,
+            'phone' => $request->phone_number,
+            'email' => $request->email,
+            'message' => $request->message,
+        ]);
 
-      return redirect()->back()->withErrors($validator)->withInput();('/');
+        if ($quote) {
+            Session::flash('message', 'Quote was successful sent');
+            return redirect()->back();
+        } else {
+            Session::flash('message', 'Quote was unsuccessful sent');
+            return redirect()->back();
+        }
     }
 }

@@ -18,7 +18,8 @@
     <nav
         class="navbar navbar-expand-lg bg-white navbar-light shadow border-top border-2 border-secondary sticky-top p-0">
         <a href="#" class="navbar-brand bg-secondary d-flex align-items-center px-4 px-lg-5">
-            <h2 class="mb-2 text-white text-break text-small" style="font-size: small; color:black;">Manyanya Enterprises
+            <h2 class="mb-2 text-white text-break text-small" style="font-size: small; color:black;">Manyanya
+                Enterprises
             </h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -57,7 +58,7 @@
                                         class="text-primary">Cargo Transport</span> Solution</h1>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-2">
                                     <marquee behavior="" direction="right" style="width: 530px; font-size:20px;">
-                                        Welcome to Manyanya 
+                                        Welcome to Manyanya
                                         Enterprises Company
                                         LTD. We deliver safely</marquee>
 
@@ -340,31 +341,47 @@
                 </div>
                 <div class="col-lg-7">
                     <div class="bg-light text-center p-5 wow fadeIn" data-wow-delay="0.5s">
+
                         <form action="{{ route('home') }}" method="POST">
-                            @csrf_field
+                            @csrf
                             <div class="row g-3">
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" name="name"
-                                        placeholder="Your Name" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <input type="email" name="email" class="form-control border-0"
-                                        placeholder="Your Email" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" name="phonenumber" class="form-control border-0"
-                                        placeholder="Your Mobile" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <select class="form-select border-0" name="vehicle_id" style="height: 55px;">
-                                        <option selected>Select A Truck</option>
-                                        <option value="1">Truck 01</option>
-                                        <option value="2">Truck 02</option>
-                                        <option value="3">Truck 03</option>
-                                    </select>
+                                <div class="col-12">
+                                    @if (Session::has('message'))
+                                        <p
+                                            class="@if (str_contains(Session::get('message'), 'successful')) text-success @else text-danger @endif mt-2">
+                                            {{ Session::get('message') }}</p>
+                                    @endif
                                 </div>
                                 <div class="col-12">
-                                    <textarea class="form-control border-0" name="notices" placeholder="Special Note"></textarea>
+                                    <input type="text"
+                                        class="form-control  @error('name') is-invalid @enderror border-0"
+                                        name="name" placeholder="Your Name" style="height: 55px;">
+                                    @error('name')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-12">
+                                    <input type="email" name="email"
+                                        class="form-control  @error('email') is-invalid @enderror border-0"
+                                        placeholder="Your Email" style="height: 55px;">
+                                    @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" name="phone_number"
+                                        class="form-control  @error('phone_number') is-invalid @enderror border-0"
+                                        placeholder="Your Mobile" style="height: 55px;">
+                                    @error('phone_number')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-12">
+                                    <textarea rows="6" class="form-control  @error('message') is-invalid @enderror border-0" name="message"
+                                        placeholder="Message"></textarea>
+                                    @error('message')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
                                     <button class="btn btn-secondary w-100 py-3" type="submit">Request here</button>
@@ -390,9 +407,11 @@
                     <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@yarongo.com</p>
                     <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i
+                                class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i
+                                class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -425,7 +444,8 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        Designed and mentained by <a class="border-bottom" href="#">Manyanya Enterprises</a> &copy;
+                        Designed and mentained by <a class="border-bottom" href="#">Manyanya Enterprises</a>
+                        &copy;
                         2022 All Right Reserved.
                     </div>
 
@@ -438,7 +458,8 @@
 
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-0 back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-0 back-to-top"><i
+            class="bi bi-arrow-up"></i></a>
 
     @include('assets.homejs')
 </body>

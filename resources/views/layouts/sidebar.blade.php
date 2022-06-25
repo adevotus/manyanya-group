@@ -219,6 +219,13 @@
                             <span>Expenses</span>
                         </a>
                     </li>
+
+                    <li class="{{ Route::is('quotes') ? 'menuitem-active' : '' }} ">
+                        <a class="active" href="{{ route('quotes') }}">
+                            <i data-feather="sliders"></i>
+                            <span>Quote</span>
+                        </a>
+                    </li>
                 @endrole
 
                 @role('driver')

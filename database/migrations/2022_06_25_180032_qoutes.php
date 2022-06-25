@@ -17,7 +17,9 @@ class Qoutes extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->string('phonenumber');
+            $table->string('phone');
+            $table->string('message');
+            $table->string('reply')->nullable();
             $table->timestamps();
         });
     }
