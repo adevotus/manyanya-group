@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@yield('title')</title>
+        <title> Manyanya's Group</title>
+
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
