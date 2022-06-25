@@ -26,7 +26,7 @@ class MuhasibuController extends Controller
         $route = Route::whereDate('created_at', Carbon::today());
         $routes = $route->get();
 
-        $cargos = Route::whereDate('updated_at', '>=',  Carbon::now()->subDays(6))
+        $cargos = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
             ->select(DB::raw('DATE(updated_at) as day'), DB::raw('SUM(price) as price'))
             ->groupBy('day')
             ->orderBy('day', 'ASC')->get();
