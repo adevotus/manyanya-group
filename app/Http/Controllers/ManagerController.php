@@ -30,28 +30,29 @@ class ManagerController extends Controller
      */
     public function index()
     {
-        $vehicles = Vehicle::orderBy('created_at', 'desc')->get()->take(4);
-        $cargos = Cargo::orderBy('created_at', 'desc')->get()->take(4);
-        $drivers = User::orderBy('created_at', 'desc')->whereRoleIs('driver')->get()->take(4);
-        $tools = Garage::orderBy('created_at', 'desc')->get()->take(4);
+        $vehicles = Vehicle::orderBy('created_at', 'desc')->take(4)->get();
+        $cargos = Cargo::orderBy('created_at', 'desc')->take(4)->get();
+        $drivers = User::orderBy('created_at', 'desc')->whereRoleIs('driver')->take(4)->get();
+        $tools = Garage::orderBy('created_at', 'desc')->take(4)->get();
 
 
         $route = Route::whereDate('created_at', Carbon::today());
         $routes = $route->get();
 
-        $cargos = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-            ->select(DB::raw('DATE(updated_at) as day'), DB::raw('SUM(price) as price'))
+        $rts = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
+            ->select(DB::raw('DATE(created_at) as day'), DB::raw('SUM(price) as price'))
             ->groupBy('day')
             ->orderBy('day', 'ASC')->get();
+
 
         $xAxis = [];
         $yAxis  = [];
 
 
-        foreach ($cargos as $cargo) {
-            $day = new DateTime($cargo->day);
+        foreach ($rts as $rt) {
+            $day = new DateTime($rt->day);
 
-            array_push($yAxis, $cargo->price);
+            array_push($yAxis, $rt->price);
             array_push($xAxis, $day->format('l'));
         }
 
@@ -65,13 +66,18 @@ class ManagerController extends Controller
             ->sum(DB::raw('amount'));
 
         //Weekly statistics
-        $r_w_sum = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+        $r_w_sum = 0;
+        $e_w_sum = 0;
+        $g_w_sum = 0;
+
+        $r_w_sum = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
             ->sum(DB::raw('price'));
 
-        $e_w_sum = Expense::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+
+        $e_w_sum = Expense::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
             ->sum(DB::raw('amount'));
 
-        $g_w_sum = Garage::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+        $g_w_sum = Garage::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
             ->sum(DB::raw('amount'));
 
         return view('manager.dashboard')->with('routes', $routes)

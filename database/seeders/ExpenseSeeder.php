@@ -66,6 +66,8 @@ class ExpenseSeeder extends Seeder
                 'platenumber'  => $faker->creditCardNumber(),
                 'reg_number'  => $faker->uuid(),
                 'condition'  => 'new',
+                'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
+                'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 5))),
             ]);
         }
 
@@ -79,6 +81,8 @@ class ExpenseSeeder extends Seeder
                 'weight' =>  rand(1, 100),
                 'total' =>  0,
                 'invoice' => $faker->uuid(),
+                'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
+                'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 5))),
             ]);
         }
 
@@ -97,8 +101,8 @@ class ExpenseSeeder extends Seeder
                 'price' => (Cargo::where('id', $i)->first())->amount,
                 'mode' => 'full',
                 'payment_method' => 'bank',
-                'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
-                'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 5))),
+                'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 1))),
+                'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 1))),
             ]);
         }
     }

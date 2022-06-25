@@ -26,19 +26,20 @@ class MuhasibuController extends Controller
         $route = Route::whereDate('created_at', Carbon::today());
         $routes = $route->get();
 
-        $cargos = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-            ->select(DB::raw('DATE(updated_at) as day'), DB::raw('SUM(price) as price'))
+        $rts = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
+            ->select(DB::raw('DATE(created_at) as day'), DB::raw('SUM(price) as price'))
             ->groupBy('day')
             ->orderBy('day', 'ASC')->get();
+
 
         $xAxis = [];
         $yAxis  = [];
 
 
-        foreach ($cargos as $cargo) {
-            $day = new DateTime($cargo->day);
+        foreach ($rts as $rt) {
+            $day = new DateTime($rt->day);
 
-            array_push($yAxis, $cargo->price);
+            array_push($yAxis, $rt->price);
             array_push($xAxis, $day->format('l'));
         }
 
@@ -52,13 +53,18 @@ class MuhasibuController extends Controller
             ->sum(DB::raw('amount'));
 
         //Weekly statistics
-        $r_w_sum = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+        $r_w_sum = 0;
+        $e_w_sum = 0;
+        $g_w_sum = 0;
+
+        $r_w_sum = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
             ->sum(DB::raw('price'));
 
-        $e_w_sum = Expense::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+
+        $e_w_sum = Expense::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
             ->sum(DB::raw('amount'));
 
-        $g_w_sum = Garage::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+        $g_w_sum = Garage::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
             ->sum(DB::raw('amount'));
 
         return view('muhasibu.dashboard')->with('routes', $routes)

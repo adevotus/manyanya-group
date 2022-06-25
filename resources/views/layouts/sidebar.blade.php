@@ -54,6 +54,12 @@
                             <span>Expenses</span>
                         </a>
                     </li>
+                    <li class="{{ Route::is('quotes') ? 'menuitem-active' : '' }} ">
+                        <a class="active" href="{{ route('quotes') }}">
+                            <i data-feather="gift"></i>
+                            <span>Quote</span>
+                        </a>
+                    </li>
                 @endrole
                 @role('manager')
                     <li class="{{ Route::is('manager.home') ? 'menuitem-active' : '' }}">
@@ -105,6 +111,12 @@
                         <a class="active" href="{{ route('expense') }}">
                             <i data-feather="sliders"></i>
                             <span>Expenses</span>
+                        </a>
+                    </li>
+                    <li class="{{ Route::is('quotes') ? 'menuitem-active' : '' }} ">
+                        <a class="active" href="{{ route('quotes') }}">
+                            <i data-feather="gift"></i>
+                            <span>Quote</span>
                         </a>
                     </li>
                 @endrole
@@ -222,7 +234,7 @@
 
                     <li class="{{ Route::is('quotes') ? 'menuitem-active' : '' }} ">
                         <a class="active" href="{{ route('quotes') }}">
-                            <i data-feather="sliders"></i>
+                            <i data-feather="gift"></i>
                             <span>Quote</span>
                         </a>
                     </li>
