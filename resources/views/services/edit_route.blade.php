@@ -148,6 +148,17 @@
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
+                                    @else
+                                        <div class="mb-3 hideiffull" style="display: none;">
+                                            <label for="name" class="form-label">Advance Payment</label>
+                                            <input type="number" id="advanced_payment" name="advanced_payment"
+                                                min="0"
+                                                class="form-control toAdd @error('advanced_payment') is-invalid @enderror"
+                                                id="name" placeholder="Enter advanced payment">
+                                            @error('advanced_payment')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     @endif
 
                                     <div class="mb-3">

@@ -24,7 +24,7 @@ class Routes extends Migration
             $table->string('vehicle_status')->nullable();
             $table->string('vehicle_description')->nullable();
             $table->double('price', 100, 0)->default(0);
-            $table->string('mode')->default('full');
+            $table->string('mode')->nullable();
             $table->string('payment_method')->default('bank');
             $table->double('i_price', 100, 0)->nullable();
             $table->double('r_price', 100, 0)->nullable();
