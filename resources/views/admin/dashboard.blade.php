@@ -238,10 +238,10 @@
                                 </div>
                                 <div class="col-sm-4 text-end">
                                     <button type="button" class="btn btn-success text-end waves-effect waves-light">
-                                        <a href="{{ route('admin.driver') }}" class="text-white"><i
+                                        <a href="{{ route('driver') }}" class="text-white"><i
                                                 class="mdi mdi-plus-circle me-1"></i>View Driver</a>
                                         <span> | </span>
-                                        <a href="{{ route('admin.staff') }}" class="text-white"><i
+                                        <a href="{{ route('staff') }}" class="text-white"><i
                                                 class="mdi mdi-plus-circle me-1"></i>View Staff</a>
                                     </button>
                                 </div><!-- end col-->
