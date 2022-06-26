@@ -19,8 +19,14 @@
                             style=" box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; width:100%;">
                             <div class="card-title text-center">
                                 <a href="/">
-                                    <h2 style="font-size:medium;font-weight:bold">MANYANYA ENTERPRISE <br>
+                                    {{-- <h2 style="font-size:medium;font-weight:bold">MANYANYA ENTERPRISE <br>
                                         <span class="text-primary">Company Limited</span>
+                                    </h2> --}}
+                                    <span class="logo-lg">
+                                        <img src="{{ asset('assets/images/small.png') }}" w-50 alt=""
+                                            style="width:150px; background:transparent;">
+                                    </span>
+                                    <h2 style="font-size:20px;font-weight:bold">Login here
                                     </h2>
                                 </a>
                             </div>

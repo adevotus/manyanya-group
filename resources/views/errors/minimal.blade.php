@@ -24,7 +24,7 @@
                             <div class="auth-logo">
                                 <div class="card-title text-center">
                                     <a href="/">
-                                        <h2 style="font-size:medium;font-weight:bold">YARONGA ENTERPRISE <br>
+                                        <h2 style="font-size:medium;font-weight:bold"> Manyanya's Group<br>
                                             <span class="text-primary">Company Limited</span>
                                         </h2>
                                     </a>
