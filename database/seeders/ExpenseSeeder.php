@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Cargo;
+use App\Models\Expense;
 use App\Models\Route;
 use App\Models\User;
 use Carbon\Carbon;
@@ -66,6 +67,15 @@ class ExpenseSeeder extends Seeder
                 'platenumber'  => $faker->creditCardNumber(),
                 'reg_number'  => $faker->uuid(),
                 'condition'  => 'new',
+                'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
+                'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 5))),
+            ]);
+        }
+
+        for ($i = 1; $i < 1001; $i++) {
+            Expense::create([
+                'description'  => $faker->sentence(),
+                'amount'  => $faker->numberBetween(10000, 1000000),
                 'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
                 'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 5))),
             ]);
