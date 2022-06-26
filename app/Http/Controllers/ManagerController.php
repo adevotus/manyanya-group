@@ -28,7 +28,7 @@ class ManagerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $vehicles = Vehicle::orderBy('created_at', 'desc')->take(4)->get();
         $cargos = Cargo::orderBy('created_at', 'desc')->take(4)->get();
@@ -80,12 +80,40 @@ class ManagerController extends Controller
         $g_w_sum = Garage::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
             ->sum(DB::raw('amount'));
 
+
+        // Monthly Records
+        $rAxis = [];
+        $sAxis = [];
+
+        if (strlen($request->date) > 16) {
+            $fromdate = substr($request->date, 0, -14);
+            $toDate =  substr($request->date, -10);
+
+            $m_r_sum = Route::orderBy('updated_at', 'desc')
+                ->whereBetween('updated_at', [$fromdate, $toDate])
+                ->paginate(15);
+        } else {
+            $m_r_sum = Route::where('created_at', '>=', Carbon::now()->startOfMonth()->toDateString())
+                ->select(DB::raw('DATE(created_at) as day'), DB::raw('SUM(price) as price'))
+                ->groupBy('day')
+                ->orderBy('day', 'ASC')->get();
+        }
+
+        foreach ($m_r_sum as $mrs) {
+            $day = new DateTime($mrs->day);
+
+            array_push($sAxis, $mrs->day);
+            array_push($rAxis, $mrs->price);
+        }
+
         return view('manager.dashboard')->with('routes', $routes)
             ->with('drivers', $drivers)
             ->with('vehicles', $vehicles)
             ->with('garages', $tools)
             ->with('cargos', $cargos)
-            ->with('xAxis',  $xAxis)->with('yAxis', $yAxis)->with('r_sum', $r_sum)->with('r_count', $r_count)
+            ->with('xAxis',  $xAxis)->with('yAxis', $yAxis)
+            ->with('rAxis',  $rAxis)->with('sAxis', $sAxis)->with('counts_month', count($sAxis))
+            ->with('r_sum', $r_sum)->with('r_count', $r_count)
             ->with('e_sum', $e_sum)->with('g_sum', $g_sum)
             ->with('r_w_sum', $r_w_sum)->with('g_w_sum', $g_w_sum)->with('e_w_sum', $e_w_sum);
     }
