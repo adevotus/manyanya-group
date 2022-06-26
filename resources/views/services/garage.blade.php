@@ -39,6 +39,18 @@
                                                     class="mdi mdi-plus-circle me-1"></i> Add
                                                 New Tool</button>
                                         @endrole
+                                        @role('manager')
+                                            <button type="button" class="btn btn-success waves-effect waves-light"
+                                                data-bs-toggle="modal" data-bs-target="#custom-modal"><i
+                                                    class="mdi mdi-plus-circle me-1"></i> Add
+                                                New Tool</button>
+                                        @endrole
+                                        @role('superadmin')
+                                            <button type="button" class="btn btn-success waves-effect waves-light"
+                                                data-bs-toggle="modal" data-bs-target="#custom-modal"><i
+                                                    class="mdi mdi-plus-circle me-1"></i> Add
+                                                New Tool</button>
+                                        @endrole
                                     </div>
                                     <div class="col-sm-7">
                                         @if (Session::has('message'))

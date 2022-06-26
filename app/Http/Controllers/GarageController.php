@@ -86,10 +86,13 @@ class GarageController extends Controller
             'amount' => 'required|numeric|gte:1',
             'tool_condition' => 'required|string|max:255',
             'tool_number' => 'required|string|max:255',
-            'payment_slip' => 'required|mimes:png,jpeg,jpg,docx,pdf,docs|max:1000',
         ]);
 
         if ($request->hasFile('payment_slip')) {
+            $this->validate($request, [
+                'payment_slip' => 'required|mimes:png,jpeg,jpg,docx,pdf,docs|max:1000',
+            ]);
+
             $file = $request->file('payment_slip');
 
             $path = Storage::putFileAs(
@@ -105,14 +108,21 @@ class GarageController extends Controller
                 'slip' => $path,
                 'tool_no' => $request->tool_number,
             ]);
+        } else {
+            $garage = Garage::create([
+                'tool_name' => $request->tool_name,
+                'amount' => $request->amount,
+                'condition' => $request->tool_condition,
+                'tool_no' => $request->tool_number,
+            ]);
+        }
 
-            if ($garage) {
-                Session::flash('message', 'Garage Tool successful created');
-                return redirect()->back();
-            } else {
-                Session::flash('message', 'Garage Tool unsuccessful created');
-                return redirect()->back();
-            }
+        if ($garage) {
+            Session::flash('message', 'Garage Tool successful created');
+            return redirect()->back();
+        } else {
+            Session::flash('message', 'Garage Tool unsuccessful created');
+            return redirect()->back();
         }
     }
 
