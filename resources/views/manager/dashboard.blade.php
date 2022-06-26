@@ -105,7 +105,7 @@
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="header-title">Weekly Invoice Chart</h4>
+                            <h4 class="header-title">Weekly Route Invoice Chart</h4>
                             <div class="mt-4 chartjs-chart">
                                 <div class="chartjs-size-monitor">
                                     <div class="chartjs-size-monitor-expand">
@@ -135,7 +135,7 @@
                                         <div class=""></div>
                                     </div>
                                 </div>
-                                <canvas id="support-trackers-chart" style="display: block; height: 350px; width: 412px;"
+                                <canvas id="support-trackers-chart" style="display: block; height: 150px; width: 412px;"
                                     class="chartjs-render-monitor" width="824" height="700"></canvas>
                             </div>
                         </div> <!-- end card-body-->
@@ -152,16 +152,19 @@
                                     <h4 class="header-title">Monthly Invoice Chart</h4>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-sm-10">
-                                            <input type="text" id="range-datepicker" class="form-control flatpickr-input"
-                                                name="date" placeholder="2018-10-03 to 2018-10-10" readonly="readonly">
+                                    <form action="{{ route('manager.home') }}" method="get">
+                                        <div class="row">
+                                            <div class="col-sm-10">
+                                                <input type="text" id="range-datepicker"
+                                                    class="form-control flatpickr-input" name="date"
+                                                    placeholder="2018-10-03 to 2018-10-10" readonly="readonly">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="submit" class="btn btn-success waves-effect waves-light"><i
+                                                        class="mdi mdi-arrow-right"></i></button>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-2">
-                                            <button type="submit" class="btn btn-success waves-effect waves-light"><i
-                                                    class="mdi mdi-arrow-right"></i></button>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                             <div class="mt-4 chartjs-chart">
@@ -173,8 +176,8 @@
                                         <div class=""></div>
                                     </div>
                                 </div>
-                                <canvas id="monthlyLineChart" style="display: block; height: 350px; width: 412px;"
-                                    class="chartjs" width="824" height="700"></canvas>
+                                <canvas id="monthlyLineChart" style="display: block; height: 150px; width: 412px;"
+                                    class="chartjs" width="824" height="400"></canvas>
                             </div>
                         </div> <!-- end card-body-->
                     </div> <!-- end card-->

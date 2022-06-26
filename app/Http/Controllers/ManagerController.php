@@ -89,9 +89,12 @@ class ManagerController extends Controller
             $fromdate = substr($request->date, 0, -14);
             $toDate =  substr($request->date, -10);
 
-            $m_r_sum = Route::orderBy('updated_at', 'desc')
-                ->whereBetween('updated_at', [$fromdate, $toDate])
-                ->paginate(15);
+            // dd($request->date);
+
+            $m_r_sum = Route::whereBetween('created_at', [$fromdate, $toDate])
+                ->select(DB::raw('DATE(created_at) as day'), DB::raw('SUM(price) as price'))
+                ->groupBy('day')
+                ->orderBy('day', 'ASC')->get();
         } else {
             $m_r_sum = Route::where('created_at', '>=', Carbon::now()->startOfMonth()->toDateString())
                 ->select(DB::raw('DATE(created_at) as day'), DB::raw('SUM(price) as price'))
