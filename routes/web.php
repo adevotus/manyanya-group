@@ -15,13 +15,14 @@ use App\Http\Controllers\RoutesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\VehicleController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // homepage route
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/', [HomeController::class, 'qoute']);
-Route::post('/contact', [HomeController::class, 'contact']);
+Route::get('/contact', [HomeController::class, 'contact']);
 
 
 Auth::routes();
@@ -147,4 +148,25 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|man
     Route::post('/driver', [DriverController::class, 'store']);
     Route::put('/driver', [DriverController::class, 'update']);
     Route::delete('/driver', [DriverController::class, 'destroy']);
+});
+
+
+Route::get('/config-clear', function () {
+    Artisan::call('config:clear');
+});
+
+Route::get('/view-clear', function () {
+    Artisan::call('view:clear');
+});
+
+Route::get('/route-clear', function () {
+    Artisan::call('route:cache');
+});
+
+Route::get('/migrate', function () {
+    Artisan::call('migrate:fresh', ["--force" => true]);
+});
+
+Route::get('/migrate-seed', function () {
+    Artisan::call('db:seed', ["--force" => true]);
 });
