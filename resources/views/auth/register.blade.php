@@ -19,11 +19,12 @@
                             <div class="text-center w-75 m-auto">
                                 <div class="auth-logo">
                                     <a href="/" class="logo logo-dark text-center">
-                                        <!-- <span class="logo-lg">
-                                                <img src="../assets/images/logo-dark.png" alt="" height="22">
-                                            </span> -->
-                                        <h2 style="font-size:medium;font-weight:bold;line-height:1.7;">Manyanya
-                                            Enterprises <br> <span class="text-primary">Company Limited</span></h2>
+                                        <span class="logo-lg">
+                                            <img src="{{ asset('assets/images/small.png') }}" w-50 alt=""
+                                                style="width:150px; background:transparent;">
+                                        </span>
+                                        <h2 style="font-size:20px;font-weight:bold">Register here
+                                        </h2>
 
                                     </a>
 
