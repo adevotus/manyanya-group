@@ -46,16 +46,19 @@
     <div class="container-fluid p-0 pb-5">
         <div class="owl-carousel header-carousel position-relative mb-5">
             <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="{{ asset('home/img/carousel-2.jpg') }}" alt="">
+                <img class="img-fluid" src="{{ asset('home/img/home3.jpg') }}" alt="">
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
                     style="background: rgba(6, 3, 21, .5);">
                     <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-10 col-lg-8">
                                 <h5 class="text-white text-uppercase mb-3 animated slideInDown"></h5>
-                                <h5 class="display-3 text-white animated slideInDown mb-4">Dedicated to Logistics,
+                                {{-- <h5 class="display-3 text-white animated slideInDown mb-4">Dedicated to Logistics,
                                     managed Transportation and freight Brokerage.
-
+                                    <span class="text-primary"></span>
+                                </h5> --}}
+                                <h5 class="display-3 text-white animated slideInDown mb-4">SEAMLESS & SAFE ACROSS
+                                    DISTANCE
                                     <span class="text-primary"></span>
                                 </h5>
                                 <p class="fs-5 fw-medium text-white mb-4 pb-2">
@@ -75,7 +78,7 @@
                 </div>
             </div>
             <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="{{ asset('home/img/carousel-2.jpg') }}" alt="">
+                <img class="img-fluid" src="{{ asset('home/img/home2.jpeg') }}" alt="">
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
                     style="background: rgba(6, 3, 21, .5);">
                     <div class="container">
@@ -156,11 +159,12 @@
                 <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="service-item p-4">
                         <div class="overflow-hidden mb-4">
-                            <img class="img-fluid" src="{{ asset('home/img/service-3.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('home/img/manyanya1.jpg') }}" alt="">
                         </div>
-                        <h4 class="mb-3">Cargo Transport</h4>
-                        <p>We offer both local and long distance trucking services to facilitate the pick up and
-                            delivery of your shipments around East and Central Africa.</p>
+                        <h4 class="mb-3">Petroleum service station</h4>
+                        <p>We offer best fueling service to your vehicles and motor equipments.Manyanya is the smart
+                            choice for your motor fuel and will help you deliver on your promise to perform.
+                        </p>
                         <a class="btn-slide mt-2" href="#requestTruck"><i
                                 class="fa fa-arrow-right"></i><span>Request</span></a>
                     </div>
@@ -179,7 +183,7 @@
                 <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.7s">
                     <div class="service-item p-4">
                         <div class="overflow-hidden mb-4">
-                            <img class="img-fluid" src="{{ asset('home/img/service-3.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('home/img/serv2.jpg') }}" alt="">
                         </div>
                         <h4 class="mb-3">Transportation of Aggrigates</h4>
                         <p>As a leading aggregate supplier in Tanzania, Manyanya offers top-of-the-line aggregate
@@ -200,29 +204,7 @@
                                 class="fa fa-arrow-right"></i><span>Request</span></a>
                     </div>
                 </div>
-                {{-- <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item p-4">
-                        <div class="overflow-hidden mb-4">
-                            <img class="img-fluid" src="{{ asset('home/img/service-5.jpg') }}" alt="">
-                        </div>
-                        <h4 class="mb-3">Customs Clearance</h4>
-                        <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
-                        <a class="btn-slide mt-2" href="#requestTruck"><i
-                                class="fa fa-arrow-right"></i><span>Request</span></a>
-                    </div>
-                </div> --}}
-                {{-- <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="service-item p-4">
-                        <div class="overflow-hidden mb-4">
-                            <img class="img-fluid" src="{{ asset('home/img/service-6.jpg') }}" alt="">
-                        </div>
-                        <h4 class="mb-3">Warehouse Solutions</h4>
-                        <p>whether small, medium,inbound material or outbound distribution facilities we have
-                            sophisticated systems to accurately control inventories.</p>
-                        <a class="btn-slide mt-2" href="#requestTruck"><i
-                                class="fa fa-arrow-right"></i><span>Request</span></a>
-                    </div>
-                </div> --}}
+
             </div>
         </div>
     </div>
@@ -236,14 +218,14 @@
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                     <h6 class="text-secondary text-uppercase mb-3">Some Facts</h6>
                     <h1 class="mb-5">Limited is dedicated to provide complete</h1>
-                    <p class="mb-5">We do provide bales compressing service for customers who specialize in the
-                        clothing industry. The clothing materials and other garments will be compressed by our very
-                        powerful compressing machines and squeezed into bales.</p>
+                    <p class="mb-5">Our focus is on providing the optimum service levels and constant
+                        emphasis on development makes Manyanya unique in our ability to reach out to a continuum of
+                        logistical applications</p>
                     <div class="d-flex align-items-center">
                         <i class="fa fa-headphones fa-2x flex-shrink-0 bg-primary p-3 text-white"></i>
                         <div class="ps-4">
                             <h6>Call for any query!</h6>
-                            <h3 class="text-primary m-0">+012 345 6789</h3>
+                            <h3 class="text-primary m-0">+255 715 307 770</h3>
                         </div>
                     </div>
                 </div>
@@ -288,10 +270,13 @@
                 <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="service-item p-4">
                         <div class="overflow-hidden mb-4">
-                            <img class="img-fluid" src="{{ asset('home/img/service-3.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('home/img/tru1.jpg') }}" alt="">
                         </div>
                         <h4 class="mb-3"> Cargo Transport with Us</h4>
-                        <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
+                        <p>Manyanya provides a one stop solution for all your cargo transportation requirements and
+                            delivers a premium value added service that is driven by keeping you ahead of every step of
+                            the way.
+                        </p>
                         <a class="btn btn-secondary text-center mt-2" href="">
                             <span>Read More</span>
                             <i class="fa fa-arrow-right"></i>
@@ -302,10 +287,13 @@
                 <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.2s">
                     <div class="service-item p-4">
                         <div class="overflow-hidden mb-4">
-                            <img class="img-fluid" src="{{ asset('home/img/service-3.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('home/img/manag1.jpg') }}" alt="">
                         </div>
-                        <h4 class="mb-3">Truk Management with care </h4>
-                        <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
+                        <h4 class="mb-3">Truck Management with care </h4>
+                        <p>To uphold the firm’s promise by continually delivering timely services of the highest
+                            quality we ensure that delivery times and route are strictly monitored. Punctuality is
+                            prioritized.
+                        </p>
                         <a class="btn btn-secondary text-center mt-2" href="">
                             <span>Read More</span>
                             <i class="fa fa-arrow-right"></i>
@@ -316,10 +304,11 @@
                 <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="service-item p-4">
                         <div class="overflow-hidden mb-4">
-                            <img class="img-fluid" src="{{ asset('home/img/service-3.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('home/img/prob1.jpg') }}" alt="">
                         </div>
                         <h4 class="mb-3">Do have problem of Logistic?</h4>
-                        <p>Stet stet justo dolor sed duo. Ut clita sea sit ipsum diam lorem diam.</p>
+                        <p>The highly skilled operations personnel constantly monitor all vehicles to ensure proper
+                            fleet management.</p>
                         <a class="btn btn-secondary text-center mt-2" href="">
                             <span>Read More</span>
                             <i class="fa fa-arrow-right"></i>
@@ -342,8 +331,11 @@
                 <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.1s">
                     <h6 class="text-secondary text-uppercase mb-3">Request a Truck Here</h6>
                     <h1 class="mb-5">Request a Route with a Truck</h1>
-                    <p class="mb-5">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam
-                        amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo erat amet
+                    <p class="mb-5">To ensure that goods arrive safely and on time, and that the company is
+                        constantly aware of the whereabouts of their vehicles.We ensure that the performance of the
+                        drivers and vehicles are continuously monitored using multiple surveillance devices that have
+                        been installed in all vehicles. Details of each trip are tabulated in order to ensure the safety
+                        of the driver, the assistants, the vehicle and the goods that are being transported.
                     </p>
                     <div class="d-flex align-items-center">
                         <i class="fa fa-headphones fa-2x flex-shrink-0 bg-secondary p-3 text-white"></i>
@@ -354,6 +346,7 @@
                     </div>
                 </div>
                 <div class="col-lg-7">
+                    <h3 class="text-center">Request Quote</h3>
                     <div class="bg-light text-center p-5 wow fadeIn" data-wow-delay="0.5s">
 
                         <form action="{{ route('home') }}" method="POST">
@@ -416,9 +409,9 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-3">Address</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Dodoma City Tanzania</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+(255) 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@yarongo.com</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Tunduma, Tanzania</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+(255) 715 307 770</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@manyanyasgroup.com</p>
                     <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i
@@ -447,9 +440,8 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-3">Manyanya Enterprises</h4>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est Lorem ipsum dolor sit amet consectetur
-                        adipisicing
-                        expedita tempor.</p>
+                    <p>We are dedicated to preserving its core operating philosophy that is founded on maintaining the
+                        highest levels of quality service.</p>
 
                 </div>
             </div>

@@ -30,9 +30,9 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="/" class="nav-item nav-link">Home</a>
-                <a href="#about" class="nav-item nav-link">About</a>
-                <a href="#service" class="nav-item nav-link">Services</a>
-                <a href="#blogs" class="nav-item nav-link">Blogs</a>
+                <a href="/" class="nav-item nav-link">About</a>
+                <a href="/" class="nav-item nav-link">Services</a>
+                <a href="/" class="nav-item nav-link">Blogs</a>
                 <a href="/contact" class="nav-item nav-link">Contact</a>
             </div>
             <div class="text-center text-secondary p-3 mr-2  text-black"
@@ -72,64 +72,62 @@
                         done.
                     </p>
                     <div class="bg-light p-4">
-                        <form method="POST" action="{{ route('contact') }}">
+                        <form method="POST" action="{{ route('home') }}">
                             @csrf
                             <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" name="name"
-                                            class="form-control @error('name') is-invalid @enderror" id="name"
-                                            placeholder="Name">
-                                        <label for="name">Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" name="email"
-                                            class="form-control @error('name') is-invalid @enderror" id="email"
-                                            placeholder="Email">
-                                        <label for="email">Email</label>
-                                    </div>
+                                <div class="col-12">
+                                    @if (Session::has('message'))
+                                        <p
+                                            class="@if (str_contains(Session::get('message'), 'successful')) text-success @else text-danger @endif mt-2">
+                                            {{ Session::get('message') }}</p>
+                                    @endif
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="tel"
-                                            class="form-control @error('phone_number') is-invalid @enderror"
-                                            id="phone" placeholder="Phone" name="phone_number">
-                                        <label for="phone">Phone</label>
-                                    </div>
+                                    <input type="text"
+                                        class="form-control  @error('name') is-invalid @enderror border-0"
+                                        name="name" placeholder="Your Name" style="height: 55px;">
+                                    @error('name')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="text" name="subject"
-                                            class="form-control @error('name') is-invalid @enderror" id="subject"
-                                            placeholder="Subject">
-                                        <label for="subject">Subject</label>
-                                    </div>
+                                    <input type="email" name="email"
+                                        class="form-control  @error('email') is-invalid @enderror border-0"
+                                        placeholder="Your Email" style="height: 55px;">
+                                    @error('email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea name="message" class="form-control @error('name') is-invalid @enderror" placeholder="Leave a message here"
-                                            id="message" style="height: 100px"></textarea>
-                                        <label for="message">Message</label>
-                                    </div>
+                                    <input type="text" name="phone_number"
+                                        class="form-control  @error('phone_number') is-invalid @enderror border-0"
+                                        placeholder="Your Mobile" style="height: 55px;">
+                                    @error('phone_number')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-secondary w-100 py-3" type="submit">Send Message</button>
+                                    <textarea rows="6" class="form-control  @error('message') is-invalid @enderror border-0" name="message"
+                                        placeholder="Message"></textarea>
+                                    @error('message')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-secondary w-100 py-3" type="submit">Request here</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="col-md-6 pe-lg-0 wow fadeInRight" data-wow-delay="0.1s">
+                {{-- <div class="col-md-6 pe-lg-0 wow fadeInRight" data-wow-delay="0.1s">
                     <div class="position-relative h-100">
-                        <!-- <iframe class="position-absolute w-100 h-100" style="object-fit: cover;"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
-                        frameborder="0" allowfullscreen="" aria-hidden="false"
-                        tabindex="0">
-                       </iframe> -->
+                        <iframe class="position-absolute w-100 h-100" style="object-fit: cover;"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
+                            frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0">
+                        </iframe>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -141,9 +139,9 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-3">Address</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Dodoma City Tanzania</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Songwe Tanzania</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+(255) 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@yarongo.com</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@manyanyasgroup.com</p>
                     <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i
