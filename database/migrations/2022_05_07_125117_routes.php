@@ -18,7 +18,7 @@ class Routes extends Migration
             $table->string('route');
             $table->string('fuel')->nullable();
             $table->string('trip')->nullable();
-            $table->string('date')->nullable();
+            $table->date('date')->nullable();
             $table->double('drive_allowance', 100, 0)->nullable();
             $table->string('status')->default('pending');
             $table->string('vehicle_status')->nullable();

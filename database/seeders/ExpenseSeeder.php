@@ -48,7 +48,7 @@ class ExpenseSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 1; $i < 1001; $i++) {
+        for ($i = 1; $i < 100; $i++) {
             $user = User::create([
                 'name'  => $faker->userName(),
                 'email' => $faker->unique()->safeEmail(),
@@ -76,6 +76,7 @@ class ExpenseSeeder extends Seeder
             Expense::create([
                 'description'  => $faker->sentence(),
                 'amount'  => $faker->numberBetween(10000, 1000000),
+                'user_id' =>  rand(1, 50),
                 'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
                 'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 5))),
             ]);
@@ -106,7 +107,7 @@ class ExpenseSeeder extends Seeder
                 'date' => $date,
                 'drive_allowance' => rand(50000, 200000),
                 'cargo_id' => $i,
-                'driver_id' => $i + 5,
+                'driver_id' => rand(10, 100),
                 'vehicle_id' => $i,
                 'price' => (Cargo::where('id', $i)->first())->amount,
                 'mode' => 'full',

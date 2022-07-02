@@ -107,6 +107,32 @@ class DriverController extends Controller
         return view('driver.dashboard')->with('routes', $routes)->with('price', $total_price);
     }
 
+    public function ack()
+    {
+        $route = Route::orderBy('updated_at', 'desc')->where('driver_id', auth()->user()->id)->paginate(20);
+
+        return view('driver.ack')->with('routes', $route);
+    }
+
+    public function updateVehicle(Request $request, $id)
+    {
+        $this->validate($request, [
+            'description' => 'required|string'
+        ]);
+
+        $route = Route::find($id);
+        if (!is_null($route)) {
+            $route->vehicle_description = $request->description;
+            $route->save();
+
+            Session::flash('message', 'Vehicle description successful updated');
+            return redirect()->back();
+        } else {
+            Session::flash('message', 'Vehicle description unsuccessful updated');
+            return redirect()->back();
+        }
+    }
+
     public function profile()
     {
         return view('driver.register');

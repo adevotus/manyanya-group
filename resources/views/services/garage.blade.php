@@ -26,51 +26,124 @@
                         <div class="row mb-2">
                             <div class="col-sm-6">
                                 <div class="row">
-                                    <div class="col-sm-7">
-                                        @role('mechanics')
+                                    @role('mechanics')
+                                        <div class="col-sm-5">
                                             <button type="button" class="btn btn-success waves-effect waves-light"
                                                 data-bs-toggle="modal" data-bs-target="#custom-modal"><i
                                                     class="mdi mdi-plus-circle me-1"></i> Add
                                                 New Tool</button>
-                                        @endrole
-                                        @role('storekeeper')
+                                        </div>
+                                    @endrole
+                                    @role('storekeeper')
+                                        <div class="col-sm-5">
                                             <button type="button" class="btn btn-success waves-effect waves-light"
                                                 data-bs-toggle="modal" data-bs-target="#custom-modal"><i
                                                     class="mdi mdi-plus-circle me-1"></i> Add
                                                 New Tool</button>
-                                        @endrole
-                                        @role('manager')
+                                        </div>
+                                    @endrole
+                                    @role('manager')
+                                        <div class="col-sm-5">
+                                            <button type="button" class="btn btn-success waves-effect waves-light"
+                                                data-bs-toggle="modal" data-bs-target="#custom-modal"><i
+                                                    class="mdi mdi-plus-circle me-1"></i> Add
+                                                New Tool
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="dropdown mt-sm-0 mt-2">
+                                                <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Export<i class="mdi mdi-chevron-down"></i>
+                                                </a>
+
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('garages.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('garages.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('garages.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endrole
+                                    @role('muhasibu')
+                                        <div class="col-sm-4">
+                                            <div class="dropdown mt-sm-0 mt-2">
+                                                <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Export<i class="mdi mdi-chevron-down"></i>
+                                                </a>
+
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('garages.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('garages.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('garages.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endrole
+                                    @role('superadmin')
+                                        <div class="col-sm-5">
                                             <button type="button" class="btn btn-success waves-effect waves-light"
                                                 data-bs-toggle="modal" data-bs-target="#custom-modal"><i
                                                     class="mdi mdi-plus-circle me-1"></i> Add
                                                 New Tool</button>
-                                        @endrole
-                                        @role('superadmin')
-                                            <button type="button" class="btn btn-success waves-effect waves-light"
-                                                data-bs-toggle="modal" data-bs-target="#custom-modal"><i
-                                                    class="mdi mdi-plus-circle me-1"></i> Add
-                                                New Tool</button>
-                                        @endrole
-                                    </div>
-                                    <div class="col-sm-7">
-                                        @if (Session::has('message'))
-                                            <p class="text-success mt-2">{{ Session::get('message') }}</p>
-                                        @endif
-                                        @error('tool_name')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                        @error('amount')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                        @error('tool_condition')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                        @error('tool_number')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                        @error('payment_slip')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
+
+                                            {{ request()->get('search') }}
+
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="dropdown mt-sm-0 mt-2">
+                                                <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Export<i class="mdi mdi-chevron-down"></i>
+                                                </a>
+
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('garages.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('garages.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('garages.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endrole
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4>Total amount: <strong
+                                                class="text-success">{{ number_format($total) }}</strong></h4>
+                                        <div class="col-6">
+                                            @if (Session::has('message'))
+                                                <p class="text-success mt-2">{{ Session::get('message') }}</p>
+                                            @endif
+                                            @error('tool_name')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                            @error('amount')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                            @error('tool_condition')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                            @error('tool_number')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                            @error('payment_slip')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -83,8 +156,9 @@
 
                                         </div>
                                         <div class="col-sm-5">
-                                            <input type="text" id="range-datepicker" class="form-control flatpickr-input"
-                                                name="date" placeholder="2018-10-03 to 2018-10-10" readonly="readonly">
+                                            <input type="text" id="range-datepicker"
+                                                class="form-control flatpickr-input" name="date"
+                                                placeholder="2018-10-03 to 2018-10-10" readonly="readonly">
                                         </div>
                                         <div class="col-sm-2">
                                             <button type="submit" class="btn btn-success waves-effect waves-light"><i
@@ -135,7 +209,8 @@
                                                 <td>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#update-modal{{ $garage->id }}"
-                                                        class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                        class="action-icon"> <i
+                                                            class="mdi mdi-square-edit-outline"></i></a>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#delete-modal{{ $garage->id }}"
                                                         class="action-icon"> <i class="mdi mdi-delete"></i></a>
@@ -162,7 +237,8 @@
 
                         <div class="row">
                             <div class="col-sm-12 col-md-5">
-                                <div class="dataTables_info" id="basic-datatable_info" role="status" aria-live="polite">
+                                <div class="dataTables_info" id="basic-datatable_info" role="status"
+                                    aria-live="polite">
                                     Showing {{ $garages->firstItem() }} to {{ $garages->lastItem() }} of
                                     {{ $garages->total() }} entries</div>
                             </div>

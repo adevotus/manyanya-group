@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RouteExport;
 use App\Models\Cargo;
 use App\Models\Route;
 use App\Models\User;
 use App\Models\Vehicle;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Excel;
 
 class RoutesController extends Controller
 {
@@ -23,10 +26,7 @@ class RoutesController extends Controller
         $vehicles = Vehicle::get();
         $cargos = Cargo::get();
 
-        // dd(strlen($request->date)); //max - 24 min - 10
-        // dd(substr($request->date, 0, -14), substr($request->date, -10));
-
-        $routes = Route::orderBy('updated_at', 'desc')->paginate(20);
+        $routes = Route::orderBy('date', 'desc')->paginate(20);
 
         if (!is_null($request->date)) {
             if (strlen($request->date) > 16) {
@@ -40,24 +40,25 @@ class RoutesController extends Controller
 
                     $search = $request->search;
 
-                    $routes = Route::orderBy('updated_at', 'desc')
-                        ->whereBetween('updated_at', [$fromdate, $toDate])
-                        ->where('source', 'LIKE', '%' . $search . '%')
-                        ->orWhere('destination', 'LIKE', '%' . $search . '%')
-                        ->orWhere('status', $search)
-                        ->orWhereHas('driver', function ($query) use ($search) {
-                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                    $routes = Route::orderBy('date', 'desc')
+                        ->where('route', 'LIKE', '%' . $search . '%')
+                        ->orWhere('trip', 'LIKE', '%' . $search . '%')
+                        ->orWhere('mode', 'LIKE', '%' . $search . '%')
+                        ->orWhere('payment_method', 'LIKE', '%' . $search . '%')
+                        ->orWhere(function ($querys) use ($search) {
+                            return  $querys->whereHas('driver', function ($query) use ($search) {
+                                return $query->where('name', 'LIKE', '%' . $search . '%');
+                            })->orWhereHas('vehicle', function ($query) use ($search) {
+                                return $query->where('name', 'LIKE', '%' . $search . '%');
+                            })->orWhereHas('cargo', function ($query) use ($search) {
+                                return $query->where('name', 'LIKE', '%' . $search . '%');
+                            });
                         })
-                        ->orWhereHas('vehicle', function ($query) use ($search) {
-                            return $query->where('name', 'LIKE', '%' . $search . '%');
-                        })
-                        ->orWhereHas('cargo', function ($query) use ($search) {
-                            return $query->where('name', 'LIKE', '%' . $search . '%');
-                        })
+                        ->whereBetween('date', array($fromdate, $toDate))
                         ->paginate(15);
                 } else {
-                    $routes = Route::orderBy('updated_at', 'desc')
-                        ->whereBetween('updated_at', [$fromdate, $toDate])
+                    $routes = Route::orderBy('date', 'desc')
+                        ->whereBetween('date', array($fromdate, $toDate))
                         ->paginate(15);
                 }
             } else {
@@ -69,24 +70,25 @@ class RoutesController extends Controller
 
                     $search = $request->search;
 
-                    $routes = Route::orderBy('updated_at', 'desc')
-                        ->whereDate('updated_at', $request->date)
-                        ->where('source', 'LIKE', '%' . $search . '%')
-                        ->orWhere('destination', 'LIKE', '%' . $search . '%')
-                        ->orWhere('status', $search)
-                        ->orWhereHas('driver', function ($query) use ($search) {
-                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                    $routes = Route::orderBy('date', 'desc')
+                        ->where('route', 'LIKE', '%' . $search . '%')
+                        ->orWhere('trip', 'LIKE', '%' . $search . '%')
+                        ->orWhere('mode', 'LIKE', '%' . $search . '%')
+                        ->orWhere('payment_method', 'LIKE', '%' . $search . '%')
+                        ->orWhere(function ($querys) use ($search) {
+                            return  $querys->whereHas('driver', function ($query) use ($search) {
+                                return $query->where('name', 'LIKE', '%' . $search . '%');
+                            })->orWhereHas('vehicle', function ($query) use ($search) {
+                                return $query->where('name', 'LIKE', '%' . $search . '%');
+                            })->orWhereHas('cargo', function ($query) use ($search) {
+                                return $query->where('name', 'LIKE', '%' . $search . '%');
+                            });
                         })
-                        ->orWhereHas('vehicle', function ($query) use ($search) {
-                            return $query->where('name', 'LIKE', '%' . $search . '%');
-                        })
-                        ->orWhereHas('cargo', function ($query) use ($search) {
-                            return $query->where('name', 'LIKE', '%' . $search . '%');
-                        })
+                        ->whereDate('date', $request->date)
                         ->paginate(15);
                 } else {
-                    $routes = Route::orderBy('updated_at', 'desc')
-                        ->whereDate('updated_at', $request->date)
+                    $routes = Route::orderBy('date', 'desc')
+                        ->whereDate('date', $request->date)
                         ->paginate(15);
                 }
             }
@@ -98,27 +100,49 @@ class RoutesController extends Controller
 
                 $search = $request->search;
 
-                $routes = Route::orderBy('updated_at', 'desc')
-                    ->where('source', 'LIKE', '%' . $search . '%')
-                    ->orWhere('destination', 'LIKE', '%' . $search . '%')
-                    ->orWhere('status', $search)
-                    ->orWhereHas('driver', function ($query) use ($search) {
-                        return $query->where('name', 'LIKE', '%' . $search . '%');
-                    })
-                    ->orWhereHas('vehicle', function ($query) use ($search) {
-                        return $query->where('name', 'LIKE', '%' . $search . '%');
-                    })
-                    ->orWhereHas('cargo', function ($query) use ($search) {
-                        return $query->where('name', 'LIKE', '%' . $search . '%');
+                $routes = Route::orderBy('date', 'desc')
+                    ->where('route', 'LIKE', '%' . $search . '%')
+                    ->orWhere('trip', 'LIKE', '%' . $search . '%')
+                    ->orWhere('mode', 'LIKE', '%' . $search . '%')
+                    ->orWhere('payment_method', 'LIKE', '%' . $search . '%')
+                    ->orWhere(function ($querys) use ($search) {
+                        return  $querys->whereHas('driver', function ($query) use ($search) {
+                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                        })->orWhereHas('vehicle', function ($query) use ($search) {
+                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                        })->orWhereHas('cargo', function ($query) use ($search) {
+                            return $query->where('name', 'LIKE', '%' . $search . '%');
+                        });
                     })
                     ->paginate(15);
             }
         }
 
+        $total = 0;
+        foreach ($routes as $exp) {
+            $total += $exp->price;
+        }
+
         return view('services.routes')->with('routes', $routes)
+            ->with('total', $total)
             ->with('vehicles', $vehicles)
             ->with('drivers', $drivers)
             ->with('cargos', $cargos);
+    }
+
+    public function downloadCSV(Request $request)
+    {
+        return Excel::download(new RouteExport($request->search, $request->date), 'Routes-' . Carbon::now()->format('Y-m-d') . '.csv');
+    }
+
+    public function downloadExcel(Request $request)
+    {
+        return Excel::download(new RouteExport($request->search, $request->date), 'Routes-' . Carbon::now()->format('Y-m-d') . '.xlsx');
+    }
+
+    public function downloadPDF(Request $request)
+    {
+        return Excel::download(new RouteExport($request->search, $request->date), 'Routes-' . Carbon::now()->format('Y-m-d') . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function create()

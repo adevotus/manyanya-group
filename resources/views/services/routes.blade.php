@@ -27,38 +27,100 @@
                         <div class="row mb-2">
                             <div class="col-sm-6">
                                 <div class="row">
-                                    <div class="col-sm-6">
-                                        @role('storekeeper')
+                                    @role('muhasibu')
+                                        <div class="col-sm-4">
+                                            <div class="dropdown mt-sm-0 mt-2">
+                                                <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Export<i class="mdi mdi-chevron-down"></i>
+                                                </a>
+
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('routes.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('routes.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('routes.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endrole
+                                    @role('storekeeper')
+                                        <div class="col-sm-5">
                                             <a href={{ route('routes.add') }}
                                                 class="btn btn-success waves-effect waves-light"><i
                                                     class="mdi mdi-plus-circle me-1"></i> Add
                                                 Add Route</a>
-                                        @endrole
-                                        @role('manager')
+                                        </div>
+                                    @endrole
+                                    @role('manager')
+                                        <div class="col-sm-5">
                                             <a href={{ route('routes.add') }}
                                                 class="btn btn-success waves-effect waves-light"><i
                                                     class="mdi mdi-plus-circle me-1"></i> Add
                                                 Add Route</a>
-                                        @endrole
-                                        @role('superadmin')
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="dropdown mt-sm-0 mt-2">
+                                                <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Export<i class="mdi mdi-chevron-down"></i>
+                                                </a>
+
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('routes.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('routes.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('routes.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endrole
+                                    @role('superadmin')
+                                        <div class="col-sm-5">
                                             <a href={{ route('routes.add') }}
                                                 class="btn btn-success waves-effect waves-light"><i
                                                     class="mdi mdi-plus-circle me-1"></i> Add
                                                 Add Route</a>
-                                        @endrole
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="dropdown mt-sm-0 mt-2">
+                                                <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Export<i class="mdi mdi-chevron-down"></i>
+                                                </a>
 
-                                    </div>
-                                    <div class="col-sm-7">
-                                        @if (Session::has('message'))
-                                            <p
-                                                class="@if (str_contains(Session::get('message'), 'successful')) text-success @else text-danger @endif mt-2">
-                                                {{ Session::get('message') }}</p>
-                                        @endif
-
-
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('routes.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('routes.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('routes.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endrole
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4>Total amount: <strong
+                                                class="text-success">{{ number_format($total) }}</strong></h4>
+                                        <div class="col-6">
+                                            @if (Session::has('message'))
+                                                <p class="text-success mt-2">{{ Session::get('message') }}</p>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-sm-6">
                                 <div class="me-3">
                                     <form action="{{ route('routes') }}" method="get">
@@ -184,7 +246,8 @@
 
                                                 <td>
                                                     <a href="{{ route('route.edit', ['id' => $route->id]) }}"
-                                                        class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                        class="action-icon"> <i
+                                                            class="mdi mdi-square-edit-outline"></i></a>
                                                     @role('superadmin')
                                                         <a href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete-modal{{ $route->id }}"

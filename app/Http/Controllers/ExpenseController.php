@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExpenseExport;
 use App\Models\Expense;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Excel;
 
 class ExpenseController extends Controller
 {
@@ -18,72 +21,165 @@ class ExpenseController extends Controller
     // Expenses
     public function expense(Request $request)
     {
-        $expenses = Expense::orderBy('updated_at', 'desc')->paginate(20);
+        if (auth()->user()->hasRole('superadmin') || auth()->user()->hasRole('manager') || auth()->user()->hasRole('muhasibu')) {
 
-        if (!is_null($request->date)) {
-            if (strlen($request->date) > 16) {
-                $fromdate = substr($request->date, 0, -14);
-                $toDate =  substr($request->date, -10);
+            if (!is_null($request->date)) {
 
-                if (!is_null($request->search)) {
-                    $this->validate($request, [
-                        'search' => 'string',
-                    ]);
+                if (strlen($request->date) > 16) {
+                    $fromdate = substr($request->date, 0, -14);
+                    $toDate =  substr($request->date, -10);
 
-                    $search = $request->search;
+                    if (!is_null($request->search)) {
+                        $this->validate($request, [
+                            'search' => 'string',
+                        ]);
 
-                    $expenses = Expense::orderBy('updated_at', 'desc')
-                        ->whereBetween('updated_at', [$fromdate, $toDate])
-                        ->where('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('platenumber', 'LIKE', '%' . $search . '%')
-                        ->orWhere('reg_number', 'LIKE', '%' . $search . '%')
-                        ->orWhere('condition', $search)
-                        ->paginate(15);
+                        $search = $request->search;
+
+
+                        $expenses = Expense::orderBy('created_at', 'desc')
+                            ->where('description', 'LIKE', '%' . $search . '%')
+                            ->orWhere(function ($query) use ($search) {
+                                return $query->whereHas('user', function ($querys) use ($search) {
+                                    return $querys->where('name', 'LIKE', '%' . $search . '%');
+                                });
+                            })
+                            ->whereBetween('created_at',  array($fromdate, $toDate))
+                            ->paginate(15);
+                    } else {
+                        $expenses = Expense::orderBy('created_at', 'desc')
+                            ->whereBetween('created_at',  array($fromdate, $toDate))
+                            ->paginate(15);
+                    }
                 } else {
-                    $expenses = Expense::orderBy('updated_at', 'desc')
-                        ->whereBetween('updated_at', [$fromdate, $toDate])
-                        ->paginate(15);
+                    if (!is_null($request->search)) {
+                        $this->validate($request, [
+                            'search' => 'string',
+                        ]);
+
+                        $search = $request->search;
+
+                        $expenses = Expense::orderBy('created_at', 'desc')
+                            ->where('description', 'LIKE', '%' . $search . '%')
+                            ->orWhere(function ($query) use ($search) {
+                                return $query->whereHas('user', function ($querys) use ($search) {
+                                    return $querys->where('name', 'LIKE', '%' . $search . '%');
+                                });
+                            })
+                            ->whereDate('created_at', $request->date)
+                            ->paginate(15);
+                    } else {
+                        $expenses = Expense::orderBy('created_at', 'desc')
+                            ->whereDate('created_at', $request->date)
+                            ->paginate(15);
+                    }
                 }
-            } else {
-
-                if (!is_null($request->search)) {
-                    $this->validate($request, [
-                        'search' => 'string',
-                    ]);
-
-                    $search = $request->search;
-
-                    $expenses = Expense::orderBy('updated_at', 'desc')
-                        ->whereDate('updated_at', $request->date)
-                        ->where('name', 'LIKE', '%' . $search . '%')
-                        ->orWhere('platenumber', 'LIKE', '%' . $search . '%')
-                        ->orWhere('reg_number', 'LIKE', '%' . $search . '%')
-                        ->orWhere('condition', $search)
-                        ->paginate(15);
-                } else {
-                    $expenses = Expense::orderBy('updated_at', 'desc')
-                        ->whereDate('updated_at', $request->date)
-                        ->paginate(15);
-                }
-            }
-        } else {
-            if (!is_null($request->search)) {
+            } else if (!is_null($request->search)) {
                 $this->validate($request, [
                     'search' => 'string',
                 ]);
 
                 $search = $request->search;
 
-                $expenses = Expense::orderBy('updated_at', 'desc')
-                    ->where('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('platenumber', 'LIKE', '%' . $search . '%')
-                    ->orWhere('reg_number', 'LIKE', '%' . $search . '%')
-                    ->orWhere('condition', $search)
+                $expenses = Expense::orderBy('created_at', 'desc')
+                    ->where('description', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('user', function ($query) use ($search) {
+                        return $query->where('name', 'LIKE', '%' . $search . '%');
+                    })
+                    ->paginate(15);
+            } else {
+                $expenses = Expense::orderBy('created_at', 'desc')->paginate(20);
+            }
+        } else {
+            $expenses = Expense::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(20);
+
+            if (!is_null($request->date)) {
+                if (strlen($request->date) > 16) {
+                    $fromdate = substr($request->date, 0, -14);
+                    $toDate =  substr($request->date, -10);
+
+                    if (!is_null($request->search)) {
+                        $this->validate($request, [
+                            'search' => 'string',
+                        ]);
+
+                        $search = $request->search;
+
+                        $expenses = Expense::orderBy('created_at', 'desc')
+                            ->where('user_id', auth()->user()->id)
+                            ->where('description', 'LIKE', '%' . $search . '%')
+                            ->orWhereHas('user', function ($query) use ($search) {
+                                return $query->where('name', 'LIKE', '%' . $search . '%');
+                            })
+                            ->whereBetween('created_at', [$fromdate, $toDate])
+                            ->paginate(15);
+                    } else {
+                        $expenses = Expense::orderBy('created_at', 'desc')
+                            ->where('user_id', auth()->user()->id)
+                            ->whereBetween('created_at', [$fromdate, $toDate])
+                            ->paginate(15);
+                    }
+                } else {
+
+                    if (!is_null($request->search)) {
+                        $this->validate($request, [
+                            'search' => 'string',
+                        ]);
+
+                        $search = $request->search;
+
+                        $expenses = Expense::orderBy('created_at', 'desc')
+                            ->where('user_id', auth()->user()->id)
+                            ->where('description', 'LIKE', '%' . $search . '%')
+                            ->orWhereHas('user', function ($query) use ($search) {
+                                return $query->where('name', 'LIKE', '%' . $search . '%');
+                            })
+                            ->whereDate('created_at', $request->date)
+                            ->paginate(15);
+                    } else {
+                        $expenses = Expense::orderBy('created_at', 'desc')
+                            ->whereDate('created_at', $request->date)
+                            ->paginate(15);
+                    }
+                }
+            } else if (!is_null($request->search)) {
+                $this->validate($request, [
+                    'search' => 'string',
+                ]);
+
+                $search = $request->search;
+
+                $expenses = Expense::orderBy('created_at', 'desc')
+                    ->where('user_id', auth()->user()->id)
+                    ->where('description', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('user', function ($query) use ($search) {
+                        return $query->where('name', 'LIKE', '%' . $search . '%');
+                    })
                     ->paginate(15);
             }
         }
 
-        return view('services.expense')->with('expenses', $expenses);
+        $total = 0;
+        foreach ($expenses as $exp) {
+            $total += $exp->amount;
+        }
+
+        return view('services.expense')->with('expenses', $expenses)->with('total', $total);
+    }
+
+    public function downloadCSV(Request $request)
+    {
+        return Excel::download(new ExpenseExport($request->search, $request->date), 'Expenses-' . Carbon::now()->format('Y-m-d') . '.csv');
+    }
+
+    public function downloadExcel(Request $request)
+    {
+        return Excel::download(new ExpenseExport($request->search, $request->date), 'Expenses-' . Carbon::now()->format('Y-m-d') . '.xlsx');
+    }
+
+    public function downloadPDF(Request $request)
+    {
+        return Excel::download(new ExpenseExport($request->search, $request->date), 'Expenses-' . Carbon::now()->format('Y-m-d') . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function store(Request $request)
@@ -110,11 +206,13 @@ class ExpenseController extends Controller
                 'description' => $request->description,
                 'amount' => $request->amount,
                 'slip' => $path,
+                'user_id' => auth()->user()->id,
             ]);
         } else {
             $expense = Expense::create([
                 'description' => $request->description,
                 'amount' => $request->amount,
+                'user_id' => auth()->user()->id,
             ]);
         }
 

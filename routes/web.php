@@ -64,6 +64,10 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:mechanics|store
     Route::post('/garages', [GarageController::class, 'store']);
     Route::put('/garages', [GarageController::class, 'update']);
     Route::delete('/garages', [GarageController::class, 'destroy']);
+
+    Route::get('/garage/download/csv', [GarageController::class, 'downloadCSV'])->name('garages.downloadc');
+    Route::get('/garage/download/excel', [GarageController::class, 'downloadExcel'])->name('garages.downloadx');
+    Route::get('/garage/download/pdf', [GarageController::class, 'downloadPDF'])->name('garages.downloadp');
 });
 
 // Routes view,Create,Update,Delete
@@ -77,6 +81,10 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|muh
     Route::post('/{id}/edit_routes', [RoutesController::class, 'update']);
 
     Route::delete('/routes', [RoutesController::class, 'destroy']);
+
+    Route::get('/route/download/csv', [RoutesController::class, 'downloadCSV'])->name('routes.downloadc');
+    Route::get('/route/download/excel', [RoutesController::class, 'downloadExcel'])->name('routes.downloadx');
+    Route::get('/route/download/pdf', [RoutesController::class, 'downloadPDF'])->name('routes.downloadp');
 });
 
 // Other Expenses view,Create,Update,Delete
@@ -85,6 +93,10 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|dri
     Route::post('/expenses', [ExpenseController::class, 'store']);
     Route::put('/expenses', [ExpenseController::class, 'update']);
     Route::delete('/expenses', [ExpenseController::class, 'destroy']);
+
+    Route::get('/expenses/download/csv', [ExpenseController::class, 'downloadCSV'])->name('expense.downloadc');
+    Route::get('/expenses/download/excel', [ExpenseController::class, 'downloadExcel'])->name('expense.downloadx');
+    Route::get('/expenses/download/pdf', [ExpenseController::class, 'downloadPDF'])->name('expense.downloadp');
 });
 
 
@@ -113,9 +125,6 @@ Route::group(['prefix' => 'manager', 'middleware' => ['role:manager']], function
 // Mechanics view, crud ops
 Route::group(['prefix' => 'mechanics', 'middleware' => ['role:mechanics']], function () {
     Route::get('/', [MechanicsController::class, 'index'])->name('mechanics.home');
-
-    Route::get('/acknowledgement', [MechanicsController::class, 'ack'])->name('mechanics.ack');
-    Route::post('/check/{id}', [MechanicsController::class, 'updateVehicle'])->name('mechanics.check');
 });
 
 //Driver route
@@ -124,8 +133,9 @@ Route::group(['prefix' => 'driver', 'middleware' => ['role:driver']], function (
     Route::post('/confirm/{id}', [DriverController::class, 'delivered'])->name('driver.deliver');
     Route::post('/', [DriverController::class, 'registration']);
     Route::put('/', [DriverController::class, 'route_confirmation']);
-
     Route::get('/profile', [DriverController::class, 'profile'])->name('driver.profile');
+    Route::get('/acknowledgement', [DriverController::class, 'ack'])->name('driver.ack');
+    Route::post('/check/{id}', [DriverController::class, 'updateVehicle'])->name('driver.check');
 });
 
 

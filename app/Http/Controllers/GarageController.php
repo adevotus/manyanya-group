@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GarageExport;
 use App\Models\Garage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Excel;
+use Carbon\Carbon;
+
 
 class GarageController extends Controller
 {
@@ -32,9 +36,9 @@ class GarageController extends Controller
                     $search = $request->search;
 
                     $garage = Garage::orderBy('updated_at', 'desc')
-                        ->whereBetween('updated_at', [$fromdate, $toDate])
                         ->where('tool_name', 'LIKE', '%' . $search . '%')
                         ->orWhere('condition', $search)
+                        ->whereBetween('updated_at', [$fromdate, $toDate])
                         ->paginate(15);
                 } else {
                     $garage = Garage::orderBy('updated_at', 'desc')
@@ -51,9 +55,9 @@ class GarageController extends Controller
                     $search = $request->search;
 
                     $garage = Garage::orderBy('updated_at', 'desc')
-                        ->whereDate('updated_at', $request->date)
                         ->where('tool_name', 'LIKE', '%' . $search . '%')
                         ->orWhere('condition', $search)
+                        ->whereDate('updated_at', $request->date)
                         ->paginate(15);
                 } else {
                     $garage = Garage::orderBy('updated_at', 'desc')
@@ -76,7 +80,27 @@ class GarageController extends Controller
             }
         }
 
-        return view('services.garage')->with('garages', $garage);
+        $total = 0;
+        foreach ($garage as $exp) {
+            $total += $exp->amount;
+        }
+
+        return view('services.garage')->with('garages', $garage)->with('total', $total);
+    }
+
+    public function downloadCSV(Request $request)
+    {
+        return Excel::download(new GarageExport($request->search, $request->date), 'GarageTools-' . Carbon::now()->format('Y-m-d') . '.csv');
+    }
+
+    public function downloadExcel(Request $request)
+    {
+        return Excel::download(new GarageExport($request->search, $request->date), 'GarageTools-' . Carbon::now()->format('Y-m-d') . '.xlsx');
+    }
+
+    public function downloadPDF(Request $request)
+    {
+        return Excel::download(new GarageExport($request->search, $request->date), 'GarageTools-' . Carbon::now()->format('Y-m-d') . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function store(Request $request)

@@ -146,13 +146,6 @@
                             <span>Expenses</span>
                         </a>
                     </li>
-
-                    <li class="{{ Route::is('mechanics.ack') ? 'menuitem-active' : '' }} ">
-                        <a class="active" href="{{ route('mechanics.ack') }}">
-                            <i data-feather="check"></i>
-                            <span>Acknowledgement</span>
-                        </a>
-                    </li>
                 @endrole
                 @role('storekeeper')
                     <li class="{{ Route::is('store.home') ? 'menuitem-active' : '' }}">
@@ -257,6 +250,12 @@
                         <a href="{{ route('expense') }}">
                             <i data-feather="archive"></i>
                             <span> Expenses</span>
+                        </a>
+                    </li>
+                    <li class="{{ Route::is('driver.ack') ? 'menuitem-active' : '' }} ">
+                        <a class="active" href="{{ route('driver.ack') }}">
+                            <i data-feather="check"></i>
+                            <span>Acknowledgement</span>
                         </a>
                     </li>
                 @endrole

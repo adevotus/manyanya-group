@@ -27,46 +27,76 @@
                         <div class="row mb-2">
                             <div class="col-sm-6">
                                 <div class="row">
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-5">
                                         <button type="button" class="btn btn-success waves-effect waves-light"
                                             data-bs-toggle="modal" data-bs-target="#custom-modal"><i
                                                 class="mdi mdi-plus-circle me-1"></i> Add
                                             New Expense</button>
-                                    </div>
-                                    <div class="col-sm-7">
-                                        @if (Session::has('message'))
-                                            <p class="text-success mt-2">{{ Session::get('message') }}</p>
-                                        @endif
-                                        @error('description')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-                                        @error('amount')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
 
-                                        @error('payment_slip')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
+                                        {{ request()->get('search') }}
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="dropdown mt-sm-0 mt-2">
+                                            <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                Export<i class="mdi mdi-chevron-down"></i>
+                                            </a>
+
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                <a class="dropdown-item"
+                                                    href="{{ route('expense.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                <a class="dropdown-item"
+                                                    href="{{ route('expense.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                <a class="dropdown-item"
+                                                    href="{{ route('expense.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4>Total amount: <strong
+                                                class="text-success">{{ number_format($total) }}</strong></h4>
+                                        <div class="col-6">
+                                            @if (Session::has('message'))
+                                                <p class="text-success mt-2">{{ Session::get('message') }}</p>
+                                            @endif
+                                            @error('description')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                            @error('amount')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+
+                                            @error('payment_slip')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="me-3">
-                                    <div class="row text-end">
-                                        <div class="col-sm-5">
-                                            <input type="search" name="search" class="form-control my-1 my-md-0"
-                                                id="search" placeholder="Search...">
+                                    <form action="" method="get">
+                                        <div class="row text-end">
+                                            <div class="col-sm-5">
+                                                <input type="search" name="search" class="form-control my-1 my-md-0"
+                                                    id="search" placeholder="Search...">
 
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <input type="text" id="range-datepicker"
+                                                    class="form-control flatpickr-input" name="date"
+                                                    placeholder="2018-10-03 to 2018-10-10" readonly="readonly">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="submit" class="btn btn-success waves-effect waves-light"><i
+                                                        class="mdi mdi-arrow-right"></i></button>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-5">
-                                            <input type="text" id="range-datepicker" class="form-control flatpickr-input"
-                                                name="date" placeholder="2018-10-03 to 2018-10-10" readonly="readonly">
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <button type="submit" class="btn btn-success waves-effect waves-light"><i
-                                                    class="mdi mdi-arrow-right"></i></button>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div><!-- end col-->
                         </div>
@@ -80,6 +110,7 @@
                                         </th>
                                         <th>Description</th>
                                         <th>Amount</th>
+                                        <th>Create By</th>
                                         <th>Create Date</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>
@@ -99,7 +130,10 @@
                                                     {{ number_format($expense->amount) }}
                                                 </td>
                                                 <td>
-                                                    {{ date('Y-m-d', strtotime($expense->updated_at)) }}
+                                                    {{ $expense->user->name }}
+                                                </td>
+                                                <td>
+                                                    {{ date('Y-m-d', strtotime($expense->created_at)) }}
                                                 </td>
                                                 <td>
                                                     <a href="#" data-bs-toggle="modal"
