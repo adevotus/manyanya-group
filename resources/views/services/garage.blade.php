@@ -149,22 +149,24 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="me-3">
-                                    <div class="row text-end">
-                                        <div class="col-sm-5">
-                                            <input type="search" name="search" class="form-control my-1 my-md-0"
-                                                id="search" placeholder="Search...">
+                                    <form action="{{ route('garages') }}" method="get">
+                                        <div class="row text-end">
+                                            <div class="col-sm-5">
+                                                <input type="search" name="search" class="form-control my-1 my-md-0"
+                                                    id="search" placeholder="Search...">
 
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <input type="text" id="range-datepicker"
+                                                    class="form-control flatpickr-input" name="date"
+                                                    placeholder="2018-10-03 to 2018-10-10" readonly="readonly">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="submit" class="btn btn-success waves-effect waves-light"><i
+                                                        class="mdi mdi-arrow-right"></i></button>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-5">
-                                            <input type="text" id="range-datepicker"
-                                                class="form-control flatpickr-input" name="date"
-                                                placeholder="2018-10-03 to 2018-10-10" readonly="readonly">
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <button type="submit" class="btn btn-success waves-effect waves-light"><i
-                                                    class="mdi mdi-arrow-right"></i></button>
-                                        </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div><!-- end col-->
                         </div>
