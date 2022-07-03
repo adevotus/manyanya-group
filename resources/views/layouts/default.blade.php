@@ -4,8 +4,9 @@
         @if ($paginator->onFirstPage())
         @else
             <li class="page-item">
-                <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev"
-                    aria-label="@lang('pagination.previous')">&lsaquo;</a>
+                <a class="page-link"
+                    href="{{ $paginator->previousPageUrl() . '&search=' . request()->get('search') . '&' . 'date=' . request()->get('date') }}"
+                    rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;</a>
             </li>
         @endif
 
@@ -24,7 +25,8 @@
                                 class="page-link">{{ $page }}</a></li>
                     @else
                         <li class="page-item"><a class="page-link"
-                                href="{{ $url }}">{{ $page }}</a></li>
+                                href="{{ $url . '&search=' . request()->get('search') . '&' . 'date=' . request()->get('date') }}">{{ $page }}</a>
+                        </li>
                     @endif
                 @endforeach
             @endif
@@ -33,8 +35,9 @@
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
             <li class="page-item">
-                <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next"
-                    aria-label="@lang('pagination.next')">&rsaquo;</a>
+                <a class="page-link"
+                    href="{{ $paginator->nextPageUrl() . '&search=' . request()->get('search') . '&' . 'date=' . request()->get('date') }}"
+                    rel="next" aria-label="@lang('pagination.next')">&rsaquo;</a>
             </li>
         @endif
     </ul>
