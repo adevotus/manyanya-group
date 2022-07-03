@@ -160,24 +160,3 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|man
     Route::put('/driver', [DriverController::class, 'update']);
     Route::delete('/driver', [DriverController::class, 'destroy']);
 });
-
-
-Route::get('/config-clear', function () {
-    Artisan::call('config:clear');
-});
-
-Route::get('/view-clear', function () {
-    Artisan::call('view:clear');
-});
-
-Route::get('/route-clear', function () {
-    Artisan::call('route:cache');
-});
-
-Route::get('/migrate', function () {
-    Artisan::call('migrate:fresh', ["--force" => true]);
-});
-
-Route::get('/migrate-seed', function () {
-    Artisan::call('db:seed', ["--force" => true]);
-});
