@@ -154,8 +154,7 @@
                                             <th style="width: 20px;">
                                                 #
                                             </th>
-                                            <th>Route Source</th>
-                                            <th>Route Destination</th>
+                                            <th>Route Name</th>
                                             <th>Driver Name</th>
                                             <th>Vehicle Model</th>
                                             <th>Cargo</th>
@@ -171,10 +170,7 @@
                                                         {{ $key + 1 }}
                                                     </td>
                                                     <td class="table-user">
-                                                        {{ $route->source }}
-                                                    </td>
-                                                    <td class="table-user">
-                                                        {{ $route->destination }}
+                                                        {{ $route->route }}
                                                     </td>
                                                     <td>
                                                         {{ $route->driver->name }}

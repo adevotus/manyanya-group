@@ -100,7 +100,6 @@
                                         <th>Last Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>status</th>
                                         <th>License</th>
                                         <th>Certificate</th>
                                         <th>Create Date</th>
@@ -129,18 +128,7 @@
                                                 <td>
                                                     {{ $driver->phone }}
                                                 </td>
-                                                <td>
-                                                    @if ($driver->verified)
-                                                        <span class="badge bg-soft-success text-success">
-                                                            Verified
-                                                        </span>
-                                                    @else
-                                                        <span class="badge  text-danger">
-                                                            Not Verified
-                                                        </span>
-                                                    @endif
 
-                                                </td>
                                                 <td>
                                                     <a href="{{ route('license.download', ['id' => $driver->id]) }}"
                                                         class="action-icon">

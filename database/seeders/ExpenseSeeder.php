@@ -111,7 +111,6 @@ class ExpenseSeeder extends Seeder
                 'vehicle_id' => $i,
                 'price' => (Cargo::where('id', $i)->first())->amount,
                 'mode' => 'full',
-                'payment_method' => 'bank',
                 'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 1))),
                 'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 1))),
             ]);

@@ -37,22 +37,62 @@
 
                                     </div>
                                     <div class="col-sm-4">
-                                        <div class="dropdown mt-sm-0 mt-2">
-                                            <a class="btn btn-light dropdown-toggle" href="https://example.com"
-                                                id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                Export<i class="mdi mdi-chevron-down"></i>
-                                            </a>
+                                        @role('muhasibu')
+                                            <div class="dropdown mt-sm-0 mt-2">
+                                                <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Export<i class="mdi mdi-chevron-down"></i>
+                                                </a>
 
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
-                                                <a class="dropdown-item"
-                                                    href="{{ route('expense.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('expense.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('expense.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('expense.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('expense.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('expense.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endrole
+                                        @role('manager')
+                                            <div class="dropdown mt-sm-0 mt-2">
+                                                <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Export<i class="mdi mdi-chevron-down"></i>
+                                                </a>
+
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('expense.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('expense.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('expense.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                </div>
+                                            </div>
+                                        @endrole
+                                        @role('superadmin')
+                                            <div class="dropdown mt-sm-0 mt-2">
+                                                <a class="btn btn-light dropdown-toggle" href="https://example.com"
+                                                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Export<i class="mdi mdi-chevron-down"></i>
+                                                </a>
+
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('expense.downloadc', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">CSV</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('expense.downloadx', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">Excel</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('expense.downloadp', ['search' => request()->get('search'), 'date' => request()->get('date')]) }}">PDF</a>
+                                                </div>
+                                            </div>
+                                        @endrole
+
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -138,7 +178,8 @@
                                                 <td>
                                                     <a href="#" data-bs-toggle="modal"
                                                         data-bs-target="#update-modal{{ $expense->id }}"
-                                                        class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                        class="action-icon"> <i
+                                                            class="mdi mdi-square-edit-outline"></i></a>
                                                     @role('muhasibu')
                                                         <a href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete-modal{{ $expense->id }}"
@@ -177,7 +218,8 @@
 
                         <div class="row">
                             <div class="col-sm-12 col-md-5">
-                                <div class="dataTables_info" id="basic-datatable_info" role="status" aria-live="polite">
+                                <div class="dataTables_info" id="basic-datatable_info" role="status"
+                                    aria-live="polite">
                                     Showing {{ $expenses->firstItem() }} to {{ $expenses->lastItem() }} of
                                     {{ $expenses->total() }} entries</div>
                             </div>

@@ -22,12 +22,14 @@ class Route extends Model
         'vehicle_id',
         'price',
         'mode',
-        'payment_method',
-        'i_price',
-        'r_price',
         'description',
     ];
 
+
+    public function payment()
+    {
+        return $this->hasMany(Payment::class);
+    }
 
     public function driver()
     {

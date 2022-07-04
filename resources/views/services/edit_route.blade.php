@@ -164,13 +164,9 @@
                                     <div class="mb-3">
                                         <label for="example-select" class="form-label">Paid Through</label>
                                         <select class="form-select" name="payment_method" id="example-select">
-                                            <option value="cash"
-                                                {{ $route->payment_method === 'cash' ? 'selected' : '' }}>Cash
-                                            </option>
-                                            <option value="bank"
-                                                {{ $route->payment_method === 'bank' ? 'selected' : '' }}>Bank</option>
-                                            <option value="agent"
-                                                {{ $route->payment_method === 'agent' ? 'selected' : '' }}>Agent</option>
+                                            <option value="cash">Cash</option>
+                                            <option value="bank">Bank</option>
+                                            <option value="agent">Agent</option>
                                         </select>
                                         @error('payment_method')
                                             <span class="text-danger">{{ $message }}</span>

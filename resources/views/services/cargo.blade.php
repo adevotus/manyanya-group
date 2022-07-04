@@ -98,9 +98,19 @@
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Items</th>
-                                        <th>Amount</th>
                                         <th>Tons</th>
-                                        <th>Total</th>
+                                        @role('muhasibu')
+                                            <th>Amount</th>
+                                            <th>Total</th>
+                                        @endrole
+                                        @role('manager')
+                                            <th>Amount</th>
+                                            <th>Total</th>
+                                        @endrole
+                                        @role('superadmin')
+                                            <th>Amount</th>
+                                            <th>Total</th>
+                                        @endrole
                                         <th>Create Date</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>
@@ -128,14 +138,33 @@
                                                 </td>
 
                                                 <td>
-                                                    {{ number_format($cargo->amount) }}
-                                                </td>
-                                                <td>
                                                     {{ number_format($cargo->weight) }}
                                                 </td>
-                                                <td>
-                                                    {{ number_format($cargo->amount * $cargo->weight) }}
-                                                </td>
+                                                @role('muhasibu')
+                                                    <td>
+                                                        {{ number_format($cargo->amount) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ number_format($cargo->amount * $cargo->weight) }}
+                                                    </td>
+                                                @endrole
+                                                @role('manager')
+                                                    <td>
+                                                        {{ number_format($cargo->amount) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ number_format($cargo->amount * $cargo->weight) }}
+                                                    </td>
+                                                @endrole
+                                                @role('superadmin')
+                                                    <td>
+                                                        {{ number_format($cargo->amount) }}
+                                                    </td>
+                                                    <td>
+                                                        {{ number_format($cargo->amount * $cargo->weight) }}
+                                                    </td>
+                                                @endrole
+
                                                 <td>
                                                     {{ date('Y-m-d', strtotime($cargo->updated_at)) }}
                                                 </td>

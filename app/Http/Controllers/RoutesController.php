@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Exports\RouteExport;
+use App\Mail\RemainderInvoice;
 use App\Models\Cargo;
+use App\Models\Payment;
 use App\Models\Route;
 use App\Models\User;
 use App\Models\Vehicle;
@@ -11,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Excel;
+use Illuminate\Support\Facades\Mail;
 
 class RoutesController extends Controller
 {
@@ -187,6 +190,39 @@ class RoutesController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $route = Route::where('id', $id)->first();
+
+        return view('services.show')->with('route', $route);
+    }
+
+    public function sendMail($id, Request $request)
+    {
+        $this->validate($request, [
+            'message' => 'required|string'
+        ]);
+
+        $route = Route::where('id', $id)->first();
+
+        try {
+            Mail::to($route->cargo->customeremail)->send(new RemainderInvoice($request->message));
+
+            Session::flash('message', 'Remainder message was successful sent');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            Session::flash('message', 'Remainder message was unsuccessful sent');
+            return redirect()->back();
+        }
+    }
+
+    public function print($id)
+    {
+        $route = Route::where('id', $id)->first();
+
+        return view('services.print')->with('route', $route);
+    }
+
     public function edit($id)
     {
         $drivers = User::whereRoleIs('driver')->get();
@@ -207,6 +243,7 @@ class RoutesController extends Controller
         if (auth()->user()->isA('muhasibu')) {
             $route = Route::find($id);
             $cargo = Cargo::find($route->cargo_id);
+            $payment = Payment::where('route_id', $route->id)->orderBy('created_at', 'desc')->first();
 
             $this->validate($request, [
                 'driver_allowance' => 'required|numeric|gte:1',
@@ -219,17 +256,22 @@ class RoutesController extends Controller
 
             if ($request->payment_mode == 'installment') {
                 if (!empty($request->advanced_payment)) {
-                    $this->validate($request, [
-                        'advanced_payment' => 'required|numeric|gte:1',
-                    ]);
+                    if (is_null($payment)) {
+                        $this->validate($request, [
+                            'advanced_payment' => 'required|numeric|lte:' . $total,
+                        ]);
+                    } else {
+                        $this->validate($request, [
+                            'advanced_payment' => 'required|numeric|lte:' . $payment->remaining,
+                        ]);
+                    }
 
-                    $route->i_price =  $request->advanced_payment;
-                    $route->r_price = $total - $request->advanced_payment;
+                    $i_price =  $request->advanced_payment;
+                    $r_price = $total - $request->advanced_payment;
                 }
             }
 
             $route->mode =  $request->payment_mode;
-            $route->payment_method =  $request->payment_method;
             $route->drive_allowance =  $request->driver_allowance;
             $route->price =  $total;
             $route->status = 'approved';
@@ -238,6 +280,47 @@ class RoutesController extends Controller
             $cargo->amount = $request->price;
             $cargo->save();
 
+            // $route = Route::where('id',$id)->first();
+
+
+
+            if (is_null($payment)) {
+                if ($request->payment_mode == 'installment') {
+                    Payment::create([
+                        'description' => 'Advanced Installment',
+                        'payment_method' =>  $request->payment_method,
+                        'price' => $route->price,
+                        'installed' => $i_price,
+                        'remaining' =>  $r_price,
+                        'route_id' =>  $route->id,
+                    ]);
+                } else {
+                    Payment::create([
+                        'payment_method' =>  $request->payment_method,
+                        'price' => $route->price,
+                        'remaining' =>  0,
+                        'route_id' =>  $route->id,
+                    ]);
+                }
+            } else {
+                if ($request->payment_mode == 'installment') {
+                    $count = Payment::where('route_id', $route->id)->count();
+                    if ($payment->remaining > 0) {
+                        Payment::create([
+                            'description' => (1 + $count) . ' Installment',
+                            'payment_method' =>  $request->payment_method,
+                            'price' => $route->price,
+                            'installed' => $i_price,
+                            'remaining' =>  $payment->remaining - $i_price,
+                            'route_id' =>  $route->id,
+                        ]);
+                    } else {
+                        Session::flash('message', 'Route installments was completed ');
+                        return redirect()->route('routes');
+                    }
+                }
+            }
+
             Session::flash('message', 'Route successful updated');
             return redirect()->route('routes');
         } else {
@@ -245,7 +328,7 @@ class RoutesController extends Controller
                 'route_name' => 'required|string|max:255',
                 'departure_date' => 'required|string|max:255',
                 'trip' => 'required|string|max:255|in:go,return',
-                'fuel' => 'required|numeric|gt:0|max:255',
+                'fuel' => 'required|numeric|gt:0',
                 'vehicle_id' => 'required|numeric|gte:1',
                 'driver_id' => 'required|numeric|gte:1',
             ]);

@@ -15,7 +15,6 @@ use App\Http\Controllers\RoutesController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\VehicleController;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -76,6 +75,10 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:storekeeper|muh
 
     Route::get('/add_routes', [RoutesController::class, 'create'])->name('routes.add');
     Route::post('/add_routes', [RoutesController::class, 'store']);
+
+    Route::get('/{id}/show', [RoutesController::class, 'show'])->name('route.show');
+    Route::post('/{id}/show', [RoutesController::class, 'sendMail']);
+    Route::get('/{id}/print', [RoutesController::class, 'print'])->name('route.print');
 
     Route::get('/{id}/edit_routes', [RoutesController::class, 'edit'])->name('route.edit');
     Route::post('/{id}/edit_routes', [RoutesController::class, 'update']);

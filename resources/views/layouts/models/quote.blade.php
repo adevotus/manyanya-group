@@ -1,5 +1,5 @@
 <div id="update-modal{{ $quota->id }}" class="modal fade" tabindex="-1" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-right">
+    <div class="modal-dialog modal-lg modal-right">
         <div class="modal-content">
             <div class="modal-header border-0">
 

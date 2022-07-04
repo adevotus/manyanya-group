@@ -16,7 +16,7 @@ class Garage extends Migration
         Schema::create('garages', function (Blueprint $table) {
             $table->id();
             $table->string('tool_name');
-            $table->string('amount');
+            $table->double('amount', 100, 0);
             $table->string('condition');
             $table->string('slip')->nullable();
             $table->string('tool_no')->nullable();
