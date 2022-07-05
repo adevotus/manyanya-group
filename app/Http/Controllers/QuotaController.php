@@ -110,7 +110,7 @@ class QuotaController extends Controller
         if (!is_null($quote)) {
             $quote->delete();
 
-            Session::flash('message', 'Message deleted successful');
+            Session::flash('message', 'Message deleted successful ');
             return redirect()->back();
         } else {
             Session::flash('message', 'Message  unsuccessful deleted');

@@ -273,13 +273,13 @@ class ExpenseController extends Controller
 
         $expense = Expense::where('id', $request->expense_id)->first();
 
-        if (!is_null($expense)) {
-            $expense->delete();
-
-            Session::flash('message', 'Expense spent deleted successful');
+        if (is_null($expense)) {
+            Session::flash('message', 'Failed to deleted expense');
             return redirect()->back();
         } else {
-            Session::flash('message', 'Expense spent  unsuccessful deleted');
+            $expense->delete();
+
+            Session::flash('message', 'Expense spent successful deleted');
             return redirect()->back();
         }
     }

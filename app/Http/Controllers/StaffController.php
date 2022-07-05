@@ -190,7 +190,7 @@ class StaffController extends Controller
         if (!is_null($staff)) {
             $staff->delete();
 
-            Session::flash('message', 'Staff member deleted successful');
+            Session::flash('message', 'Staff member deleted successful ');
             return redirect()->back();
         } else {
             Session::flash('message', 'Staff member  unsuccessful deleted');

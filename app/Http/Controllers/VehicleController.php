@@ -160,7 +160,7 @@ class VehicleController extends Controller
         if (!is_null($vehicle)) {
             $vehicle->delete();
 
-            FacadesSession::flash('message', 'Vehicle deleted successful');
+            FacadesSession::flash('message', 'Vehicle deleted successful ');
             return redirect()->back();
         } else {
             FacadesSession::flash('message', 'Vehicle  unsuccessful deleted');

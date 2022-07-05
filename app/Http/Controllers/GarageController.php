@@ -204,7 +204,7 @@ class GarageController extends Controller
         if (!is_null($garage)) {
             $garage->delete();
 
-            Session::flash('message', 'Tool deleted successful');
+            Session::flash('message', 'Tool deleted successful ');
             return redirect()->back();
         } else {
             Session::flash('message', 'Tool  unsuccessful deleted');

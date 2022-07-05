@@ -186,7 +186,7 @@ class CargoController extends Controller
         if (!is_null($driver)) {
             $driver->delete();
 
-            Session::flash('message', 'Cargo deleted successful');
+            Session::flash('message', 'Cargo deleted successful ');
             return redirect()->back();
         } else {
             Session::flash('message', 'Cargo  unsuccessful deleted');

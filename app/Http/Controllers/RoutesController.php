@@ -372,7 +372,7 @@ class RoutesController extends Controller
         if (!is_null($route)) {
             $route->delete();
 
-            Session::flash('message', 'Route deleted successful');
+            Session::flash('message', 'Route deleted successful ');
             return redirect()->back();
         } else {
             Session::flash('message', 'Route  unsuccessful deleted');
