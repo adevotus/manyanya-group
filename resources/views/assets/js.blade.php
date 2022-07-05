@@ -23,6 +23,8 @@
 
 <!-- Vendor js -->
 <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
+<script src="{{ asset('assets/js/toastr.min.js') }}"></script>
+<script src="{{ asset('assets/js/ext-component-toastr.min.js') }}"></script>
 
 <!-- Plugins js-->
 <script src="{{ asset('assets/libs/jquery-sparkline/jquery.sparkline.min.js') }}"></script>

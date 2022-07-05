@@ -26,6 +26,24 @@
     <!-- END wrapper -->
     @include('assets.js')
     @yield('js')
+
+    <script>
+        @if (Session::has('message'))
+            @if (str_contains(Session::get('message'), ' successful '))
+                toastr.success('👋 {{ Session::get('message') }}', 'Success!', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    progressBar: true,
+                });
+            @else
+                toastr.error('👋 {{ Session::get('message') }}', 'Error!', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    progressBar: true,
+                });
+            @endif
+        @endif
+    </script>
 </body>
 
 </html>

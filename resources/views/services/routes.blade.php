@@ -123,9 +123,7 @@
                                                     class="text-success">{{ number_format($total) }}</strong></h4>
                                         @endrole
                                         <div class="col-6">
-                                            @if (Session::has('message'))
-                                                <p class="text-success mt-2">{{ Session::get('message') }}</p>
-                                            @endif
+
                                         </div>
                                     </div>
                                 </div>
@@ -162,7 +160,7 @@
                                         <th style="width: 20px;">
                                             #
                                         </th>
-                                        <th>Date</th>
+                                        <th>Departure Date</th>
                                         <th>Route Name</th>
                                         <th>Fuel</th>
                                         <th>Trip</th>
@@ -318,6 +316,9 @@
                                                     @role('superadmin')
                                                         <a href="{{ route('route.show', ['id' => $route->id]) }}"
                                                             class="action-icon"> <i class="mdi mdi-eye"></i></a>
+                                                        <a href="{{ route('route.edit', ['id' => $route->id]) }}"
+                                                            class="action-icon"> <i
+                                                                class="mdi mdi-square-edit-outline"></i></a>
                                                         <a href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete-modal{{ $route->id }}"
                                                             class="action-icon"> <i class="mdi mdi-delete"></i></a>
@@ -326,6 +327,7 @@
                                                     @role('manager')
                                                         <a href="{{ route('route.show', ['id' => $route->id]) }}"
                                                             class="action-icon"> <i class="mdi mdi-eye"></i></a>
+
                                                         <a href="#" data-bs-toggle="modal"
                                                             data-bs-target="#delete-modal{{ $route->id }}"
                                                             class="action-icon"> <i class="mdi mdi-delete"></i></a>

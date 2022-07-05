@@ -52,3 +52,7 @@
     type="text/css" />
 <link href="{{ asset('assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
     type="text/css" />
+
+<link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+<link href="{{ asset('assets/css/ext-component-toastr.css') }}" rel="stylesheet" type="text/css"
+    id="app-default-stylesheet" />

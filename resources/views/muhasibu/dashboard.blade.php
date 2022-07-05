@@ -146,6 +146,46 @@
         </div>
 
         <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="header-title">Monthly Invoice Chart</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <form action="{{ route('muhasibu.home') }}" method="get">
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <input type="text" id="range-datepicker" class="form-control flatpickr-input"
+                                                name="date" placeholder="2018-10-03 to 2018-10-10" readonly="readonly">
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="submit" class="btn btn-success waves-effect waves-light"><i
+                                                    class="mdi mdi-arrow-right"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="mt-4 chartjs-chart">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class=""></div>
+                                </div>
+                            </div>
+                            <canvas id="monthlyLineChart" style="display: block; height: 150px; width: 412px;"
+                                class="chartjs" width="824" height="400"></canvas>
+                        </div>
+                    </div> <!-- end card-body-->
+                </div> <!-- end card-->
+            </div> <!-- end col -->
+        </div>
+
+        <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
@@ -452,5 +492,131 @@
             options: options,
 
         });
+    </script>
+
+    <script>
+        pAxis = {!! json_encode($sAxis, JSON_HEX_TAG) !!};
+        qAxis = {!! json_encode($rAxis, JSON_HEX_TAG) !!};
+
+        const DATA_COUNT_3 = {!! $counts_month !!};
+        const NUMBER_CFG_3 = {
+            count: DATA_COUNT_3,
+            min: 0,
+            max: 100
+        };
+
+        const data3 = {
+            labels: pAxis,
+            datasets: [{
+                label: 'Amount',
+                data: qAxis,
+                borderColor: '#7367f0',
+                fill: false,
+                pointRadius: 2,
+                borderWidth: 2,
+                backgroundColor: '#7367f0',
+                tension: 0.4,
+            }]
+        };
+
+        const config3 = {
+            type: 'line',
+            data: data3,
+            options: {
+                animations: {
+                    radius: {
+                        duration: 400,
+                        easing: 'linear',
+                        loop: (context) => context.active
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Min and Max Settings'
+                    }
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                hover: {
+                    mode: 'index',
+                },
+                legend: {
+                    display: false,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 50,
+                    }
+                },
+                tooltips: {
+                    mode: 'index',
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return "Tsh " + Number(tooltipItem.yLabel).toFixed(0).replace(/./g,
+                                function(c, i, a) {
+                                    return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," +
+                                        c : c;
+                                });
+                        }
+                    },
+                    stepped: true,
+                    enabled: true,
+                    intersect: false,
+                    padding: 20,
+                    position: "nearest",
+                    backgroundColor: "#FAFAFA",
+                    borderColor: "#7367f0",
+                    borderWidth: 1,
+                    titleFontColor: "black",
+                    titleFontStyle: "bold",
+                    displayColors: false,
+                    bodyFontColor: "black"
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            padding: 20,
+                            fontFamily: "Montserrat",
+                            callback: function(value, index, values) {
+                                if (value >= 1000000000 || value <= -1000000000) {
+                                    return value / 1e9 + 'B';
+                                } else if (value >= 1000000 || value <= -1000000) {
+                                    return value / 1e6 + 'M';
+                                } else if (value >= 1000 || value <= -1000) {
+                                    return value / 1e3 + 'K';
+                                } else {
+                                    return value;
+                                }
+                            }
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            zeroLineColor: 'transparent',
+                        },
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            padding: 20,
+                            fontFamily: "Montserrat",
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false,
+                            zeroLineColor: 'transparent',
+                        },
+                    }],
+                }
+            },
+        };
+
+
+        const myChart3 = new Chart(
+            document.getElementById('monthlyLineChart'),
+            config3
+        );
     </script>
 @endsection

@@ -139,7 +139,8 @@
 
                                     @if ($route->mode == 'installment')
                                         <div class="mb-3 hideiffull">
-                                            <label for="name" class="form-label">Advance Payment</label>
+                                            <label for="name" class="form-label">Advance Payment / Installments
+                                                Price</label>
                                             <input type="number" id="advanced_payment" name="advanced_payment"
                                                 min="0"
                                                 class="form-control toAdd @error('advanced_payment') is-invalid @enderror"

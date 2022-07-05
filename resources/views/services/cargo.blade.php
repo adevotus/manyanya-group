@@ -36,11 +36,6 @@
                                         @endrole
                                     </div>
                                     <div class="col-sm-7">
-                                        @if (Session::has('message'))
-                                            <p
-                                                class="@if (str_contains(Session::get('message'), 'successful')) text-success @else text-danger @endif mt-2">
-                                                {{ Session::get('message') }}</p>
-                                        @endif
 
                                         @error('name')
                                             <p class="text-danger mt-2">{{ $message }}</p>

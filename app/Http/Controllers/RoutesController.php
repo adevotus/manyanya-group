@@ -298,6 +298,7 @@ class RoutesController extends Controller
                     Payment::create([
                         'payment_method' =>  $request->payment_method,
                         'price' => $route->price,
+                        'installed' =>  0,
                         'remaining' =>  0,
                         'route_id' =>  $route->id,
                     ]);
@@ -305,7 +306,7 @@ class RoutesController extends Controller
             } else {
                 if ($request->payment_mode == 'installment') {
                     $count = Payment::where('route_id', $route->id)->count();
-                    if ($payment->remaining > 0) {
+                    if ($payment->remaining > 0 && $request->advanced_payment > 0) {
                         Payment::create([
                             'description' => (1 + $count) . ' Installment',
                             'payment_method' =>  $request->payment_method,
@@ -315,7 +316,7 @@ class RoutesController extends Controller
                             'route_id' =>  $route->id,
                         ]);
                     } else {
-                        Session::flash('message', 'Route installments was completed ');
+                        Session::flash('message', 'No changes were made!');
                         return redirect()->route('routes');
                     }
                 }

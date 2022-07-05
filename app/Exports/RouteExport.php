@@ -42,13 +42,13 @@ class RouteExport implements FromQuery, WithHeadings, WithMapping, WithColumnFor
                         return $query->where('name', 'LIKE', '%' . $search . '%');
                     });
                 })
-                ->whereBetween('date', array($fromdate, $toDate));
+                ->whereBetween('date', array($fromdate, $toDate))->with('payment');
         } else if (!is_null($this->date) && (strlen($this->date) > 16) && (is_null($search))) {
             $fromdate = substr($this->date, 0, -14);
             $toDate =  substr($this->date, -10);
 
             return Route::query()->orderBy('date', 'desc')
-                ->whereBetween('date',  array($fromdate, $toDate));
+                ->whereBetween('date',  array($fromdate, $toDate))->with('payment');
         } else if (!is_null($this->date) && (strlen($this->date) > 4 && strlen($this->date) < 16) && (!is_null($search))) {
             return Route::query()->orderBy('date', 'desc')
                 ->where('route', 'LIKE', '%' . $search . '%')
@@ -62,12 +62,12 @@ class RouteExport implements FromQuery, WithHeadings, WithMapping, WithColumnFor
                         return $query->where('name', 'LIKE', '%' . $search . '%');
                     })->orWhereHas('cargo', function ($query) use ($search) {
                         return $query->where('name', 'LIKE', '%' . $search . '%');
-                    });
+                    })->with('payment');
                 })
                 ->whereDate('date', $this->date);
         } else if (!is_null($this->date) && (strlen($this->date) > 4 && strlen($this->date) < 16) && (is_null($search))) {
             return Route::query()->orderBy('date', 'desc')
-                ->whereDate('date', $this->date);
+                ->whereDate('date', $this->date)->with('payment');
         } else if (!is_null($search)) {
             return Route::query()->orderBy('date', 'desc')
                 ->where('route', 'LIKE', '%' . $search . '%')
@@ -82,9 +82,9 @@ class RouteExport implements FromQuery, WithHeadings, WithMapping, WithColumnFor
                     })->orWhereHas('cargo', function ($query) use ($search) {
                         return $query->where('name', 'LIKE', '%' . $search . '%');
                     });
-                });
+                })->with('payment');
         } else {
-            return Route::query();
+            return Route::query()->orderBy('date', 'desc')->with('payment');
         }
     }
 
@@ -96,16 +96,17 @@ class RouteExport implements FromQuery, WithHeadings, WithMapping, WithColumnFor
             'Route Name',
             'Fuel',
             'Trip',
+            'Driver Name',
+            'Vehicle Name',
             'Item',
             'Tons',
             'Total',
-            'Payment Method',
             'Payment Mode',
+            'Method',
+            'Description',
             'Installment',
-            'Remaining',
-            'Driver Name',
             'Driver Allowance',
-            'Vehicle Name',
+            'Remaining',
             'Created Date',
         ];
     }
@@ -117,29 +118,30 @@ class RouteExport implements FromQuery, WithHeadings, WithMapping, WithColumnFor
             $route->route, //b
             $route->fuel, //c
             $route->trip,  //d
-            $route->cargo->name, //e
-            $route->cargo->weight, //f
-            $route->price, //g
-            $route->payment_method,  //h
-            $route->mode,  //i
-            $route->i_price,  //j
-            $route->r_price,  //k
-            $route->driver->name, //l
-            $route->drive_allowance, //m
-            $route->vehicle->name,  //n
-            Date::dateTimeToExcel($route->created_at),  //o
+            $route->driver->name, //e
+            $route->vehicle->name,  //f
+            $route->cargo->name, //g
+            $route->cargo->weight, //h
+            $route->price, //i
+            $route->mode,  //j
+            $route->payment->last()->payment_method,  //k
+            $route->payment->last()->description,  //l
+            $route->payment->last()->installed,  //m
+            $route->drive_allowance, //n
+            $route->payment->last()->remaining,  //o
+            Date::dateTimeToExcel($route->created_at),  //p
         ];
     }
 
     public function columnFormats(): array
     {
         return [
-            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'O' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'N' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'A' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-            'O' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'P' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 }

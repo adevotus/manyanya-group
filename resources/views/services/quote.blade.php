@@ -28,9 +28,7 @@
                                 <div class="row">
 
                                     <div class="col-sm-7">
-                                        @if (Session::has('message'))
-                                            <p class="text-success mt-2">{{ Session::get('message') }}</p>
-                                        @endif
+
                                         @error('reply')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror

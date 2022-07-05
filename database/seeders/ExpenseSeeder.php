@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Cargo;
 use App\Models\Expense;
+use App\Models\Payment;
 use App\Models\Route;
 use App\Models\User;
 use Carbon\Carbon;
@@ -42,6 +43,17 @@ class ExpenseSeeder extends Seeder
     public $trip = [
         'Go',
         'return'
+    ];
+
+    public $mode = [
+        'full',
+        'installment'
+    ];
+
+    public $agent = [
+        'bank',
+        'cash',
+        'agent'
     ];
 
     public function run()
@@ -89,7 +101,7 @@ class ExpenseSeeder extends Seeder
                 'customeremail' =>  $faker->unique()->safeEmail(),
                 'name' => $this->mizigo[array_rand($this->mizigo)],
                 'amount' => rand(30000, 100000),
-                'weight' =>  rand(1, 100),
+                'weight' =>  rand(10, 100),
                 'total' =>  0,
                 'invoice' => $faker->uuid(),
                 'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
@@ -100,7 +112,12 @@ class ExpenseSeeder extends Seeder
         for ($i = 1; $i < 1001; $i++) {
             $date =  Carbon::today()->subDays(rand(0, (365 * 6)));
 
-            Route::create([
+            $mode = $this->mode[array_rand($this->mode)];
+            $agent = $this->agent[array_rand($this->agent)];
+
+            $cargo = Cargo::where('id', $i)->first();
+
+            $route = Route::create([
                 'route' => $faker->country() . '-' . $faker->country(),
                 'fuel' => rand(1000, 10000),
                 'trip' => $this->trip[array_rand($this->trip)],
@@ -109,11 +126,33 @@ class ExpenseSeeder extends Seeder
                 'cargo_id' => $i,
                 'driver_id' => rand(10, 100),
                 'vehicle_id' => $i,
-                'price' => (Cargo::where('id', $i)->first())->amount,
-                'mode' => 'full',
-                'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 1))),
-                'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 1))),
+                'price' => $cargo->amount * $cargo->weight,
+                'mode' => $mode,
+                'created_at' => $date,
+                'updated_at' => $date,
             ]);
+
+            if ($mode  === 'full') {
+                Payment::create([
+                    'description' => 'Full',
+                    'price' => $route->price,
+                    'installed' => 0,
+                    'remaining' => 0,
+                    'route_id' => $route->id,
+                    'payment_method' => $agent,
+                ]);
+            } else {
+                $installed = rand(50000, 250000);
+
+                Payment::create([
+                    'description' => 'Advanced Installment',
+                    'price' => $route->price,
+                    'installed' => $installed,
+                    'remaining' => $route->price - $installed,
+                    'route_id' => $route->id,
+                    'payment_method' => $agent,
+                ]);
+            }
         }
     }
 }

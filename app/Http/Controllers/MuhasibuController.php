@@ -21,7 +21,7 @@ class MuhasibuController extends Controller
         $this->middleware('role:muhasibu|superadmin');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $route = Route::whereDate('created_at', Carbon::today());
         $routes = $route->get();
@@ -67,8 +67,55 @@ class MuhasibuController extends Controller
         $g_w_sum = Garage::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
             ->sum(DB::raw('amount'));
 
+
+        //Weekly statistics
+        $r_w_sum = 0;
+        $e_w_sum = 0;
+        $g_w_sum = 0;
+
+        $r_w_sum = Route::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
+            ->sum(DB::raw('price'));
+
+
+        $e_w_sum = Expense::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
+            ->sum(DB::raw('amount'));
+
+        $g_w_sum = Garage::whereBetween('created_at', [Carbon::now()->startOfWeek(Carbon::MONDAY), Carbon::now()->endOfWeek(Carbon::SUNDAY)])
+            ->sum(DB::raw('amount'));
+
+
+        // Monthly Records
+        $rAxis = [];
+        $sAxis = [];
+
+        if (strlen($request->date) > 16) {
+            $fromdate = substr($request->date, 0, -14);
+            $toDate =  substr($request->date, -10);
+
+            // dd($request->date);
+
+            $m_r_sum = Route::whereBetween('created_at', [$fromdate, $toDate])
+                ->select(DB::raw('DATE(created_at) as day'), DB::raw('SUM(price) as price'))
+                ->groupBy('day')
+                ->orderBy('day', 'ASC')->get();
+        } else {
+            $m_r_sum = Route::where('created_at', '>=', Carbon::now()->startOfMonth()->toDateString())
+                ->select(DB::raw('DATE(created_at) as day'), DB::raw('SUM(price) as price'))
+                ->groupBy('day')
+                ->orderBy('day', 'ASC')->get();
+        }
+
+        foreach ($m_r_sum as $mrs) {
+            $day = new DateTime($mrs->day);
+
+            array_push($sAxis, $mrs->day);
+            array_push($rAxis, $mrs->price);
+        }
+
         return view('muhasibu.dashboard')->with('routes', $routes)
-            ->with('xAxis',  $xAxis)->with('yAxis', $yAxis)->with('r_sum', $r_sum)->with('r_count', $r_count)
+            ->with('xAxis',  $xAxis)->with('yAxis', $yAxis)
+            ->with('rAxis',  $rAxis)->with('sAxis', $sAxis)->with('counts_month', count($sAxis))
+            ->with('r_sum', $r_sum)->with('r_count', $r_count)
             ->with('e_sum', $e_sum)->with('g_sum', $g_sum)
             ->with('r_w_sum', $r_w_sum)->with('g_w_sum', $g_w_sum)->with('e_w_sum', $e_w_sum);
     }

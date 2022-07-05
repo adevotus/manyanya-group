@@ -125,9 +125,7 @@
                                         <h4>Total amount: <strong
                                                 class="text-success">{{ number_format($total) }}</strong></h4>
                                         <div class="col-6">
-                                            @if (Session::has('message'))
-                                                <p class="text-success mt-2">{{ Session::get('message') }}</p>
-                                            @endif
+
                                             @error('tool_name')
                                                 <p class="text-danger mt-2">{{ $message }}</p>
                                             @enderror
