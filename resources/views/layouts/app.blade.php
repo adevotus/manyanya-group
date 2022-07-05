@@ -30,13 +30,21 @@
     <script>
         @if (Session::has('message'))
             @if (str_contains(Session::get('message'), ' successful '))
-                toastr.success('👋 {{ Session::get('message') }}', 'Success!', {
+                toastr.success('{{ Session::get('message') }}', 'Success!', {
+                    closeButton: true,
+                    tapToDismiss: false,
+                    progressBar: true,
+                });
+            @elseif
+                (Session::get('message') === 'No changes were made!')
+
+                toastr.info('{{ Session::get('message') }}', 'Info!', {
                     closeButton: true,
                     tapToDismiss: false,
                     progressBar: true,
                 });
             @else
-                toastr.error('👋 {{ Session::get('message') }}', 'Error!', {
+                toastr.error('{{ Session::get('message') }}', 'Error!', {
                     closeButton: true,
                     tapToDismiss: false,
                     progressBar: true,
