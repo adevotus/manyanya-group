@@ -9,6 +9,7 @@ use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\MechanicsController;
 use App\Http\Controllers\MuhasibuController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuotaController;
 use App\Http\Controllers\RoutesController;
@@ -23,6 +24,22 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/', [HomeController::class, 'qoute']);
 
 Route::get('/contact', [HomeController::class, 'contact']);
+
+
+// Blog News
+Route::group(['prefix' => 'posts/'], function () {
+    Route::get('', [PostController::class, 'index'])->name('posts')->middleware('auth', 'role:mechanics|muhasibu|driver|storekeeper|manager|superadmin');
+
+    Route::get('create', [PostController::class, 'create'])->name('posts.create')->middleware('auth', 'role:mechanics|muhasibu|driver|storekeeper|manager|superadmin');
+    Route::post('create', [PostController::class, 'store']);
+
+    Route::get('{slug}', [PostController::class, 'edit'])->name('posts.edit')->middleware('auth', 'role:mechanics|muhasibu|driver|storekeeper|manager|superadmin');
+    Route::post('{slug}', [PostController::class, 'update']);
+
+    Route::delete('{slug}', [PostController::class, 'destroy'])->name('posts.delete')->middleware('auth', 'role:mechanics|muhasibu|driver|storekeeper|manager|superadmin');
+
+    Route::get('{slug}/show', [PostController::class, 'show'])->name('posts.show');
+});
 
 
 Auth::routes();

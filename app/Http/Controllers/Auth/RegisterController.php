@@ -31,19 +31,21 @@ class RegisterController extends Controller
      */
     protected function redirectTo()
     {
-        if (Auth::user()->isA('superadmin')) {
-            return  '/superadmin';
-        } else if (Auth::user()->isA('storekeeper')) {
-            return  '/storekeeper';
-        } else if (Auth::user()->isA('muhasibu')) {
-            return  '/muhasibu';
-        } else if (Auth::user()->isA('manager')) {
-            return  '/manager';
-        } else if (Auth::user()->isA('mechanics')) {
-            return  '/mechanics';
-        } else {
-            return  '/driver';
-        }
+        // if (Auth::user()->isA('superadmin')) {
+        //     return  '/superadmin';
+        // } else if (Auth::user()->isA('storekeeper')) {
+        //     return  '/storekeeper';
+        // } else if (Auth::user()->isA('muhasibu')) {
+        //     return  '/muhasibu';
+        // } else if (Auth::user()->isA('manager')) {
+        //     return  '/manager';
+        // } else if (Auth::user()->isA('mechanics')) {
+        //     return  '/mechanics';
+        // } else {
+        //     return  '/driver';
+        // }
+
+        return '/login';
     }
 
 
@@ -65,12 +67,12 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'agreement' => ['accepted'],
-        ]);
+        // return Validator::make($data, [
+        //     'name' => ['required', 'string', 'max:255'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        //     'password' => ['required', 'string', 'min:8', 'confirmed'],
+        //     'agreement' => ['accepted'],
+        // ]);
     }
 
     /**
@@ -81,12 +83,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user =  User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        // $user =  User::create([
+        //     'name' => $data['name'],
+        //     'email' => $data['email'],
+        //     'password' => bcrypt($data['password']),
+        // ]);
 
-        return $user->attachRole('driver');
+        // return $user->attachRole('driver');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Home;
 
 use App\Models\CustomerRequest;
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -12,7 +13,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('home');
+        $post = Post::orderBy('updated_at', 'desc')->take(3)->get();
+
+        return view('home')->with('posts', $post);
     }
 
     public function contact()

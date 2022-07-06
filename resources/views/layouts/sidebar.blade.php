@@ -119,6 +119,12 @@
                             <span>Quote</span>
                         </a>
                     </li>
+                    <li class="{{ Route::is('posts') ? 'menuitem-active' : '' }} ">
+                        <a class="active" href="{{ route('posts') }}">
+                            <i data-feather="rss"></i>
+                            <span>Blog</span>
+                        </a>
+                    </li>
                 @endrole
                 @role('mechanics')
                     <li class="{{ Route::is('mechanics.home') ? 'menuitem-active' : '' }}">

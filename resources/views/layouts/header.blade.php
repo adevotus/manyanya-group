@@ -9,8 +9,7 @@
                     @if (is_null(Auth::user()->profile))
                         <img src="{{ Auth::user()->default_url }}" alt="user-image" class="rounded-circle">
                     @else
-                        <img src="/storage/profile/{{ Auth::user()->profile }}" alt="user-image"
-                            class="rounded-circle">
+                        <img src="{{ Storage::url(Auth::user()->profile) }}" alt="user-image" class="rounded-circle">
                     @endif
                     <span class="pro-user-name ms-1">
                         {{ Auth::user()->name }}

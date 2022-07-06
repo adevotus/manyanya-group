@@ -28,28 +28,13 @@
                             <img src="{{ Auth::user()->default_url }}" class="rounded-circle avatar-xxl img-responsive"
                                 alt="profile-image" id="imgShow" srcset="">
                         @else
-                            <img src="storage/profile/{{ Auth::user()->profile }}"
-                                class="rounded-circle avatar-xxl img-responsive" alt="profile-image" id="imgShow" srcset="">
+                            <img src="{{ Storage::url(Auth::user()->profile) }}"
+                                class="rounded-circle avatar-xxl img-responsive" alt="profile-image" id="imgShow"
+                                srcset="">
                         @endif
 
                         <h4 class="mb-0">{{ Auth::user()->name }}</h4>
                         <p class="text-muted">{{ Auth::user()->email }}</p>
-
-                        {{-- <div class="text-start mt-3">
-                            <h4 class="font-13 text-uppercase">About Me :</h4>
-                            <p class="text-danger font-13 mb-3">
-                            <p class="text-danger mb-2 font-13"><strong>UserName :</strong> <span
-                                    class="ms-2">Geneva D. McKnight</span></p>
-
-                            <p class="text-danger mb-2 font-13"><strong>Mobile :</strong><span class="ms-2">(123)
-                                    123 1234</span></p>
-
-                            <p class="text-danger mb-2 font-13"><strong>Email :</strong> <span
-                                    class="ms-2">user@email.domain</span></p>
-
-                            <p class="text-danger mb-1 font-13"><strong>Location :</strong> <span
-                                    class="ms-2">USA</span></p>
-                        </div> --}}
 
                     </div>
                 </div> <!-- end card -->
@@ -202,7 +187,8 @@
                                                     <label for="lastname" class="form-label">Confirm New
                                                         Password</label>
                                                     <div class="input-group input-group-merge">
-                                                        <input type="password" id="password" name="password_confirmation"
+                                                        <input type="password" id="password"
+                                                            name="password_confirmation"
                                                             class="form-control  @error('password') is-invalid @enderror"
                                                             required="your password" placeholder="Confirm your password">
                                                         <div class="input-group-text" data-password="false">
@@ -218,7 +204,8 @@
 
 
                                         <div class="text-end">
-                                            <button type="submit" class="btn btn-success waves-effect waves-light mt-2"><i
+                                            <button type="submit"
+                                                class="btn btn-success waves-effect waves-light mt-2"><i
                                                     class="mdi mdi-content-save"></i>Save Changes</button>
                                         </div>
                                     </form>

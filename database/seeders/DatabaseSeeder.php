@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,8 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Post::factory(20)->create();
         $this->call(LaratrustSeeder::class);
-        // \App\Models\Cargo::factory()->create();
         $this->call(ExpenseSeeder::class);
     }
 }

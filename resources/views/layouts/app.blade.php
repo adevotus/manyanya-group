@@ -3,7 +3,7 @@
 
 <head>
     @include('assets.css')
-
+    @yield('css')
 </head>
 
 <!-- body start -->

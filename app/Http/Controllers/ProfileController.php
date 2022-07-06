@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Rules\MatchOldPassword;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -24,44 +26,43 @@ class ProfileController extends Controller
     {
         $user = User::where('id', auth()->user()->id)->first();
 
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+        ]);
+
         if ($user) {
 
             if ($request->hasFile('profile_picture')) {
                 $this->validate($request, [
-                    'profile_picture' => 'required|max:4096|mimes:jpg,jpeg,png',
+                    'profile_picture' => 'required|image|max:4096|mimes:jpg,jpeg,png',
                 ]);
 
-                $request->profile_picture->store('profile', 'public');
+                $file = $request->file('profile_picture');
 
-                $user->update([
-                    'profile' => $request->profile_picture->hashName(),
-                ]);
+                $path = Storage::putFileAs(
+                    'public/profile/' . Str::slug(auth()->user()->name),
+                    $file,
+                    time() . '.' . $file->getClientOriginalExtension(),
+                );
+
+                $user->profile = $path;
             }
 
             if ($request->email != auth()->user()->email) {
                 $this->validate($request, [
                     'email' => 'required|email|unique:users|max:255',
-                    'name' => 'required|string|max:255',
-                    'first_name' => 'required|string|max:255',
-                    'last_name' => 'required|string|max:255',
                 ]);
 
-                $user->update([
-                    'email' => $request->email,
-                ]);
-            } else {
-                $this->validate($request, [
-                    'name' => 'required|string|max:255',
-                    'first_name' => 'required|string|max:255',
-                    'last_name' => 'required|string|max:255',
-                ]);
+                $user->email = $request->email;
             }
 
-            $user->update([
-                'name' => $request->name,
-                'fname' => $request->first_name,
-                'lname' => $request->last_name,
-            ]);
+            $user->fname = $request->first_name;
+            $user->lname = $request->last_name;
+            $user->name = $request->name;
+
+            $user->save();
 
             Session::flash('message', 'User successful updated');
         } else {
@@ -81,8 +82,10 @@ class ProfileController extends Controller
 
         if ($user) {
             Session::flash('password', 'Password successful updated');
+            Session::flash('message', 'Password successful updated');
         } else {
             Session::flash('password', 'Password unsuccessful updated');
+            Session::flash('message', 'Password unsuccessful updated');
         }
 
         return redirect()->back();
