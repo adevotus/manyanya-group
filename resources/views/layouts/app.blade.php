@@ -35,20 +35,21 @@
                     tapToDismiss: false,
                     progressBar: true,
                 });
-            @elseif
-                (Session::get('message') === 'No changes were made!')
-
-                toastr.info('{{ Session::get('message') }}', 'Info!', {
-                    closeButton: true,
-                    tapToDismiss: false,
-                    progressBar: true,
-                });
             @else
-                toastr.error('{{ Session::get('message') }}', 'Error!', {
-                    closeButton: true,
-                    tapToDismiss: false,
-                    progressBar: true,
-                });
+                @if (Session::get('message') === 'No changes were made!')
+
+                    toastr.info('{{ Session::get('message') }}', 'Info!', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        progressBar: true,
+                    });
+                @else
+                    toastr.error('{{ Session::get('message') }}', 'Error!', {
+                        closeButton: true,
+                        tapToDismiss: false,
+                        progressBar: true,
+                    });
+                @endif
             @endif
         @endif
     </script>

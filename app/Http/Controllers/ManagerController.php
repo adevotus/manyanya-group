@@ -102,11 +102,71 @@ class ManagerController extends Controller
                 ->orderBy('day', 'ASC')->get();
         }
 
+        $m_total = 0;
+
         foreach ($m_r_sum as $mrs) {
+            $m_total += ($mrs->price = (is_numeric($mrs->price) || !is_null($mrs->price)) ? $mrs->price : 0);
             $day = new DateTime($mrs->day);
 
             array_push($sAxis, $mrs->day);
             array_push($rAxis, $mrs->price);
+        }
+
+
+        // Yearly Comparisons
+        $today = today();
+        $year = Carbon::createFromDate($today->year, $today->month, 1)->format('Y');
+
+        $from = ($year - 1) . '-01-01';
+        $from2 = ($year - 1) . '-12-31';
+
+        $to = ($year) . '-01-01';
+        $to2 = ($year) . '-12-31';
+
+        $fromY = $year - 1;
+        $fromT = $year;
+
+        if ($request->yearFrom != '' && $request->yearTo != '') {
+            $from = ($request->yearFrom) . '-01-01';
+            $from2 = ($request->yearFrom) . '-12-31';
+
+            $to = ($request->yearTo) . '-01-01';
+            $to2 = ($request->yearTo) . '-12-31';
+
+            $fromY = $request->yearFrom;
+            $fromT = $request->yearTo;
+        }
+
+        $last_year_payments = Route::whereDate('date', '>=', $from)
+            ->whereDate('date', '<=', $from2)
+            ->select(DB::raw('MONTH(date) as month'), DB::raw('SUM(price) as total'))
+            ->groupBy('month')
+            ->orderBy('month', 'ASC')
+            ->get();
+
+        $this_year_payments = Route::whereDate('date', '>=', $to)
+            ->whereDate('date', '<=', $to2)
+            ->select(DB::raw('MONTH(date) as month'), DB::raw('SUM(price) as total'))
+            ->groupBy('month')
+            ->orderBy('month', 'ASC')
+            ->get();
+
+        // unset($this->zAxis);
+        // unset($this->yAxis);
+        $aAxis = array();
+        $bAxis = array();
+
+        $y_total = 0;
+        $l_total = 0;
+
+        foreach ($this_year_payments as $payment) {
+            $y_total += ($payment->total = (is_numeric($payment->total) || !is_null($payment->total)) ? $payment->total : 0);
+            array_push($aAxis, $payment->total);
+        }
+
+        foreach ($last_year_payments as $payment) {
+            $l_total += ($payment->total = (is_numeric($payment->total) || !is_null($payment->total)) ? $payment->total : 0);
+            array_push($bAxis, $payment->total);
         }
 
         return view('manager.dashboard')->with('routes', $routes)
@@ -114,10 +174,14 @@ class ManagerController extends Controller
             ->with('vehicles', $vehicles)
             ->with('garages', $tools)
             ->with('cargos', $cargos)
+            ->with('aAxis',  $aAxis)->with('bAxis', $bAxis)
+            ->with('y_total', $y_total)->with('l_total', $l_total)
+            ->with('fromY', $fromY)->with('fromT', $fromT)
             ->with('xAxis',  $xAxis)->with('yAxis', $yAxis)
             ->with('rAxis',  $rAxis)->with('sAxis', $sAxis)->with('counts_month', count($sAxis))
             ->with('r_sum', $r_sum)->with('r_count', $r_count)
             ->with('e_sum', $e_sum)->with('g_sum', $g_sum)
+            ->with('m_total', $m_total)
             ->with('r_w_sum', $r_w_sum)->with('g_w_sum', $g_w_sum)->with('e_w_sum', $e_w_sum);
     }
 

@@ -150,6 +150,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <h4 class="header-title">Monthly Invoice Chart</h4>
+                                    <p>{{ 'Monthly Total is ' . number_format($m_total) }}</p>
                                 </div>
                                 <div class="col-md-6">
                                     <form action="{{ route('manager.home') }}" method="get">
@@ -177,6 +178,135 @@
                                     </div>
                                 </div>
                                 <canvas id="monthlyLineChart" style="display: block; height: 150px; width: 412px;"
+                                    class="chartjs" width="824" height="400"></canvas>
+                            </div>
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div> <!-- end col -->
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 class="header-title">Yearly Revenue Chart</h4>
+                                    <p>{{ 'Total ' . $fromY . ' is ' . number_format($l_total) . ' & ' . 'Total ' . $fromT . ' is ' . number_format($y_total) }}
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <form action="{{ route('manager.home') }}" method="get">
+                                        <div class="row">
+                                            <div class="col-sm-5">
+                                                <select class="form-select" name="yearFrom" id="example-select">
+                                                    <option value="2015" {{ (int) $fromY === 2015 ? 'selected' : '' }}>
+                                                        2015
+                                                    </option>
+                                                    <option value="2016" {{ (int) $fromY === 2016 ? 'selected' : '' }}>
+                                                        2016
+                                                    </option>
+                                                    <option value="2017" {{ (int) $fromY === 2017 ? 'selected' : '' }}>
+                                                        2017
+                                                    </option>
+                                                    <option value="2018"
+                                                        {{ (int) $fromY === 2018 ? 'selected' : '' }}>
+                                                        2018
+                                                    </option>
+                                                    <option value="2019"
+                                                        {{ (int) $fromY === 2019 ? 'selected' : '' }}>
+                                                        2019</option>
+                                                    <option value="2020"
+                                                        {{ (int) $fromY === 2020 ? 'selected' : '' }}>
+                                                        2020</option>
+                                                    <option value="2021"
+                                                        {{ (int) $fromY === 2021 ? 'selected' : '' }}>
+                                                        2021</option>
+                                                    <option value="2022"
+                                                        {{ (int) $fromY === 2022 ? 'selected' : '' }}>
+                                                        2022</option>
+                                                    <option value="2023"
+                                                        {{ (int) $fromY === 2023 ? 'selected' : '' }}>
+                                                        2023</option>
+                                                    <option value="2024"
+                                                        {{ (int) $fromY === 2024 ? 'selected' : '' }}>
+                                                        2024</option>
+                                                    <option value="2025"
+                                                        {{ (int) $fromY === 2025 ? 'selected' : '' }}>
+                                                        2025</option>
+                                                    <option value="2026"
+                                                        {{ (int) $fromY === 2026 ? 'selected' : '' }}>
+                                                        2026</option>
+                                                    <option value="2027"
+                                                        {{ (int) $fromY === 2027 ? 'selected' : '' }}>
+                                                        2027</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <select class="form-select" name="yearTo" id="example-select">
+                                                    <option value="2015"
+                                                        {{ (int) $fromT === 2015 ? 'selected' : '' }}>
+                                                        2015
+                                                    </option>
+                                                    <option value="2016"
+                                                        {{ (int) $fromT === 2016 ? 'selected' : '' }}>
+                                                        2016
+                                                    </option>
+                                                    <option value="2017"
+                                                        {{ (int) $fromT === 2017 ? 'selected' : '' }}>
+                                                        2017
+                                                    </option>
+                                                    <option value="2018"
+                                                        {{ (int) $fromT === 2018 ? 'selected' : '' }}>
+                                                        2018
+                                                    </option>
+                                                    <option value="2019"
+                                                        {{ (int) $fromT === 2019 ? 'selected' : '' }}>
+                                                        2019</option>
+                                                    <option value="2020"
+                                                        {{ (int) $fromT === 2020 ? 'selected' : '' }}>
+                                                        2020</option>
+                                                    <option value="2021"
+                                                        {{ (int) $fromT === 2021 ? 'selected' : '' }}>
+                                                        2021</option>
+                                                    <option value="2022"
+                                                        {{ (int) $fromT === 2022 ? 'selected' : '' }}>
+                                                        2022</option>
+                                                    <option value="2023"
+                                                        {{ (int) $fromT === 2023 ? 'selected' : '' }}>
+                                                        2023</option>
+                                                    <option value="2024"
+                                                        {{ (int) $fromT === 2024 ? 'selected' : '' }}>
+                                                        2024</option>
+                                                    <option value="2025"
+                                                        {{ (int) $fromT === 2025 ? 'selected' : '' }}>
+                                                        2025</option>
+                                                    <option value="2026"
+                                                        {{ (int) $fromT === 2026 ? 'selected' : '' }}>
+                                                        2026</option>
+                                                    <option value="2027"
+                                                        {{ (int) $fromT === 2027 ? 'selected' : '' }}>
+                                                        2027</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="submit" class="btn btn-success waves-effect waves-light"><i
+                                                        class="mdi mdi-arrow-right"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="mt-4 chartjs-chart">
+                                <div class="chartjs-size-monitor">
+                                    <div class="chartjs-size-monitor-expand">
+                                        <div class=""></div>
+                                    </div>
+                                    <div class="chartjs-size-monitor-shrink">
+                                        <div class=""></div>
+                                    </div>
+                                </div>
+                                <canvas id="yearlyLineChart" style="display: block; height: 150px; width: 412px;"
                                     class="chartjs" width="824" height="400"></canvas>
                             </div>
                         </div> <!-- end card-body-->
@@ -641,6 +771,7 @@
 
 
 @section('js')
+    {{-- Weekly --}}
     <script>
         nAxis = {!! json_encode($xAxis, JSON_HEX_TAG) !!};
         mAxis = {!! json_encode($yAxis, JSON_HEX_TAG) !!};
@@ -767,6 +898,7 @@
         );
     </script>
 
+    {{-- Monthly --}}
     <script>
         pAxis = {!! json_encode($sAxis, JSON_HEX_TAG) !!};
         qAxis = {!! json_encode($rAxis, JSON_HEX_TAG) !!};
@@ -893,7 +1025,7 @@
         );
     </script>
 
-
+    {{-- Pie Chart --}}
     <script>
         var data = [{
             data: [{!! $g_w_sum + $e_w_sum !!}, {!! $r_w_sum !!}],
@@ -976,5 +1108,146 @@
             options: options,
 
         });
+    </script>
+
+    {{-- Year --}}
+    <script>
+        aAxis = {!! json_encode($aAxis, JSON_HEX_TAG) !!};
+        bAxis = {!! json_encode($bAxis, JSON_HEX_TAG) !!};
+
+        const DATA_COUNT5 = 12;
+        const NUMBER_CFG5 = {
+            count: DATA_COUNT5,
+            min: 0,
+            max: 100
+        };
+
+        const data5 = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mar', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct',
+                'Nov', 'Dec'
+            ],
+            datasets: [{
+                    label: 'This Year',
+                    data: aAxis,
+                    borderColor: '#7367f0',
+                    pointRadius: 4,
+                    borderWidth: 3,
+                    fill: false,
+                    backgroundColor: '#7367f0',
+                    tension: 0.2,
+                },
+                {
+                    label: 'Last Year',
+                    data: bAxis,
+                    borderColor: '#e1e1e1',
+                    fill: false,
+                    borderDash: [5, 5],
+                    pointRadius: 4,
+                    borderWidth: 3,
+                    backgroundColor: '#e1e1e1',
+                    tension: 0.4,
+                },
+
+            ]
+        };
+
+        const config5 = {
+            type: 'line',
+            data: data5,
+            options: {
+                animations: {
+                    radius: {
+                        duration: 400,
+                        easing: 'linear',
+                        loop: (context) => context.active
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Min and Max Settings'
+                    }
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                hover: {
+                    mode: 'index',
+                },
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 50,
+                    }
+                },
+                tooltips: {
+                    mode: 'index',
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            return "Tsh " + Number(tooltipItem.yLabel).toFixed(0).replace(/./g,
+                                function(c, i, a) {
+                                    return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "," +
+                                        c : c;
+                                });
+                        }
+                    },
+                    stepped: true,
+                    enabled: true,
+                    intersect: false,
+                    padding: 20,
+                    position: "nearest",
+                    backgroundColor: "#FAFAFA",
+                    borderColor: "#7367f0",
+                    borderWidth: 1,
+                    titleFontColor: "black",
+                    titleFontStyle: "bold",
+                    displayColors: false,
+                    bodyFontColor: "black"
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            padding: 20,
+                            fontFamily: "Montserrat",
+                            callback: function(value, index, values) {
+                                if (value >= 1000000000 || value <= -1000000000) {
+                                    return value / 1e9 + 'B';
+                                } else if (value >= 1000000 || value <= -1000000) {
+                                    return value / 1e6 + 'M';
+                                } else if (value >= 1000 || value <= -1000) {
+                                    return value / 1e3 + 'K';
+                                } else {
+                                    return value;
+                                }
+                            }
+                        },
+                        gridLines: {
+                            drawBorder: false,
+                            zeroLineColor: 'transparent',
+                        },
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            padding: 20,
+                            fontFamily: "Montserrat",
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false,
+                            zeroLineColor: 'transparent',
+                        },
+                    }],
+                }
+            },
+        };
+
+        const myChart5 = new Chart(
+            document.getElementById('yearlyLineChart'),
+            config5
+        );
     </script>
 @endsection

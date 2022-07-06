@@ -110,21 +110,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        @role('muhasibu')
-                                            <h4>Total amount: <strong
-                                                    class="text-success">{{ number_format($total) }}</strong></h4>
-                                        @endrole
-                                        @role('manager')
-                                            <h4>Total amount: <strong
-                                                    class="text-success">{{ number_format($total) }}</strong></h4>
-                                        @endrole
-                                        @role('superadmin')
-                                            <h4>Total amount: <strong
-                                                    class="text-success">{{ number_format($total) }}</strong></h4>
-                                        @endrole
-                                        <div class="col-6">
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>

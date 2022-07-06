@@ -97,8 +97,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <h4>Total amount: <strong
-                                                class="text-success">{{ number_format($total) }}</strong></h4>
+
                                         <div class="col-6">
 
                                             @error('description')
