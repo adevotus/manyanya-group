@@ -1,11 +1,11 @@
-<div class="container-xxl py-5" id="blogs">
-    <div class="container py-5">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="text-secondary text-uppercase">Blogs & Event and News</h6>
-            <h1 class="mb-5">Explore Our event that are accour to us</h1>
-        </div>
-        <div class="row g-4">
-            @if ($posts && $posts->count() > 0)
+@if ($posts && $posts->count() > 0)
+    <div class="container-xxl py-5" id="blogs">
+        <div class="container py-5">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="text-secondary text-uppercase">Blogs & Event and News</h6>
+                <h1 class="mb-5">Explore Our event that are accour to us</h1>
+            </div>
+            <div class="row g-4">
                 @foreach ($posts as $post)
                     <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="service-item p-4">
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 @endforeach
-            @endif
+            </div>
         </div>
     </div>
-</div>
+@endif

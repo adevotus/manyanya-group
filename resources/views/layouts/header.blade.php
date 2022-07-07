@@ -10,6 +10,7 @@
                         <img src="{{ Auth::user()->default_url }}" alt="user-image" class="rounded-circle">
                     @else
                         <img src="{{ Storage::url(Auth::user()->profile) }}" alt="user-image" class="rounded-circle">
+                        {{-- <img src="/storage/app/{{ Auth::user()->profile }}" alt="user-image" class="rounded-circle"> --}}
                     @endif
                     <span class="pro-user-name ms-1">
                         {{ Auth::user()->name }}

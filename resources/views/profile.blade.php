@@ -31,6 +31,8 @@
                             <img src="{{ Storage::url(Auth::user()->profile) }}"
                                 class="rounded-circle avatar-xxl img-responsive" alt="profile-image" id="imgShow"
                                 srcset="">
+
+                            {{-- <img src="/storage/app/{{ Auth::user()->profile }}" alt="user-image" class="rounded-circle"> --}}
                         @endif
 
                         <h4 class="mb-0">{{ Auth::user()->name }}</h4>

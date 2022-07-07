@@ -71,8 +71,26 @@ class PostController extends Controller
     public function show($slug)
     {
         $post = Post::where('slug', $slug)->first();
+        if (is_null($post)) {
+            abort(404, 'Post Not Found');
+        } else {
+            $previous = Post::where('id', '<', $post->id)->max('id');
+            $nextN = Post::where('id', '>', $post->id)->min('id');
 
-        return view('news.show')->with('post', $post);
+            if ($previous == null) {
+                $prev = Post::orderBy('create_at', 'asc')->last();
+            } else {
+                $prev = Post::where('id', $previous)->first();
+            }
+
+            if ($nextN == null) {
+                $next = Post::orderBy('created_at', 'asc')->first();
+            } else {
+                $next = Post::where('id', $nextN)->first();
+            }
+
+            return view('news.show')->with('post', $post)->with('prev', $prev)->with('next', $next);
+        }
     }
 
 

@@ -17,18 +17,18 @@
                 <h4 class="text-light mb-3">Services</h4>
                 <a class="btn btn-link" href="#">Logistic Solutions</a>
                 <a class="btn btn-link" href="#">Industry solutions</a>
-                <a class="btn btn-link" href="">Cargo Transportation</a>
-                <a class="btn btn-link" href="">Truck Request</a>
+                <a class="btn btn-link" href="#">Cargo Transportation</a>
+                <a class="btn btn-link" href="#">Truck Request</a>
 
 
             </div>
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-3">Quick Links</h4>
-                <a class="btn btn-link" href="#">About Us</a>
-                <a class="btn btn-link" href="#">Contact Us</a>
-                <a class="btn btn-link" href="#">Our Services</a>
-                <a class="btn btn-link" href="#">Terms & Condition</a>
-                <a class="btn btn-link" href="#">Support</a>
+                <a class="btn btn-link" href="#about">About Us</a>
+                <a class="btn btn-link" href="#requestTruck">Quotes</a>
+                <a class="btn btn-link" href="#service">Our Services</a>
+                <a class="btn btn-link" href="#blogs">Blog & Events</a>
+                <a class="btn btn-link" href="/contact">Support</a>
             </div>
             <div class="col-lg-3 col-md-6">
                 <h4 class="text-light mb-3">Manyanya Enterprises</h4>
@@ -51,3 +51,7 @@
         </div>
     </div>
 </div>
+
+<!-- Back to Top -->
+<a href="#" style="background-color: #51CFED !important; border:#51CFED;"
+    class="btn btn-lg btn-primary btn-lg-square rounded-0 back-to-top"><i class="bi bi-arrow-up"></i></a>
