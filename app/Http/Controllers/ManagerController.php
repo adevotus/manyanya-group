@@ -35,6 +35,8 @@ class ManagerController extends Controller
         $drivers = User::orderBy('created_at', 'desc')->whereRoleIs('driver')->take(4)->get();
         $tools = Garage::orderBy('created_at', 'desc')->take(4)->get();
 
+        $t_cargo = Cargo::whereDate('created_at', Carbon::today())->count();
+
 
         $route = Route::whereDate('created_at', Carbon::today());
         $routes = $route->get();
@@ -169,7 +171,9 @@ class ManagerController extends Controller
             array_push($bAxis, $payment->total);
         }
 
-        return view('manager.dashboard')->with('routes', $routes)
+        return view('manager.dashboard')
+            ->with('t_cargo', $t_cargo)
+            ->with('routes', $routes)
             ->with('drivers', $drivers)
             ->with('vehicles', $vehicles)
             ->with('garages', $tools)

@@ -58,6 +58,11 @@ class User extends Authenticatable
         return $this->hasMany(Route::class);
     }
 
+    public function activity()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
     public function expense()
     {
         return $this->hasMany(Expense::class);

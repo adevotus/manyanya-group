@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Activity;
 use App\Models\Cargo;
 use App\Models\Expense;
 use App\Models\Payment;
@@ -71,31 +72,59 @@ class ExpenseSeeder extends Seeder
             ]);
 
             $user->attachRole('driver');
+
+            Activity::create([
+                'action' => 'ADD USER',
+                'description' => 'User ' . $user->name . ' with email ' . $user->email . ' was added successful',
+                'user_id' => 4,
+            ]);
         }
 
-        for ($i = 1; $i < 1001; $i++) {
-            Vehicle::create([
+        for ($i = 0; $i < 50; $i++) {
+            $date = Carbon::tomorrow()->subDays(rand(0, (365 * 6)));
+            $vehicle = Vehicle::create([
                 'name'  => $this->vehicle[array_rand($this->vehicle)],
                 'platenumber'  => $faker->creditCardNumber(),
                 'reg_number'  => $faker->uuid(),
                 'condition'  => 'new',
-                'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
-                'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 5))),
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]);
+
+            Activity::create([
+                'action' => 'ADD VEHICLE',
+                'description' => 'Vehicle ' . $vehicle->name . ' with plate number ' . $vehicle->platenumber . ' was added',
+                'user_id' => 5,
+                'created_at' => $date,
+                'updated_at' => $date,
             ]);
         }
 
-        for ($i = 1; $i < 1001; $i++) {
-            Expense::create([
+        for ($i = 1; $i < 5000; $i++) {
+            $date = Carbon::tomorrow()->subDays(rand(0, (365 * 6)));
+
+            $expense = Expense::create([
                 'description'  => $faker->sentence(),
                 'amount'  => $faker->numberBetween(10000, 1000000),
                 'user_id' =>  rand(1, 50),
-                'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
-                'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 5))),
+
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]);
+
+            Activity::create([
+                'action' => 'ADD EXPENSE SPENT',
+                'description' => 'Expense with amount ' . $expense->amount . ' was added',
+                'user_id' =>  rand(1, 50),
+                'created_at' => $date,
+                'updated_at' => $date,
             ]);
         }
 
-        for ($i = 1; $i < 1001; $i++) {
-            Cargo::create([
+        for ($i = 1; $i < 10001; $i++) {
+            $date = Carbon::tomorrow()->subDays(rand(0, (365 * 6)));
+
+            $cargo = Cargo::create([
                 'customername' => $faker->name(),
                 'customerphone' => $faker->phoneNumber(),
                 'customeremail' =>  $faker->unique()->safeEmail(),
@@ -103,14 +132,23 @@ class ExpenseSeeder extends Seeder
                 'amount' => rand(30000, 100000),
                 'weight' =>  rand(10, 100),
                 'total' =>  0,
+                'status' =>  true,
                 'invoice' => $faker->uuid(),
-                'created_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 6))),
-                'updated_at' => Carbon::tomorrow()->subDays(rand(0, (365 * 5))),
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]);
+
+            Activity::create([
+                'action' => 'ADD CARGO',
+                'description' => 'cargo ' . $cargo->name . ' with weight ' . $cargo->weight . ' for customer ' . $cargo->customername . ' and  phone number ' . $cargo->customerphone . ' was added',
+                'user_id' => 4,
+                'created_at' => $date,
+                'updated_at' => $date,
             ]);
         }
 
-        for ($i = 1; $i < 1001; $i++) {
-            $date =  Carbon::today()->subDays(rand(0, (365 * 6)));
+        for ($i = 1; $i < 10001; $i++) {
+            $date =  Carbon::tomorrow()->subDays(rand(0, (365 * 6)));
 
             $mode = $this->mode[array_rand($this->mode)];
             $agent = $this->agent[array_rand($this->agent)];
@@ -125,9 +163,17 @@ class ExpenseSeeder extends Seeder
                 'drive_allowance' => rand(50000, 200000),
                 'cargo_id' => $i,
                 'driver_id' => rand(10, 100),
-                'vehicle_id' => $i,
+                'vehicle_id' => rand(1, 50),
                 'price' => $cargo->amount * $cargo->weight,
                 'mode' => $mode,
+                'created_at' => $date,
+                'updated_at' => $date,
+            ]);
+
+            Activity::create([
+                'action' => 'ADD ROUTE',
+                'description' => 'Route ' . $route->route . ' was added',
+                'user_id' =>  4,
                 'created_at' => $date,
                 'updated_at' => $date,
             ]);
@@ -141,6 +187,14 @@ class ExpenseSeeder extends Seeder
                     'route_id' => $route->id,
                     'payment_method' => $agent,
                 ]);
+
+                Activity::create([
+                    'action' => 'ADD PAYMENT',
+                    'description' => 'Full Payment of TZS ' . $route->price . 'for route ' . $route->route . ' was successful paid',
+                    'user_id' =>  3,
+                    'created_at' => $date,
+                    'updated_at' => $date,
+                ]);
             } else {
                 $installed = rand(50000, 250000);
 
@@ -151,6 +205,15 @@ class ExpenseSeeder extends Seeder
                     'remaining' => $route->price - $installed,
                     'route_id' => $route->id,
                     'payment_method' => $agent,
+                ]);
+
+                Activity::create([
+                    'action' => 'ADD PAYMENT',
+                    'description' => 'Advanced Payment of TZS ' . $installed . 'for route ' . $route->route . ' was successful paid the remaining amount is TZS ' .
+                        ($route->price - $installed),
+                    'user_id' =>  3,
+                    'created_at' => $date,
+                    'updated_at' => $date,
                 ]);
             }
         }

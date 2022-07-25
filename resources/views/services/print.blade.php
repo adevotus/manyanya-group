@@ -9,8 +9,7 @@
 
     <link href="{{ asset('assets/css/config/default/bootstrap.min.css') }}" rel="stylesheet" type="text/css"
         media="all" />
-    <link href="{{ asset('assets/css/config/default/app.min.css') }}" rel="stylesheet" type="text/css"
-        media="all" />
+    <link href="{{ asset('assets/css/config/default/app.min.css') }}" rel="stylesheet" type="text/css" media="all" />
 
     <style>
         @media screen {
@@ -51,7 +50,6 @@
                                 <!-- Ticket type -->
                                 <label class="mt-2 mb-1">Route Name:</label>
                                 <p>
-                                    <i class="mdi mdi-truck font-18 text-info me-1 align-middle"></i>
                                     <strong>{{ $route->route }}</strong>
                                 </p>
                                 <!-- end Ticket Type -->
@@ -61,7 +59,6 @@
                                 <!-- Ticket type -->
                                 <label class="mt-2 mb-1">Route Invoice:</label>
                                 <p>
-                                    <i class="mdi mdi-credit-card font-18 text-info me-1 align-middle"></i>
                                     <strong>{{ $route->cargo->invoice }}</strong>
                                 </p>
                                 <!-- end Ticket Type -->

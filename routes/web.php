@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\DriverController;
@@ -64,6 +65,12 @@ Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:muhasibu|manage
     Route::get('/quotas', [QuotaController::class, 'index'])->name('quotes');
     Route::put('/quotas/{id}', [QuotaController::class, 'update'])->name('update');
     Route::delete('/quotas/{id}', [QuotaController::class, 'destroy'])->name('destroy');
+});
+
+// Activities view,Create,Update,Delete
+Route::group(['prefix' => 'home', 'middleware' => ['auth', 'role:manager|superadmin']], function () {
+    Route::get('/activity', [ActivityController::class, 'index'])->name('activity');
+    Route::delete('/activity/{id}', [ActivityController::class, 'destroy'])->name('activity.destroy');
 });
 
 // Cargo view,Create,Update,Delete

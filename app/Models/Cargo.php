@@ -18,7 +18,8 @@ class Cargo extends Model
         'weight',
         'total',
         'invoice',
-        'payment'
+        'payment',
+        'status',
     ];
 
     public function route()

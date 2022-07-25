@@ -5,8 +5,8 @@
             <div class="col-md-6">
                 <script>
                     document.write(new Date().getFullYear())
-                </script> &copy; Maintained by<a href="">Manyanya's Enterprises Company
-                    Limited</a>
+                </script> &copy;<a href=""> Manyanya's Group
+                </a>
             </div>
             <div class="col-md-6">
                 <div class="text-md-end footer-links d-none d-sm-block">

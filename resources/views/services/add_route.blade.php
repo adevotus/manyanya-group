@@ -83,7 +83,8 @@
                                     <label for="example-select" class="form-label">Select Vehicle</label>
                                     <select class="form-select" name="vehicle_id" id="example-select">
                                         @foreach ($vehicles as $vehicle)
-                                            <option value="{{ $vehicle->id }}">{{ $vehicle->name }}</option>
+                                            <option value="{{ $vehicle->id }}">
+                                                {{ $vehicle->name . ' - ' . $vehicle->platenumber }}</option>
                                         @endforeach
                                     </select>
                                     @error('vehicle_id')

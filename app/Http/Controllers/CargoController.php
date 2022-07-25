@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\InvoiceMail;
+use App\Models\Activity;
 use App\Models\Cargo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -116,9 +117,21 @@ class CargoController extends Controller
             //     $cargo->weight,
             // ));
 
+            Activity::create([
+                'action' => "ADD CARGO",
+                'description' => 'Cargo ' . $cargo->name . ' with weight ' . $cargo->weight . ' for customer ' . $cargo->customername . ' and  phone number ' . $cargo->customerphone . ' was added',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Cargo successful created');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => "ADD CARGO",
+                'description' => 'Cargo ' . $request->name . ' with weight ' . $request->weight . ' for customer ' . $request->customername . ' and  phone number ' . $request->customerphone . ' failed to create',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Cargo unsuccessful created');
             return redirect()->back();
         }
@@ -130,13 +143,13 @@ class CargoController extends Controller
         $month = date('my', strtotime(Carbon::now()));
 
         if ($latest < 10) {
-            return 'YE-' . $month . '-000' . $latest;
+            return 'MG-' . $month . '-000' . $latest;
         } else  if ($latest < 100 && $latest >= 10) {
-            return 'YE-' . $month . '-00' . $latest;
+            return 'MG-' . $month . '-00' . $latest;
         } else  if ($latest >= 100 && $latest < 1000) {
-            return 'YE-' . $month . '-0' . $latest;
+            return 'MG-' . $month . '-0' . $latest;
         } else {
-            return 'YE-' . $month . '-' . $latest;
+            return 'MG-' . $month . '-' . $latest;
         }
     }
 
@@ -156,15 +169,30 @@ class CargoController extends Controller
 
 
         if (!is_null($cargo)) {
+            $cargo->customername = $request->customername;
+            $cargo->customerphone = $request->customerphone;
+            $cargo->customeremail = $request->customeremail;
             $cargo->name = $request->name;
             $cargo->amount = $request->amount;
             $cargo->weight = $request->weight;
             $cargo->save();
 
-            Session::flash('message', 'Cargo successful created');
+            Activity::create([
+                'action' => "UPDATE CARGO",
+                'description' => 'Cargo ' . $request->name . ' with weight ' . $request->weight . ' for customer ' . $cargo->customername . ' and  phone number ' . $cargo->customerphone . ' is updated',
+                'user_id' => auth()->user()->id,
+            ]);
+
+            Session::flash('message', 'Cargo successful updated');
             return redirect()->back();
         } else {
-            Session::flash('message', 'Cargo unsuccessful created');
+            Activity::create([
+                'action' => "UPDATE CARGO",
+                'description' => 'Cargo to update was not found',
+                'user_id' => auth()->user()->id,
+            ]);
+
+            Session::flash('message', 'Cargo unsuccessful updated');
             return redirect()->back();
         }
     }
@@ -181,14 +209,28 @@ class CargoController extends Controller
             'cargo_id' => 'required|numeric',
         ]);
 
-        $driver = Cargo::where('id', $request->cargo_id)->first();
+        $cargo = Cargo::where('id', $request->cargo_id)->first();
 
-        if (!is_null($driver)) {
-            $driver->delete();
+        if (!is_null($cargo)) {
+            $tempCargo = $cargo;
+
+            $cargo->delete();
+
+            Activity::create([
+                'action' => "DELETE CARGO",
+                'description' => 'Cargo ' . $tempCargo->name . ' with weight ' . $tempCargo->weight . ' for customer ' . $tempCargo->customername . ' and  phone number ' . $tempCargo->customerphone . ' is deleted',
+                'user_id' => auth()->user()->id,
+            ]);
 
             Session::flash('message', 'Cargo deleted successful ');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => "DELETE CARGO",
+                'description' => 'Cargo with id ' . $request->cargo_id . ' was not found',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Cargo  unsuccessful deleted');
             return redirect()->back();
         }

@@ -119,6 +119,12 @@
                             <span>Quote</span>
                         </a>
                     </li>
+                    <li class="{{ Route::is('activity') ? 'menuitem-active' : '' }} ">
+                        <a class="active" href="{{ route('activity') }}">
+                            <i data-feather="activity"></i>
+                            <span>Activites</span>
+                        </a>
+                    </li>
                     <li class="{{ Route::is('posts') ? 'menuitem-active' : '' }} ">
                         <a class="active" href="{{ route('posts') }}">
                             <i data-feather="rss"></i>

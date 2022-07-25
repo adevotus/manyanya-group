@@ -98,7 +98,7 @@
 
                             <div class="col-md-6">
                                 <!-- Reported by -->
-                                <label class="mt-2 mb-1">Customer phone:</label>
+                                <label class="mt-2 mb-1">Vehicle Details:</label>
                                 <div class="d-flex align-items-start">
                                     <div class="w-100">
                                         <p><strong>{{ $route->vehicle->name }} -
@@ -113,14 +113,14 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <!-- assignee -->
-                                <label class="mt-2 mb-1">Created On :</label>
+                                <label class="mt-2 mb-1">Created Date :</label>
                                 <p> <strong>{{ date('d-m-Y', strtotime($route->created_at)) }}</strong></p>
                                 <!-- end assignee -->
                             </div> <!-- end col -->
 
                             <div class="col-md-6">
                                 <!-- assignee -->
-                                <label class="mt-2 mb-1">departure On :</label>
+                                <label class="mt-2 mb-1">Departure Date :</label>
                                 <p> <strong>{{ date('d-m-Y', strtotime($route->date)) }}</strong></p>
                                 <!-- end assignee -->
                             </div> <!-- end col -->
@@ -214,8 +214,7 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                            <form action="{{ route('route.show', ['id' => $route->id]) }}"
-                                                method="post">
+                                            <form action="{{ route('route.show', ['id' => $route->id]) }}" method="post">
                                                 @csrf
                                                 <div class="modal-body p-4">
 

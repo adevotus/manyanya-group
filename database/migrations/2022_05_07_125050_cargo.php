@@ -23,6 +23,7 @@ class Cargo extends Migration
             $table->double('amount', 100, 0)->nullable();
             $table->double('weight', 10, 0)->nullable();
             $table->double('Total', 10, 0)->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }

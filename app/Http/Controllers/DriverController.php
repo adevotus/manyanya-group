@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\Expense;
 use App\Models\Route;
 use App\Models\User;
@@ -125,9 +126,20 @@ class DriverController extends Controller
             $route->vehicle_description = $request->description;
             $route->save();
 
+            Activity::create([
+                'action' => 'UPDATE ROUTE VEHICLE DESCRIPTION',
+                'description' => 'Vehicle ' . $route->vehicle->name . ' with plate number ' . $route->vehicle->platenumber . ' route description is updated',
+                'user_id' => 4,
+            ]);
+
             Session::flash('message', 'Vehicle description successful updated');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'UPDATE ROUTE VEHICLE DESCRIPTION',
+                'description' => 'Route was ' . $id . ' not found',
+                'user_id' => 4,
+            ]);
             Session::flash('message', 'Vehicle description unsuccessful updated');
             return redirect()->back();
         }
@@ -177,9 +189,21 @@ class DriverController extends Controller
                     'birth_certifacate' => $path2,
                 ]);
 
+                Activity::create([
+                    'action' => 'ADD DRIVER',
+                    'description' => 'Driver ' . $user->name . ' with email ' . $user->email . ' was updated successful',
+                    'user_id' => auth()->user()->id,
+                ]);
+
                 Session::flash('message', 'Driver details successful updated');
                 return redirect()->back();
             } else {
+                Activity::create([
+                    'action' => 'UPDATE DRIVER',
+                    'description' => 'Driver was not found',
+                    'user_id' => auth()->user()->id,
+                ]);
+
                 Session::flash('message', 'Driver details unsuccessful updated');
                 return redirect()->back();
             }
@@ -199,42 +223,28 @@ class DriverController extends Controller
         })->first();
 
         if (!is_null($route)) {
-            if ($route->status === 'delivered') {
-                if ($request->driver_status == 'yes') {
-                    $user = User::find(auth()->user()->id);
-                    $user->status = true;
-                    $user->save();
 
-                    Session::flash('message', 'You have change status to available');
-                } else {
-                    $user = User::find(auth()->user()->id);
-                    $user->status = false;
-                    $user->save();
+            $route->update([
+                'status' => 'delivered',
+            ]);
 
-                    Session::flash('message', 'You have change status to not available');
-                }
-            } else {
-                if ($request->cargo_delivered == 'yes') {
-                    $route->update([
-                        'status' => 'delivered',
-                    ]);
+            Activity::create([
+                'action' => 'UPDATE ROUTE STATUS',
+                'description' => 'Route status for route ' . $route->route . ' was updated successful',
+                'user_id' => auth()->user()->id,
+            ]);
 
-                    if ($request->cargo_delivered == 'yes') {
-                        $user = User::find(auth()->user()->id);
-                        $user->status = true;
-                        $user->save();
-
-                        Session::flash('message', 'Route successful updated');
-                    } else {
-                        Session::flash('message', 'Route successful updated');
-                    }
-                } else {
-                    Session::flash('message', 'Unsuccessful! Deliver the first cargo first');
-                }
-            }
+            Session::flash('message', 'Route successful updated');
         } else {
+            Activity::create([
+                'action' => 'UPDATE ROUTE STATUS',
+                'description' => 'Route' . $request->route_id . 'for given driver was not found',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Unsuccessful updated, route with given driver not found');
         }
+
         return redirect()->back();
     }
 
@@ -284,9 +294,21 @@ class DriverController extends Controller
             $user->attachRole('driver');
 
             if ($user) {
+                Activity::create([
+                    'action' => 'ADD DRIVER',
+                    'description' => 'Driver ' . $user->name . ' with email ' . $user->email . ' was creaed successful',
+                    'user_id' => auth()->user()->id,
+                ]);
+
                 Session::flash('message', 'Driver successful created');
                 return redirect()->back();
             } else {
+                Activity::create([
+                    'action' => 'ADD DRIVER',
+                    'description' => 'Driver was  unsuccessful created',
+                    'user_id' => auth()->user()->id,
+                ]);
+
                 Session::flash('message', 'Driver unsuccessful created');
                 return redirect()->back();
             }
@@ -355,9 +377,21 @@ class DriverController extends Controller
         $user->save();
 
         if ($user) {
+            Activity::create([
+                'action' => 'ADD DRIVER',
+                'description' => 'Driver ' . $user->name . ' with email ' . $user->email . ' was updated successful',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Driver successful updated');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'ADD DRIVER',
+                'description' => 'Driver ' . $user->name . ' with email ' . $user->email . ' failed to updated',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Driver unsuccessful updated');
             return redirect()->back();
         }
@@ -372,11 +406,25 @@ class DriverController extends Controller
         $driver = User::where('id', $request->driver_id)->first();
 
         if (!is_null($driver)) {
+            $temp = $driver;
+
             $driver->delete();
+
+            Activity::create([
+                'action' => 'DELETE DRIVER',
+                'description' => 'Driver ' . $temp->name . ' with email ' . $temp->email . ' was deleted successful',
+                'user_id' => auth()->user()->id,
+            ]);
 
             Session::flash('message', 'Driver deleted successful');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'DELETE DRIVER',
+                'description' => 'Driver ' . $request->driver_id . '  failed to deleted',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Driver  unsuccessful deleted');
             return redirect()->back();
         }
@@ -555,14 +603,32 @@ class DriverController extends Controller
             $route->save();
 
             if ($route) {
+                Activity::create([
+                    'action' => 'UPDATE ROUTE STATUS',
+                    'description' => 'Route status for route ' . $route->route . ' was updated successful',
+                    'user_id' => auth()->user()->id,
+                ]);
+
                 Session::flash('message', 'Route successful confirmed');
                 return redirect()->back();
             } else {
+                Activity::create([
+                    'action' => 'UPDATE ROUTE STATUS',
+                    'description' => 'Route status for route ' . $id . ' failed to delete',
+                    'user_id' => auth()->user()->id,
+                ]);
+
                 Session::flash('message', 'Route unsuccessful confirmed');
                 return redirect()->back();
             }
         } else {
-            Session::flash('message', 'Please check the route again!');
+            Activity::create([
+                'action' => 'UPDATE ROUTE STATUS',
+                'description' => 'Route status for route ' . $id . ' failed to delete',
+                'user_id' => auth()->user()->id,
+            ]);
+
+            Session::flash('message', 'Please check the route name again!');
             return redirect()->back();
         }
     }

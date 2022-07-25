@@ -152,7 +152,7 @@ class RoutesController extends Controller
     {
         $drivers = User::whereRoleIs('driver')->get();
         $vehicles = Vehicle::where('status', 'available')->get();
-        $cargos = Cargo::orderBy('created_at', 'desc')->get();
+        $cargos = Cargo::where('status', false)->orderBy('created_at', 'desc')->get();
 
         return view('services.add_route')->with('vehicles', $vehicles)
             ->with('drivers', $drivers)
@@ -180,6 +180,10 @@ class RoutesController extends Controller
             'driver_id' => $request->driver_id,
             'vehicle_id' => $request->vehicle_id,
         ]);
+
+        $cargo = Cargo::where('id', $request->cargo_id)->first();
+        $cargo->status = true;
+        $cargo->save();
 
         if ($route) {
             Session::flash('message', 'Route successful created');
@@ -280,10 +284,6 @@ class RoutesController extends Controller
             $cargo->amount = $request->price;
             $cargo->save();
 
-            // $route = Route::where('id',$id)->first();
-
-
-
             if (is_null($payment)) {
                 if ($request->payment_mode == 'installment') {
                     Payment::create([
@@ -296,15 +296,16 @@ class RoutesController extends Controller
                     ]);
                 } else {
                     Payment::create([
+                        'description' => 'Full Installment',
                         'payment_method' =>  $request->payment_method,
                         'price' => $route->price,
-                        'installed' =>  0,
+                        'installed' =>  $route->price,
                         'remaining' =>  0,
                         'route_id' =>  $route->id,
                     ]);
                 }
             } else {
-                if ($request->payment_mode == 'installment') {
+                if ($request->payment_mode == 'installment' && $payment->mode === 'installment') {
                     $count = Payment::where('route_id', $route->id)->count();
                     if ($payment->remaining > 0 && $request->advanced_payment > 0) {
                         Payment::create([
@@ -319,10 +320,21 @@ class RoutesController extends Controller
                         Session::flash('message', 'No changes were made!');
                         return redirect()->route('routes');
                     }
+                } else  if ($request->payment_mode == 'full' && $payment->mode === 'full') {
+                    $payment->payment_method = $request->payment_method;
+                    $payment->price = $route->price;
+                    $payment->installed = $route->price;
+                    $payment->save();
+
+                    Session::flash('message', 'Route was successful updated');
+                    return redirect()->route('routes');
+                } else {
+                    Session::flash('message', 'No changes were made!');
+                    return redirect()->route('routes');
                 }
             }
 
-            Session::flash('message', 'Route successful updated');
+            Session::flash('message', 'Route was successful updated');
             return redirect()->route('routes');
         } else {
             $this->validate($request, [

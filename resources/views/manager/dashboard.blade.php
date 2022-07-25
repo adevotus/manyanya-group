@@ -79,25 +79,26 @@
                         </div>
                     </div> <!-- end widget-rounded-circle-->
                 </div> <!-- end col-->
-                {{-- <div class="col-md-6 col-xl-3">
-                <div class="widget-rounded-circle card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="avatar-lg rounded-circle bg-soft-warning border-warning border">
-                                    <i class="fe-eye font-22 avatar-title text-warning"></i>
+                <div class="col-md-6 col-xl-3">
+                    <div class="widget-rounded-circle card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="avatar-lg rounded-circle bg-soft-warning border-warning border">
+                                        <i class="fe-eye font-22 avatar-title text-warning"></i>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-8">
-                                <div class="text-end">
-                                    <h3 class="text-dark mt-1"><span data-plugin="counterup">78.41</span>k</h3>
-                                    <p class="text-muted mb-1 text-truncate">Today's </p>
+                                <div class="col-8">
+                                    <div class="text-end">
+                                        <h3 class="text-dark mt-1"><span data-plugin="counterup">{{ $t_cargo }}</span>
+                                        </h3>
+                                        <p class="text-muted mb-1 text-truncate">Today's Cargo</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div> <!-- end row-->
+                            </div> <!-- end row-->
+                        </div>
                     </div>
                 </div>
-            </div> --}}
             </div>
             <!-- end row -->
 
@@ -209,83 +210,60 @@
                                                     <option value="2017" {{ (int) $fromY === 2017 ? 'selected' : '' }}>
                                                         2017
                                                     </option>
-                                                    <option value="2018"
-                                                        {{ (int) $fromY === 2018 ? 'selected' : '' }}>
+                                                    <option value="2018" {{ (int) $fromY === 2018 ? 'selected' : '' }}>
                                                         2018
                                                     </option>
-                                                    <option value="2019"
-                                                        {{ (int) $fromY === 2019 ? 'selected' : '' }}>
+                                                    <option value="2019" {{ (int) $fromY === 2019 ? 'selected' : '' }}>
                                                         2019</option>
-                                                    <option value="2020"
-                                                        {{ (int) $fromY === 2020 ? 'selected' : '' }}>
+                                                    <option value="2020" {{ (int) $fromY === 2020 ? 'selected' : '' }}>
                                                         2020</option>
-                                                    <option value="2021"
-                                                        {{ (int) $fromY === 2021 ? 'selected' : '' }}>
+                                                    <option value="2021" {{ (int) $fromY === 2021 ? 'selected' : '' }}>
                                                         2021</option>
-                                                    <option value="2022"
-                                                        {{ (int) $fromY === 2022 ? 'selected' : '' }}>
+                                                    <option value="2022" {{ (int) $fromY === 2022 ? 'selected' : '' }}>
                                                         2022</option>
-                                                    <option value="2023"
-                                                        {{ (int) $fromY === 2023 ? 'selected' : '' }}>
+                                                    <option value="2023" {{ (int) $fromY === 2023 ? 'selected' : '' }}>
                                                         2023</option>
-                                                    <option value="2024"
-                                                        {{ (int) $fromY === 2024 ? 'selected' : '' }}>
+                                                    <option value="2024" {{ (int) $fromY === 2024 ? 'selected' : '' }}>
                                                         2024</option>
-                                                    <option value="2025"
-                                                        {{ (int) $fromY === 2025 ? 'selected' : '' }}>
+                                                    <option value="2025" {{ (int) $fromY === 2025 ? 'selected' : '' }}>
                                                         2025</option>
-                                                    <option value="2026"
-                                                        {{ (int) $fromY === 2026 ? 'selected' : '' }}>
+                                                    <option value="2026" {{ (int) $fromY === 2026 ? 'selected' : '' }}>
                                                         2026</option>
-                                                    <option value="2027"
-                                                        {{ (int) $fromY === 2027 ? 'selected' : '' }}>
+                                                    <option value="2027" {{ (int) $fromY === 2027 ? 'selected' : '' }}>
                                                         2027</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-5">
                                                 <select class="form-select" name="yearTo" id="example-select">
-                                                    <option value="2015"
-                                                        {{ (int) $fromT === 2015 ? 'selected' : '' }}>
+                                                    <option value="2015" {{ (int) $fromT === 2015 ? 'selected' : '' }}>
                                                         2015
                                                     </option>
-                                                    <option value="2016"
-                                                        {{ (int) $fromT === 2016 ? 'selected' : '' }}>
+                                                    <option value="2016" {{ (int) $fromT === 2016 ? 'selected' : '' }}>
                                                         2016
                                                     </option>
-                                                    <option value="2017"
-                                                        {{ (int) $fromT === 2017 ? 'selected' : '' }}>
+                                                    <option value="2017" {{ (int) $fromT === 2017 ? 'selected' : '' }}>
                                                         2017
                                                     </option>
-                                                    <option value="2018"
-                                                        {{ (int) $fromT === 2018 ? 'selected' : '' }}>
+                                                    <option value="2018" {{ (int) $fromT === 2018 ? 'selected' : '' }}>
                                                         2018
                                                     </option>
-                                                    <option value="2019"
-                                                        {{ (int) $fromT === 2019 ? 'selected' : '' }}>
+                                                    <option value="2019" {{ (int) $fromT === 2019 ? 'selected' : '' }}>
                                                         2019</option>
-                                                    <option value="2020"
-                                                        {{ (int) $fromT === 2020 ? 'selected' : '' }}>
+                                                    <option value="2020" {{ (int) $fromT === 2020 ? 'selected' : '' }}>
                                                         2020</option>
-                                                    <option value="2021"
-                                                        {{ (int) $fromT === 2021 ? 'selected' : '' }}>
+                                                    <option value="2021" {{ (int) $fromT === 2021 ? 'selected' : '' }}>
                                                         2021</option>
-                                                    <option value="2022"
-                                                        {{ (int) $fromT === 2022 ? 'selected' : '' }}>
+                                                    <option value="2022" {{ (int) $fromT === 2022 ? 'selected' : '' }}>
                                                         2022</option>
-                                                    <option value="2023"
-                                                        {{ (int) $fromT === 2023 ? 'selected' : '' }}>
+                                                    <option value="2023" {{ (int) $fromT === 2023 ? 'selected' : '' }}>
                                                         2023</option>
-                                                    <option value="2024"
-                                                        {{ (int) $fromT === 2024 ? 'selected' : '' }}>
+                                                    <option value="2024" {{ (int) $fromT === 2024 ? 'selected' : '' }}>
                                                         2024</option>
-                                                    <option value="2025"
-                                                        {{ (int) $fromT === 2025 ? 'selected' : '' }}>
+                                                    <option value="2025" {{ (int) $fromT === 2025 ? 'selected' : '' }}>
                                                         2025</option>
-                                                    <option value="2026"
-                                                        {{ (int) $fromT === 2026 ? 'selected' : '' }}>
+                                                    <option value="2026" {{ (int) $fromT === 2026 ? 'selected' : '' }}>
                                                         2026</option>
-                                                    <option value="2027"
-                                                        {{ (int) $fromT === 2027 ? 'selected' : '' }}>
+                                                    <option value="2027" {{ (int) $fromT === 2027 ? 'selected' : '' }}>
                                                         2027</option>
                                                 </select>
                                             </div>
