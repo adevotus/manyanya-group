@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session as FacadesSession;
@@ -100,21 +101,26 @@ class VehicleController extends Controller
             'condition' => $request->vehicle_condition,
         ]);
 
-        if ($vehicle) {
+        if (!is_null($vehicle)) {
+            Activity::create([
+                'action' => 'ADD VEHICLE',
+                'description' => 'Vehicle ' . $vehicle->name . ' with plate number ' . $vehicle->platenumber . ' was added',
+                'user_id' => auth()->user()->id,
+            ]);
+
             FacadesSession::flash('message', 'Vehicle created successful');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'ADD VEHICLE',
+                'description' => 'Attempt to create vehicle ' . $request->vehicle_name . ' with plate number ' . $request->plate_no . ' failed',
+                'user_id' => auth()->user()->id,
+            ]);
+
             FacadesSession::flash('message', 'Vehicle  unsuccessful created');
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Vehicle  $vehicle
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
 
@@ -136,20 +142,27 @@ class VehicleController extends Controller
             $vehicle->save();
 
 
+            Activity::create([
+                'action' => 'UPDATE VEHICLE',
+                'description' => 'Vehicle ' . $vehicle->name . ' with plate number ' . $vehicle->platenumber . ' was updated',
+                'user_id' => auth()->user()->id,
+            ]);
+
             FacadesSession::flash('message', 'Vehicle updated successful');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'UPDATE VEHICLE',
+                'description' => 'Attempt to update vehicle ' . $request->vehicle_name . ' with plate number ' . $request->plate_no . ' failed',
+                'user_id' => auth()->user()->id,
+            ]);
+
+
             FacadesSession::flash('message', 'Vehicle  unsuccessful updated');
             return redirect()->back();
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Vehicle  $vehicle
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
         $this->validate($request, [
@@ -158,11 +171,27 @@ class VehicleController extends Controller
         $vehicle = Vehicle::where('id', $request->vehicle_id)->first();
 
         if (!is_null($vehicle)) {
+            $temp = $vehicle;
+
             $vehicle->delete();
+
+            Activity::create([
+                'action' => 'DELETE VEHICLE',
+                'description' => 'Attempt to DELETE vehicle ' . $temp->name . ' with plate number ' . $temp->platenumber . ' was successful',
+                'user_id' => auth()->user()->id,
+            ]);
+
 
             FacadesSession::flash('message', 'Vehicle deleted successful ');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'DELETE VEHICLE',
+                'description' => 'Attempt to DELETE vehicle with id' . $request->vehicle_id . ' failed',
+                'user_id' => auth()->user()->id,
+            ]);
+
+
             FacadesSession::flash('message', 'Vehicle  unsuccessful deleted');
             return redirect()->back();
         }

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Mail\QuoteMail;
+use App\Models\Activity;
 use App\Models\Quote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
@@ -95,9 +97,21 @@ class QuotaController extends Controller
         try {
             Mail::to($request->email)->send(new QuoteMail($request->name, $request->phone_number, $request->email, $request->reply));
 
+            Activity::create([
+                'action' => 'REPLY QUOTE EMAIL',
+                'description' => 'Email was replied to customer ' . $request->name . ' with phone ' . $request->phone,
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Reply was successful sent');
             return redirect()->back();
         } catch (\Throwable $th) {
+            Activity::create([
+                'action' => 'REPLY QUOTE EMAIL',
+                'description' => 'Email failed to reply to customer ' . $request->name . ' with phone ' . $request->phone,
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Reply was unsuccessful sent');
             return redirect()->back();
         }
@@ -108,11 +122,25 @@ class QuotaController extends Controller
         $quote = Quote::where('id', $id)->first();
 
         if (!is_null($quote)) {
+            $temp = $quote;
+
             $quote->delete();
+
+            Activity::create([
+                'action' => 'DELETE QUOTE MESSAGE',
+                'description' => 'Quote message for customer' . $temp->name . ' with phone ' . $temp->phone . 'is deleted',
+                'user_id' =>  auth()->user()->id,
+            ]);
 
             Session::flash('message', 'Message deleted successful ');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'DELETE QUOTE MESSAGE',
+                'description' => 'Quote message to deleted was not found',
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Message  unsuccessful deleted');
             return redirect()->back();
         }

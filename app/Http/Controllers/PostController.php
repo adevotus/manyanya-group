@@ -78,7 +78,7 @@ class PostController extends Controller
             $nextN = Post::where('id', '>', $post->id)->min('id');
 
             if ($previous == null) {
-                $prev = Post::orderBy('create_at', 'asc')->last();
+                $prev = Post::orderBy('created_at', 'desc')->first();
             } else {
                 $prev = Post::where('id', $previous)->first();
             }

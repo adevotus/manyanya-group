@@ -67,7 +67,7 @@
                                         </th>
                                         <th>Action</th>
                                         <th>Description</th>
-                                        <th>User</th>
+                                        <th>User Responsible</th>
                                         <th>Create Date</th>
                                         <th style="width: 85px;">Action</th>
                                     </tr>

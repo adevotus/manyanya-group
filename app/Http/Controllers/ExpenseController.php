@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ExpenseExport;
+use App\Models\Activity;
 use App\Models\Expense;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -217,9 +218,21 @@ class ExpenseController extends Controller
         }
 
         if ($expense) {
+            Activity::create([
+                'action' => 'ADD EXPENSE SPENT',
+                'description' => 'Expense with amount ' . $expense->amount . ' was added',
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Expenses successful created');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'ADD EXPENSE SPENT',
+                'description' => 'Failed to add expense',
+                'user_id' =>  rand(1, 50),
+            ]);
+
             Session::flash('message', 'Expenses unsuccessful created');
             return redirect()->back();
         }
@@ -256,9 +269,21 @@ class ExpenseController extends Controller
 
             $expense->save();
 
+            Activity::create([
+                'action' => 'UPDATE EXPENSE SPENT',
+                'description' => 'Expense with amount ' . $expense->amount . ' was updated',
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Expense spent successful updated');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'UPDATE EXPENSE SPENT',
+                'description' => 'Expense with amount ' . $expense->amount . ' failed to update',
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Expense spent unsuccessful updated');
             return redirect()->back();
         }
@@ -274,10 +299,24 @@ class ExpenseController extends Controller
         $expense = Expense::where('id', $request->expense_id)->first();
 
         if (is_null($expense)) {
+            Activity::create([
+                'action' => 'DELETE EXPENSE SPENT',
+                'description' => 'Failed to delete expense ' . $request->expense_id,
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Failed to deleted expense');
             return redirect()->back();
         } else {
+            $temp = $expense;
+
             $expense->delete();
+
+            Activity::create([
+                'action' => 'ADD EXPENSE SPENT',
+                'description' => 'Expense with amount ' . $temp->amount . ' was deleted',
+                'user_id' =>  auth()->user()->id,
+            ]);
 
             Session::flash('message', 'Expense spent successful deleted');
             return redirect()->back();

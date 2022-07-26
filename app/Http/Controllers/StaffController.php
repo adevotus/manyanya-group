@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
 
@@ -120,10 +121,22 @@ class StaffController extends Controller
 
 
 
-        if ($user) {
+        if (!is_null($user)) {
+            Activity::create([
+                'action' => 'ADD STAFF USER',
+                'description' => 'User ' . $user->name . ' with email ' . $user->email . ' was added successful',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Staff member successful created');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'ADD USER',
+                'description' => 'User ' . $request->name . ' with email ' . $request->email . ' failed to be added',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Staff member unsuccessful created');
             return redirect()->back();
         }
@@ -170,10 +183,22 @@ class StaffController extends Controller
             }
         }
 
-        if ($user) {
+        if (!is_null($user)) {
+            Activity::create([
+                'action' => 'UPDATE STAFF USER',
+                'description' => 'User ' . $user->name . ' with email ' . $user->email . ' was updated successful',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Staff member successful updated');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'UPDATE STAFF USER',
+                'description' => 'User ' . $request->name . ' with email ' . $request->email . ' failed to update',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Staff member unsuccessful updated');
             return redirect()->back();
         }
@@ -188,11 +213,25 @@ class StaffController extends Controller
         $staff = User::where('id', $request->staff_id)->first();
 
         if (!is_null($staff)) {
+            $temp = $staff;
+
             $staff->delete();
+
+            Activity::create([
+                'action' => 'DELETE STAFF USER',
+                'description' => 'User ' . $temp->name . ' with email ' . $temp->email . ' was deleted successful',
+                'user_id' => auth()->user()->id,
+            ]);
 
             Session::flash('message', 'Staff member deleted successful ');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'DELETE STAFF USER',
+                'description' => 'User with id ' . $request->staff_id . ' failed to delete',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Staff member  unsuccessful deleted');
             return redirect()->back();
         }

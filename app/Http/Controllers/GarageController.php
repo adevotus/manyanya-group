@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\GarageExport;
+use App\Models\Activity;
 use App\Models\Garage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -141,10 +142,22 @@ class GarageController extends Controller
             ]);
         }
 
-        if ($garage) {
+        if (!is_null($garage)) {
+            Activity::create([
+                'action' => 'ADD GARAGE TOOL',
+                'description' => 'Tool ' . $garage->tool_name . ' with amount ' . $garage->amount . ' was added',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Garage Tool successful created');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'ADD GARAGE TOOL',
+                'description' => 'Tool ' . $request->tool_name . ' with amount ' . $request->amount . ' failed to be added',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Garage Tool unsuccessful created');
             return redirect()->back();
         }
@@ -162,7 +175,7 @@ class GarageController extends Controller
 
         $garage = Garage::find($request->garage_id);
 
-        if ($garage) {
+        if (!is_null($garage)) {
             $garage->tool_name = $request->tool_name;
             $garage->amount = $request->amount;
             $garage->condition = $request->tool_condition;
@@ -185,9 +198,21 @@ class GarageController extends Controller
 
             $garage->save();
 
+            Activity::create([
+                'action' => 'UPDATE GARAGE TOOL',
+                'description' => 'Tool ' . $request->tool_name . ' with amount ' . $request->amount . '  was updated',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Garage Tool successful updated');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'UPDATE GARAGE TOOL',
+                'description' => 'Tool ' . $request->tool_name . ' with amount ' . $request->amount . ' failed to be updated',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Garage Tool unsuccessful updated');
             return redirect()->back();
         }
@@ -202,11 +227,25 @@ class GarageController extends Controller
         $garage = Garage::where('id', $request->garage_id)->first();
 
         if (!is_null($garage)) {
+            $temp = $garage;
+
             $garage->delete();
+
+            Activity::create([
+                'action' => 'DELETE GARAGE TOOL',
+                'description' => 'Tool ' . $temp->tool_name . ' with amount ' . $temp->amount . ' was deleted',
+                'user_id' => auth()->user()->id,
+            ]);
 
             Session::flash('message', 'Tool deleted successful ');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'DELETE GARAGE TOOL',
+                'description' => 'Tool with id ' . $request->garage_id . ' failed to delete',
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Tool  unsuccessful deleted');
             return redirect()->back();
         }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\RouteExport;
 use App\Mail\RemainderInvoice;
+use App\Models\Activity;
 use App\Models\Cargo;
 use App\Models\Payment;
 use App\Models\Route;
@@ -47,7 +48,6 @@ class RoutesController extends Controller
                         ->where('route', 'LIKE', '%' . $search . '%')
                         ->orWhere('trip', 'LIKE', '%' . $search . '%')
                         ->orWhere('mode', 'LIKE', '%' . $search . '%')
-                        ->orWhere('payment_method', 'LIKE', '%' . $search . '%')
                         ->orWhere(function ($querys) use ($search) {
                             return  $querys->whereHas('driver', function ($query) use ($search) {
                                 return $query->where('name', 'LIKE', '%' . $search . '%');
@@ -77,7 +77,6 @@ class RoutesController extends Controller
                         ->where('route', 'LIKE', '%' . $search . '%')
                         ->orWhere('trip', 'LIKE', '%' . $search . '%')
                         ->orWhere('mode', 'LIKE', '%' . $search . '%')
-                        ->orWhere('payment_method', 'LIKE', '%' . $search . '%')
                         ->orWhere(function ($querys) use ($search) {
                             return  $querys->whereHas('driver', function ($query) use ($search) {
                                 return $query->where('name', 'LIKE', '%' . $search . '%');
@@ -107,7 +106,6 @@ class RoutesController extends Controller
                     ->where('route', 'LIKE', '%' . $search . '%')
                     ->orWhere('trip', 'LIKE', '%' . $search . '%')
                     ->orWhere('mode', 'LIKE', '%' . $search . '%')
-                    ->orWhere('payment_method', 'LIKE', '%' . $search . '%')
                     ->orWhere(function ($querys) use ($search) {
                         return  $querys->whereHas('driver', function ($query) use ($search) {
                             return $query->where('name', 'LIKE', '%' . $search . '%');
@@ -181,14 +179,32 @@ class RoutesController extends Controller
             'vehicle_id' => $request->vehicle_id,
         ]);
 
-        $cargo = Cargo::where('id', $request->cargo_id)->first();
-        $cargo->status = true;
-        $cargo->save();
+        if (!is_null($route)) {
+            $cargo = Cargo::where('id', $request->cargo_id)->first();
+            $cargo->status = true;
+            $cargo->save();
 
-        if ($route) {
+            Activity::create([
+                'action' => 'UPDATE CARGO STATUS',
+                'description' => 'CARGO ' . $cargo->name . ' status for customer ' . $cargo->customername . ' was updated',
+                'user_id' =>  auth()->user()->id,
+            ]);
+
+            Activity::create([
+                'action' => 'ADD ROUTE',
+                'description' => 'Route ' . $route->route . ' was added',
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Route successful created');
             return redirect()->route('routes');
         } else {
+            Activity::create([
+                'action' => 'ADD ROUTE',
+                'description' => 'Route ' . $request->route_name . 'failed to add',
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Route unsuccessful created');
             return redirect()->back();
         }
@@ -209,12 +225,35 @@ class RoutesController extends Controller
 
         $route = Route::where('id', $id)->first();
 
-        try {
-            Mail::to($route->cargo->customeremail)->send(new RemainderInvoice($request->message));
+        if (!is_null($route)) {
+            try {
+                Mail::to($route->cargo->customeremail)->send(new RemainderInvoice($request->message));
 
-            Session::flash('message', 'Remainder message was successful sent');
-            return redirect()->back();
-        } catch (\Throwable $th) {
+                Activity::create([
+                    'action' => 'SEND REMAINDER EMAIL',
+                    'description' => 'Message {' . $request->message . '} was sent to email ' . $route->cargo->customeremail,
+                    'user_id' =>  auth()->user()->id,
+                ]);
+
+                Session::flash('message', 'Remainder message was successful sent');
+                return redirect()->back();
+            } catch (\Throwable $th) {
+                Activity::create([
+                    'action' => 'SEND REMAINDER EMAIL',
+                    'description' => 'Message {' . $request->message . '} failed to send to email' . $route->cargo->customeremail,
+                    'user_id' =>  auth()->user()->id,
+                ]);
+
+                Session::flash('message', 'Remainder message was unsuccessful sent');
+                return redirect()->back();
+            }
+        } else {
+            Activity::create([
+                'action' => 'SEND REMAINDER EMAIL',
+                'description' => 'Email failed to send, no such route found',
+                'user_id' =>  auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Remainder message was unsuccessful sent');
             return redirect()->back();
         }
@@ -281,8 +320,20 @@ class RoutesController extends Controller
             $route->status = 'approved';
             $route->save();
 
+            Activity::create([
+                'action' => 'UPDATE ROUTE PAYMENT',
+                'description' => 'Route ' . $route->route . ' was updated',
+                'user_id' => auth()->user()->id,
+            ]);
+
             $cargo->amount = $request->price;
             $cargo->save();
+
+            Activity::create([
+                'action' => 'UPDATE CARGO AMOUNT',
+                'description' => 'Cargo amount of TZS ' . $cargo->amount . ' was updated',
+                'user_id' => auth()->user()->id,
+            ]);
 
             if (is_null($payment)) {
                 if ($request->payment_mode == 'installment') {
@@ -294,6 +345,12 @@ class RoutesController extends Controller
                         'remaining' =>  $r_price,
                         'route_id' =>  $route->id,
                     ]);
+
+                    Activity::create([
+                        'action' => 'ADD PAYMENT',
+                        'description' => 'Advanced Payment of TZS ' . $i_price . 'for route ' . $route->route . ' was successful paid the remaining amount is TZS ' . $r_price,
+                        'user_id' =>  auth()->user()->id,
+                    ]);
                 } else {
                     Payment::create([
                         'description' => 'Full Installment',
@@ -302,6 +359,12 @@ class RoutesController extends Controller
                         'installed' =>  $route->price,
                         'remaining' =>  0,
                         'route_id' =>  $route->id,
+                    ]);
+
+                    Activity::create([
+                        'action' => 'ADD PAYMENT',
+                        'description' => 'Full Payment of TZS ' . $route->price . 'for route ' . $route->route . ' was successful paid',
+                        'user_id' => auth()->user()->id,
                     ]);
                 }
             } else {
@@ -316,6 +379,12 @@ class RoutesController extends Controller
                             'remaining' =>  $payment->remaining - $i_price,
                             'route_id' =>  $route->id,
                         ]);
+
+                        Activity::create([
+                            'action' => 'UPDATE PAYMENT INSTALLMENT',
+                            'description' => (1 + $count) . ' Installment Payment of TZS ' . $i_price . 'for route ' . $route->route . ' was successful paid the remaining amount is TZS ' . ($payment->remaining - $i_price),
+                            'user_id' =>  auth()->user()->id,
+                        ]);
                     } else {
                         Session::flash('message', 'No changes were made!');
                         return redirect()->route('routes');
@@ -325,6 +394,12 @@ class RoutesController extends Controller
                     $payment->price = $route->price;
                     $payment->installed = $route->price;
                     $payment->save();
+
+                    Activity::create([
+                        'action' => 'UPDATE PAYMENT METHOD',
+                        'description' => 'Payment method for route ' . $route->route . ' failed to change',
+                        'user_id' =>  auth()->user()->id,
+                    ]);
 
                     Session::flash('message', 'Route was successful updated');
                     return redirect()->route('routes');
@@ -358,21 +433,27 @@ class RoutesController extends Controller
 
                 $route->save();
 
+                Activity::create([
+                    'action' => 'UPDATE ROUTE PAYMENT',
+                    'description' => 'Route ' . $route->route . ' was updated',
+                    'user_id' => auth()->user()->id,
+                ]);
+
                 Session::flash('message', 'Route successful updated');
                 return redirect()->route('routes');
             } else {
+                Activity::create([
+                    'action' => 'UPDATE ROUTE PAYMENT',
+                    'description' => 'Route' . $request->route_name . 'failed to update',
+                    'user_id' => auth()->user()->id,
+                ]);
+
                 Session::flash('message', 'Route unsuccessful updated');
                 return redirect()->back();
             }
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Route  $route
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
         $this->validate($request, [
@@ -382,11 +463,25 @@ class RoutesController extends Controller
         $route = Route::where('id', $request->route_id)->first();
 
         if (!is_null($route)) {
+            $temp = $route;
+
             $route->delete();
+
+            Activity::create([
+                'action' => 'DELETE ROUTE PAYMENT',
+                'description' => 'Route ' . $temp->route . ' was deleted',
+                'user_id' => auth()->user()->id,
+            ]);
 
             Session::flash('message', 'Route deleted successful ');
             return redirect()->back();
         } else {
+            Activity::create([
+                'action' => 'DELETE ROUTE PAYMENT',
+                'description' => 'Route with id ' . $request->route_id . ' failed to delete',
+                'user_id' => auth()->user()->id,
+            ]);
+
             Session::flash('message', 'Route  unsuccessful deleted');
             return redirect()->back();
         }

@@ -153,13 +153,11 @@
                                             <th style="width: 20px;">
                                                 #
                                             </th>
-                                            <th>Route Source</th>
-                                            <th>Route Destination</th>
+                                            <th>Route Name</th>
                                             <th>Price</th>
                                             <th>Driver Name</th>
                                             <th>Vehicle Model</th>
                                             <th>Cargo</th>
-                                            <th>Status</th>
                                             <th>Create Date</th>
                                         </tr>
                                     </thead>
@@ -171,10 +169,7 @@
                                                         {{ $key + 1 }}
                                                     </td>
                                                     <td class="table-user">
-                                                        {{ $route->source }}
-                                                    </td>
-                                                    <td class="table-user">
-                                                        {{ $route->destination }}
+                                                        {{ $route->route }}
                                                     </td>
                                                     <td>
                                                         {{ number_format($route->price) }}
@@ -188,12 +183,7 @@
                                                     <td>
                                                         {{ $route->cargo->name }}
                                                     </td>
-                                                    <td>
-                                                        <span
-                                                            class="badge @if ($route->status === 'paid') bg-soft-success text-success @elseif ($route->status === 'pending')  bg-soft-info text-info @else bg-soft-danger text-danger @endif">
-                                                            {{ $route->status }}
-                                                        </span>
-                                                    </td>
+
                                                     <td>
                                                         {{ date('Y-m-d', strtotime($route->updated_at)) }}
                                                     </td>

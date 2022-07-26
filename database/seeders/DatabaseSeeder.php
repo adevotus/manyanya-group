@@ -16,6 +16,6 @@ class DatabaseSeeder extends Seeder
     {
         Post::factory(20)->create();
         $this->call(LaratrustSeeder::class);
-        $this->call(ExpenseSeeder::class);
+        // $this->call(ExpenseSeeder::class);
     }
 }

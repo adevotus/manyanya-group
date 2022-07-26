@@ -10,7 +10,6 @@ use App\Models\Route;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 use Faker\Factory as Faker;
 use App\Models\Vehicle;
 
